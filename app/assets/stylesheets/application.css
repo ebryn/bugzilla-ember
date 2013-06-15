@@ -1,13 +1,107 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
- *
- *= require_self
- *= require_tree .
- */
+/* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+/* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
+
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  background-color: rgb(200, 200, 200);
+  margin: 0;
+  padding: 0;
+}
+
+.app-status {
+  position: absolute;
+  left: 70%;
+  width: 30%;
+  min-width: 30%;
+  background-color: yellow;
+  opacity: 0.7;
+  color: black;
+}
+
+.bug {
+  width: -moz-calc(100% - 40px);
+  background-color: rgb(240, 240, 240);
+  margin: 10px;
+  padding: 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: rgb(116, 126, 147);
+}
+
+.bug > .header {
+  background-color: rgb(208, 208, 208);
+  border-radius: 8px;
+  padding: 6px;
+  margin: 8px 0 8px 0;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.bug > .detail {
+  margin: 0 0 10px;
+}
+
+.bug > .detail > * {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.bug > .detail > .left, .bug > .detail > .right {
+  width: 45%;
+}
+
+.bug > .detail > .padding {
+  width: 5%;
+}
+
+.bug > .detail > * > * {
+  margin: 0 0 3px;
+}
+
+.bug > .detail > * > * > :first-child {
+  font-weight: bold;
+  width: 20%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.bug > .detail > * > * > :nth-child(2) {
+  display: inline-block;
+  width: 79%;
+}
+
+.bug ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.bug ul > li {
+  display: inline-block;
+  padding: 0 5px 0 0;
+}
+
+.bug a {
+  color: rgb(128, 144, 239);
+  text-decoration: none;
+}
+
+.bug .comment-template, .bug .comment-template * {
+  visibility: none;
+}
+
+.bug .comment {
+  background-color: rgb(232, 232, 232);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(200, 200, 186);
+  padding: 5px;
+  max-width: 660px;
+  word-wrap: break-word;
+}
+
+.bug pre {
+  white-space: pre-wrap;
+  font-size: 9pt;
+}
