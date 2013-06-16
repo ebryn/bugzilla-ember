@@ -1,6 +1,6 @@
 <div class="bug">
   <div class="header">
-    <span data-source="bug.header" data-format="header">
+    <span>
       {{#linkTo "bug" this}}Bug {{id}}{{/linkTo}}
       <span> - {{summary}}</span>
     </span>
@@ -9,74 +9,79 @@
   <div class="detail">
     <div class="left">
       <div class="status">
-        <span data-source="field.status">Status:</span>
-        <span data-source="bug.status">{{status}}</span>
+        <span>Status:</span>
+        <span>{{status}}</span>
       </div>
       <div class="whiteboard">
-        <span data-source="field.whiteboard">Whiteboard:</span>
-        <span data-source="bug.whiteboard"></span>
+        <span>Whiteboard:</span>
+        <span></span>
       </div>
       <div class="keywords">
-        <span data-source="field.keywords">Keywords:</span>
-        <span data-source="bug.keywords">{{keywords}}</span>
+        <span>Keywords:</span>
+        <span>{{keywords}}</span>
       </div>
       <div class="product">
-        <span data-source="field.product">Product:</span>
-        <span data-source="bug.product" data-format="select">{{product}}</span>
+        <span>Product:</span>
+        <span>{{product}}</span>
       </div>
       <div class="component">
-        <span data-source="field.component">Component:</span>
-        <span data-source="bug.component" data-format="select">{{component}}</span>
+        <span>Component:</span>
+        <span>{{component}}</span>
       </div>
       <div class="version">
-        <span data-source="field.version">Version:</span>
-        <span data-source="bug.version" data-format="select">{{version}}</span>
+        <span>Version:</span>
+        <span>{{version}}</span>
       </div>
       <div class="platform">
-        <span data-source="field.platform">Hardware:</span>
-        <span data-source="bug.platform" data-format="select">{{platform}}</span>
-        <span data-source="bug.op_sys" data-format="select">{{op_sys}}</span>
+        <span>Hardware:</span>
+        <span>{{platform}}</span>
+        <span>{{op_sys}}</span>
       </div>
       <div class="importance">
         <span>Importance:</span>
         <span>
-          <span data-source="bug.priority" data-format="select">{{priority}}</span>
-          <span data-source="bug.severity" data-format="select">{{severity}}</span>
+          <span>{{priority}}</span>
+          <span>{{severity}}</span>
         </span>
       </div>
       <div class="assigned_to">
-        <span data-source="field.assigned_to">Assignee:</span>
-        <span data-source="bug.assigned_to" data-format="user">{{assigned_to.real_name}}</span>
+        <span>Assignee:</span>
+        <span>{{assigned_to.real_name}}</span>
       </div>
       <div class="qa_contact">
-        <span data-source="field.qa_contact">QA Contact:</span>
-        <span data-source="bug.qa_contact" data-format="user">{{qa_contact.name}}</span>
+        <span>QA Contact:</span>
+        <span>{{qa_contact.name}}</span>
       </div>
       <div class="url">
-        <span data-source="field.url">URL:</span>
-        <span data-source="bug.url" data-format="url">{{url}}</span>
+        <span>URL:</span>
+        <span>{{url}}</span>
       </div>
       <div class="depends_on">
-        <span data-source="field.depends_on">Depends on:</span>
-        <ul data-source="bug.depends_on" data-format="bug-list">
+        <span>Depends on:</span>
+        <ul>
           {{#each depends_on_bugs}}
             <li {{bindAttr title="summary"}}>
               {{#linkTo "bug" this classNameBindings="isResolved"}}{{aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
-            <em>none</em>
+            {{#if depends_on_bugs.isLoaded}}
+              <em>none</em>
+            {{/if}}
           {{/each}}
         </ul>
       </div>
       <div class="blocks">
-        <span data-source="field.blocks">Blocks:</span>
-        <ul data-source="bug.blocks" data-format="bug-list">
+        <span>Blocks:</span>
+        <ul>
+
           {{#each blocks_bugs}}
             <li {{bindAttr title="summary"}}>
               {{#linkTo "bug" this classNameBindings="isResolved"}}{{aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
-            <em>none</em>
+            {{#if blocks_bugs.isLoaded}}
+              <em>none</em>
+            {{/if}}
           {{/each}}
         </ul>
       </div>
@@ -86,16 +91,16 @@
 
     <div class="right">
       <div class="creator">
-        <span data-source="field.creator">Reporter:</span>
-        <span data-source="bug.creator" data-format="user">{{creator.real_name}}</span>
+        <span>Reporter:</span>
+        <span>{{creator.real_name}}</span>
       </div>
       <div class="last_change_time">
-        <span data-source="field.last_change_time">Changed:</span>
-        <span data-source="bug.last_change_time" data-format="timestamp">{{last_change_time}}</span>
+        <span>Changed:</span>
+        <span>{{last_change_time}}</span>
       </div>
       <div class="cc">
-        <span data-source="field.cc">CC:</span>
-        <ul data-source="bug.cc" data-format="user-list">
+        <span>CC:</span>
+        <ul>
           {{#each cc}}
             <li>{{name}}</li>
           {{/each}}
@@ -110,13 +115,13 @@
     {{/if}}
     
     {{#each comments}}
-      <div style="" class="comment">
-        <div style="" class="header">
-          <span style="" data-source="comment.creator" data-format="user">{{creator.name}}</span>
-          <span style="" data-source="comment.creation_time" data-format="timestamp">{{creation_time}}</span>
-          <span style="" data-source="number"></span>
+      <div class="comment">
+        <div class="header">
+          <span>{{creator.name}}</span>
+          <span>{{creation_time}}</span>
+          <span></span>
         </div>
-        <pre style="" data-source="comment.text">{{text}}</pre>
+        <pre>{{text}}</pre>
       </div>
     {{/each}}
   </div>
