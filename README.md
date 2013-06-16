@@ -1,7 +1,5 @@
-# ember-rails-starter-kit
+# bugzilla-ember
 
-Everything you need to get up and running developing your Ember.js application with Rails 3.2.
+A [Bugzilla](https://bugzilla.mozilla.org) frontend written in Ember.js.
 
-This app is setup to be easily deployable to Heroku with Unicorn. It's based off [ruby-rails-unicorn-sample](https://github.com/heroku/ruby-rails-unicorn-sample).
-
-Enjoy!
+More soon...
