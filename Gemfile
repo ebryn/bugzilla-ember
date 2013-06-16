@@ -22,7 +22,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'ember-rails'
+gem 'ember-rails', :git => 'http://github.com/emberjs/ember-rails.git'
 gem 'ember-source', '1.0.0.rc5'
 gem 'handlebars-source', '1.0.0.rc4'
 # gem 'emblem-rails' # Uncomment for Emblem awesomeness
