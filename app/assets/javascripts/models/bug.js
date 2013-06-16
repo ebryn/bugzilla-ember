@@ -52,13 +52,28 @@ App.Bug = Ember.Model.extend({
       bug.set('id', id); // FIXME
       return bug;
     });
-  }.property('blocks')
+  }.property('blocks'),
 
+  init: function() {
+    this._super();
+
+    // add records to search index
+    this.on('didLoad', function() {
+      this.constructor.index.add(this.attributesForIndex());
+    });
+  },
+
+  attributesForIndex: function() {
+    var attrs = this.getProperties('summary');
+    attrs.id = this.get('id').toString(); // lunr doesn't like numbers :/
+    return attrs;
+  }
 });
 
 App.Bug.reopenClass({
   index: lunr(function() {
     this.field('summary', {boost: 10});
+    this.field('id')
     this.ref('id')
   }),
 
@@ -76,7 +91,6 @@ App.Bug.reopenClass({
 
     _loadFromServer: function(record, id) {
       this._getJSON(id).then(function(data) {
-        App.Bug.index.add(data);
         record.load(id, data);
         asyncStorage.setItem('bug-' + id, data);
       });
@@ -87,7 +101,6 @@ App.Bug.reopenClass({
 
       asyncStorage.getItem('bug-' + id, function(value) {
         if (value !== null) {
-          App.Bug.index.add(value);
           record.load(id, value);
 
           // check if data has been changed on the server
