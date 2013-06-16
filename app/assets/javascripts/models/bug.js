@@ -100,20 +100,20 @@ App.Bug.reopenClass({
     find: function(record, id) {
       var self = this;
 
-      asyncStorage.getItem('bug-' + id, function(value) {
+      return App.promiseStorage.getItem('bug-' + id).then(function(value){
         if (value !== null) {
-          Ember.run(record, record.load, id, value);
+          record.load(id, value);
 
-          // check if data has been changed on the server
-          self._getJSON(id, {include_fields: "last_change_time"}).then(function(data) {
+          return self._getJSON(id, {include_fields: "last_change_time"}).then(function(data) {
             if (data.last_change_time !== value.last_change_time) {
               self._loadFromServer(record, id);
             }
           });
+
         } else {
-          self._loadFromServer(record, id);
+          return self._loadFromServer(record, id);
         }
-      });
+      }).then(null, Ember.unhandledRejection);
     },
 
     findMany: function(klass, records, ids) {

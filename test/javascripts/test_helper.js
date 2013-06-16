@@ -10,6 +10,10 @@ App.rootElement = '#ember-testing';
 App.setupForTesting();
 App.injectTestHelpers();
 
+function mockBug() {
+  return {};
+}
+
 function exists(selector) {
   return !!find(selector).length;
 }
