@@ -22,6 +22,7 @@ body {
   width: -moz-calc(100% - 40px);
   background-color: rgb(240, 240, 240);
   margin: 10px;
+  margin-top: 30px;
   padding: 10px;
   border-width: 1px;
   border-style: solid;
@@ -108,4 +109,48 @@ body {
 
 .bug .is-resolved {
   text-decoration: line-through;
+}
+
+#search {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+}
+
+#search input[type=text] {
+  width: 300px;
+}
+
+.search-results {
+  background: #ccc;
+  border: 1px solid black;
+  border-radius: 4px;
+  width: 300px;
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-results li {
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 13px;
+  padding: 4px;
+  border-bottom: 1px solid black;
+}
+
+.search-results li:last-of-type {
+  border-bottom: none;
+}
+
+.search-results li:hover {
+  background: white;
+}
+
+.search-results li a {
+  text-decoration: none;
 }

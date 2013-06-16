@@ -1,0 +1,16 @@
+<div id="search">
+  {{input type="text" value=searchText placeholder="Search..."}}
+  {{#if searchResults}}
+    <ul class="search-results" {{action clearSearchText}}>
+      {{#each searchResults}}
+        <li>
+          {{#linkTo "bug" record}}
+            {{ref}}: {{record.summary}}
+          {{/linkTo}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</div>
+
+{{outlet}}

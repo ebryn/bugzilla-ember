@@ -51,36 +51,52 @@ App.Bug = Ember.Model.extend({
 
 });
 
-App.Bug.adapter = Ember.Adapter.create({
-  _getJSON: function(id, params) {
-    return $.getJSON("https://api-dev.bugzilla.mozilla.org/latest/bug/" + id, params);
-  },
+App.Bug.reopenClass({
+  index: lunr(function() {
+    this.field('summary', {boost: 10});
+    this.ref('id')
+  }),
 
-  _loadFromServer: function(record, id) {
-    this._getJSON(id).then(function(data) {
-      record.load(id, data);
-      asyncStorage.setItem('bug-' + id, data);
+  search: function(text) {
+    return this.index.search(text).map(function(result) {
+      result.record = App.Bug.find(result.ref);
+      return result;
     });
   },
 
-  find: function(record, id) {
-    var self = this;
+  adapter: Ember.Adapter.create({
+    _getJSON: function(id, params) {
+      return $.getJSON("https://api-dev.bugzilla.mozilla.org/latest/bug/" + id, params);
+    },
 
-    asyncStorage.getItem('bug-' + id, function(value) {
-      if (value !== null) {
-        record.load(id, value);
+    _loadFromServer: function(record, id) {
+      this._getJSON(id).then(function(data) {
+        App.Bug.index.add(data);
+        record.load(id, data);
+        asyncStorage.setItem('bug-' + id, data);
+      });
+    },
 
-        // check if data has been changed on the server
-        self._getJSON(id, {include_fields: "last_change_time"}).then(function(data) {
-          if (data.last_change_time !== value.last_change_time) {
-            self._loadFromServer(record, id);
-          }
-        });
-      } else {
-        self._loadFromServer(record, id);
-      }
-    });
-  },
+    find: function(record, id) {
+      var self = this;
 
-  findMany: null // FIXME
+      asyncStorage.getItem('bug-' + id, function(value) {
+        if (value !== null) {
+          App.Bug.index.add(value);
+          record.load(id, value);
+
+          // check if data has been changed on the server
+          self._getJSON(id, {include_fields: "last_change_time"}).then(function(data) {
+            if (data.last_change_time !== value.last_change_time) {
+              self._loadFromServer(record, id);
+            }
+          });
+        } else {
+          self._loadFromServer(record, id);
+        }
+      });
+    },
+
+    findMany: null // FIXME
+  })
 });
