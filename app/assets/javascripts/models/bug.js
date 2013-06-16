@@ -102,6 +102,10 @@ App.Bug.reopenClass({
       });
     },
 
-    findMany: null // FIXME
+    findMany: function(klass, records, ids) {
+      this._getJSON("", {id: ids.join(',')}).then(function(data) {
+        records.load(klass, data.bugs);
+      });
+    }
   })
 });
