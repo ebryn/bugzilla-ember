@@ -61,7 +61,7 @@
         <ul data-source="bug.depends_on" data-format="bug-list">
           {{#each depends_on_bugs}}
             <li {{bindAttr title="summary"}}>
-              {{#linkTo "bug" this classNameBindings="isResolved"}}{{id}}{{/linkTo}}
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
             <em>none</em>
@@ -73,7 +73,7 @@
         <ul data-source="bug.blocks" data-format="bug-list">
           {{#each blocks_bugs}}
             <li {{bindAttr title="summary"}}>
-              {{#linkTo "bug" this classNameBindings="isResolved"}}{{id}}{{/linkTo}}
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
             <em>none</em>

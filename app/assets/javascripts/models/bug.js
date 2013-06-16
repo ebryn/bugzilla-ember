@@ -4,6 +4,7 @@ var attr = Ember.attr;
 
 App.Bug = Ember.Model.extend({
   id: attr(),
+  alias: attr(),
   status: attr(),
   summary: attr(),
   keywords: attr(),
@@ -22,6 +23,10 @@ App.Bug = Ember.Model.extend({
   creator: attr(), // aka reporter
   last_change_time: attr(Date),
   cc: attr(),
+
+  aliasOrId: function() {
+    return this.get('alias') || this.get('id');
+  }.property('alias', 'id'),
 
   isResolved: function() {
     return this.get('status') === "RESOLVED";
