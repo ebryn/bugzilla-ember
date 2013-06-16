@@ -1,6 +1,7 @@
 App.ApplicationController = Ember.Controller.extend({
   needs: ['user', 'login'],
 
+  user: Ember.computed.alias('controllers.user'),
   searchText: null,
 
   searchResults: function() {

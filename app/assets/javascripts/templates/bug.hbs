@@ -123,16 +123,14 @@
     {{#if comments.isLoading}}
       Loading comments...
     {{/if}}
-    
-    {{#each comments}}
-      <div class="comment">
-        <div class="header">
-          <span>{{creator.name}}</span>
-          <span>{{creation_time}}</span>
-          <span></span>
-        </div>
-        <pre>{{text}}</pre>
+
+    {{#each comments itemViewClass="App.CommentView"}}
+      <div class="header">
+        <span>{{unbound creator.name}}</span>
+        <span>{{unbound creation_time}}</span>
+        <span></span>
       </div>
+      <pre>{{unbound text}}</pre>
     {{/each}}
   </div>
 </div>

@@ -10,3 +10,25 @@ App.getJSON = function(url, params) {
     });
   });
 };
+
+function unhandledRejection(reason){
+  Ember.Logger.error(reason);
+  Ember.Logger.assert(reason);
+
+  setTimeout(function(){
+    throw reason;
+  }, 0);
+}
+
+Ember.unhandledRejection = unhandledRejection;
+
+App.promiseStorage = {
+  getItem: function(key, callback) {
+    return new Ember.RSVP.Promise(function(resolve, reject){
+      asyncStorage.getItem(key, function(value){
+        Ember.run(null, resolve, value);
+      });
+    });
+  }
+};
+
