@@ -2,7 +2,11 @@
   <div class="header">
     <span>
       {{#linkTo "bug" this}}Bug {{id}}{{/linkTo}}
-      <span> - {{summary}}</span>
+      {{#if isLoading}}
+        <img src="/assets/loading.gif">
+      {{else}}
+        <span> - {{#if alias}}({{alias}}) {{/if}}{{summary}}</span>
+      {{/if}}
     </span>
   </div>
 
@@ -34,8 +38,7 @@
       </div>
       <div class="platform">
         <span>Hardware:</span>
-        <span>{{platform}}</span>
-        <span>{{op_sys}}</span>
+        <span>{{platform}} {{op_sys}}</span>
       </div>
       <div class="importance">
         <span>Importance:</span>
@@ -91,20 +94,27 @@
 
     <div class="right">
       <div class="creator">
-        <span>Reporter:</span>
-        <span>{{creator.real_name}}</span>
+        <span>Reported:</span>
+        <span>{{creation_time}} by {{creator.real_name}}</span>
       </div>
       <div class="last_change_time">
-        <span>Changed:</span>
+        <span>Modified:</span>
         <span>{{last_change_time}}</span>
       </div>
       <div class="cc">
-        <span>CC:</span>
-        <ul>
-          {{#each cc}}
-            <li>{{name}}</li>
-          {{/each}}
-        </ul>
+        <span>CC List:</span>
+        <span>
+          {{#if cc}}
+            {{cc.length}} users
+            <span>
+              <ul>
+                {{#each cc}}
+                  <li>{{name}}</li>
+                {{/each}}
+              </ul>
+            </span>
+          {{/if}}
+        </span>
       </div>
     </div>
   </div>

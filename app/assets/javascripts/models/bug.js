@@ -21,6 +21,7 @@ App.Bug = Ember.Model.extend({
   depends_on: attr(), // array
   blocks: attr(), // array
   creator: attr(), // aka reporter
+  creation_time: attr(Date),
   last_change_time: attr(Date),
   cc: attr(),
 
