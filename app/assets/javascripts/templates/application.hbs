@@ -13,4 +13,19 @@
   {{/if}}
 </div>
 
+<ul class="nav">
+  <li><a href="#">New</a></li>
+  <li><a href="#">Browse</a></li>
+  <li><a href="#">My Requests</a></li>
+  <li><a href="#">My Dashboard</a></li>
+  <li>{{render 'user'}}</li>
+</ul>
+
 {{outlet}}
+
+{{#if showingLoginModal}}
+  <div class="modal-overlay" {{action hideLoginModal}}></div>
+  <div class="modal">
+    {{render 'login'}}
+  </div>
+{{/if}}

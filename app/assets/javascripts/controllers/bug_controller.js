@@ -8,6 +8,8 @@ App.BugController = Ember.ObjectController.extend({
   }.observesBefore('content'),
 
   _contentDidChange: function() {
+    if (Ember.testing) { return; }
+
     this._pollingTimer = Ember.run.later(this, function() {
       this.get('content').reload();
       this._contentDidChange();

@@ -87,7 +87,7 @@ App.Bug.reopenClass({
 
   adapter: Ember.Adapter.create({
     _getJSON: function(id, params) {
-      return $.getJSON("https://api-dev.bugzilla.mozilla.org/latest/bug/" + id, params);
+      return App.getJSON("https://api-dev.bugzilla.mozilla.org/latest/bug/" + id, params);
     },
 
     _loadFromServer: function(record, id) {
@@ -102,7 +102,7 @@ App.Bug.reopenClass({
 
       asyncStorage.getItem('bug-' + id, function(value) {
         if (value !== null) {
-          record.load(id, value);
+          Ember.run(record, record.load, id, value);
 
           // check if data has been changed on the server
           self._getJSON(id, {include_fields: "last_change_time"}).then(function(data) {
@@ -117,7 +117,13 @@ App.Bug.reopenClass({
     },
 
     findMany: function(klass, records, ids) {
-      this._getJSON("", {id: ids.join(',')}).then(function(data) {
+      return this._getJSON("", {id: ids.join(',')}).then(function(data) {
+        records.load(klass, data.bugs);
+      });
+    },
+
+    findQuery: function(klass, records, params) {
+      this._getJSON("", params).then(function(data) {
         records.load(klass, data.bugs);
       });
     }
