@@ -14,7 +14,7 @@
     <div class="left">
       <div class="status">
         <span>Status:</span>
-        <span>{{status}}</span>
+        {{field status}}
       </div>
       <div class="whiteboard">
         <span>Whiteboard:</span>
@@ -22,49 +22,49 @@
       </div>
       <div class="keywords">
         <span>Keywords:</span>
-        <span>{{keywords}}</span>
+        <span>{{field keywords}}</span>
       </div>
       <div class="product">
         <span>Product:</span>
-        <span>{{product}}</span>
+        <span>{{field product}}</span>
       </div>
       <div class="component">
         <span>Component:</span>
-        <span>{{component}}</span>
+        <span>{{field component}}</span>
       </div>
       <div class="version">
         <span>Version:</span>
-        <span>{{version}}</span>
+        <span>{{field version}}</span>
       </div>
       <div class="platform">
         <span>Hardware:</span>
-        <span>{{platform}} {{op_sys}}</span>
+        <span>{{field platform}} {{field op_sys}}</span>
       </div>
       <div class="importance">
         <span>Importance:</span>
         <span>
-          <span>{{priority}}</span>
-          <span>{{severity}}</span>
+          <span>{{field priority}}</span>
+          <span>{{field severity}}</span>
         </span>
       </div>
       <div class="assigned_to">
         <span>Assignee:</span>
-        <span>{{assigned_to.real_name}}</span>
+        <span>{{field assigned_to.real_name}}</span>
       </div>
       <div class="qa_contact">
         <span>QA Contact:</span>
-        <span>{{qa_contact.name}}</span>
+        <span>{{field qa_contact.name}}</span>
       </div>
       <div class="url">
         <span>URL:</span>
-        <span>{{url}}</span>
+        <span>{{field url}}</span>
       </div>
       <div class="depends_on">
         <span>Depends on:</span>
         <ul>
           {{#each depends_on_bugs}}
             <li {{bindAttr title="summary"}}>
-              {{#linkTo "bug" this classNameBindings="isResolved"}}{{aliasOrId}}{{/linkTo}}
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{field aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
             {{#if depends_on_bugs.isLoaded}}
@@ -79,7 +79,7 @@
 
           {{#each blocks_bugs}}
             <li {{bindAttr title="summary"}}>
-              {{#linkTo "bug" this classNameBindings="isResolved"}}{{aliasOrId}}{{/linkTo}}
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{field aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
             {{#if blocks_bugs.isLoaded}}
@@ -95,11 +95,11 @@
     <div class="right">
       <div class="creator">
         <span>Reported:</span>
-        <span>{{creation_time}} by {{creator.real_name}}</span>
+        <span>{{field creation_time}} by {{field creator.real_name}}</span>
       </div>
       <div class="last_change_time">
         <span>Modified:</span>
-        <span>{{last_change_time}}</span>
+        <span>{{field last_change_time}}</span>
       </div>
       <div class="cc">
         <span>CC List:</span>
@@ -109,7 +109,7 @@
             <span>
               <ul>
                 {{#each cc}}
-                  <li>{{name}}</li>
+                  <li>{{field name}}</li>
                 {{/each}}
               </ul>
             </span>

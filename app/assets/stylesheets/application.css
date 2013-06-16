@@ -155,3 +155,8 @@ body {
 .search-results li a {
   text-decoration: none;
 }
+
+.fade-in {
+  transition: background-color 0.5s ease-in;
+  background-color: #ccc;
+}
