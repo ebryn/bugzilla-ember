@@ -23,9 +23,32 @@ App.Bug = Ember.Model.extend({
   last_change_time: attr(Date),
   cc: attr(),
 
+  isResolved: function() {
+    return this.get('status') === "RESOLVED";
+  }.property('status'),
+
   comments: function() {
     return App.Comment.find({bug_id: this.get('id')});
-  }.property()
+  }.property(),
+
+  depends_on_bugs: function() {
+    var depends_on = this.get('depends_on') || [];
+    return depends_on.map(function(id) {
+      var bug = App.Bug.find(id);
+      bug.set('id', id); // FIXME
+      return bug;
+    });
+  }.property('depends_on'),
+
+  blocks_bugs: function() {
+    var blocks = this.get('blocks') || [];
+    return blocks.map(function(id) {
+      var bug = App.Bug.find(id);
+      bug.set('id', id); // FIXME
+      return bug;
+    });
+  }.property('blocks')
+
 });
 
 App.Bug.adapter = Ember.Adapter.create({
@@ -57,5 +80,7 @@ App.Bug.adapter = Ember.Adapter.create({
         self._loadFromServer(record, id);
       }
     });
-  }
+  },
+
+  findMany: null // FIXME
 });

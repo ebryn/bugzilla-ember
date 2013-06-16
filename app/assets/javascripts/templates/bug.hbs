@@ -59,9 +59,9 @@
       <div class="depends_on">
         <span data-source="field.depends_on">Depends on:</span>
         <ul data-source="bug.depends_on" data-format="bug-list">
-          {{#each depends_on}}
+          {{#each depends_on_bugs}}
             <li>
-              <a href="#" {{action loadBug this}}>{{this}}</a>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{id}}{{/linkTo}}
             </li>
           {{else}}
             <em>none</em>
@@ -71,9 +71,9 @@
       <div class="blocks">
         <span data-source="field.blocks">Blocks:</span>
         <ul data-source="bug.blocks" data-format="bug-list">
-          {{#each blocks}}
+          {{#each blocks_bugs}}
             <li>
-              <a href="#" {{action loadBug this}}>{{this}}</a>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{id}}{{/linkTo}}
             </li>
           {{else}}
             <em>none</em>

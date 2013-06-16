@@ -105,3 +105,7 @@ body {
   white-space: pre-wrap;
   font-size: 9pt;
 }
+
+.bug .is-resolved {
+  text-decoration: line-through;
+}
