@@ -1,4 +1,6 @@
 App.ApplicationController = Ember.Controller.extend({
+  needs: ['user', 'login'],
+
   searchText: null,
 
   searchResults: function() {
