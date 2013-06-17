@@ -1,27 +1,32 @@
-<div id="search">
-  {{input type="text" value=searchText placeholder="Search..."}}
-  {{#if searchResults}}
-    <ul class="search-results" {{action clearSearchText}}>
-      {{#each searchResults}}
-        <li>
-          {{#linkTo "bug" record}}
-            {{ref}}: {{record.summary}}
-          {{/linkTo}}
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
-</div>
+<header class="main-app-header">
 
-<ul class="nav">
-  <li><a href="#">New</a></li>
-  <li><a href="#">Browse</a></li>
-  <li><a href="#">My Requests</a></li>
-  {{#if user.isLoggedIn}}
-    <li>{{#linkTo 'dashboard'}}My Dashboard{{/linkTo}}</li>
-  {{/if}}
-  <li>{{render 'user'}}</li>
-</ul>
+  <div id="search">
+    {{input type="text" value=searchText placeholder="Search..."}}
+    {{#if searchResults}}
+      <ul class="search-results" {{action clearSearchText}}>
+        {{#each searchResults}}
+          <li>
+            {{#linkTo "bug" record}}
+              {{ref}}: {{record.summary}}
+            {{/linkTo}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </div>
+
+  <ul class="nav">
+    <li><a href="#">New</a></li>
+    <li><a href="#">Browse</a></li>
+    <li><a href="#">My Requests</a></li>
+    {{#if user.isLoggedIn}}
+      <li>{{#linkTo 'dashboard'}}My Dashboard{{/linkTo}}</li>
+    {{/if}}
+    <li>{{render 'user'}}</li>
+  </ul>
+
+</header>
+
 
 {{outlet}}
 
