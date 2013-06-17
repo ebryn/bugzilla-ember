@@ -6,8 +6,8 @@
 
 .nav {
   @extend %reset-list;
-  display: -moz-flex;
   display: -webkit-flex;
+  display: flex;
   > li {
     margin-right: 1.5em;
   }
@@ -36,15 +36,18 @@
 /** Header Layout
 ========================================================================== */
 .main-app-header {
-  display: -moz-flex;
-  display: -webkit-flex; 
+  display: -webkit-flex;
+  display: flex; 
   -webkit-justify-content: space-between;
+  justify-content: space-between;
 
   .nav {
     -webkit-order: 1;
+    order: 1;
   }
   .search {
     -webkit-order: 2;
+    order: 2;
   }
 }
 
@@ -80,9 +83,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  padding: 0.25rem 0.25rem;
+  padding: 0.25rem 0.3rem;
   border-bottom: 1px solid #ddd;
   
+  font-size: 0.8rem;
 }
 
 .search-results li:last-of-type {
