@@ -1,0 +1,102 @@
+%reset-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav {
+  @extend %reset-list;
+  display: -webkit-flex;
+  display: flex;
+  > li {
+    margin-right: 1.5em;
+  }
+}
+
+.nav {
+  font-size: 0.85rem;
+  line-height: 1;
+  margin-top: 0.5rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/** Search
+========================================================================== */
+.search input[type=text] {
+  border-radius: 5px;
+  border: 1px solid hsl(200, 3, 76);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+/** Header Layout
+========================================================================== */
+.main-app-header {
+  display: -webkit-flex;
+  display: flex; 
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+
+  .nav {
+    -webkit-order: 1;
+    order: 1;
+  }
+  .search {
+    -webkit-order: 2;
+    order: 2;
+  }
+}
+
+.main-app-header {
+  padding: 1rem 1.5rem;
+
+  margin-bottom: 2.5rem;
+
+  background: hsl(200, 15, 92);
+  border-bottom: 1px solid hsl(200, 3, 76);
+}
+
+/** Search & Auto complete
+========================================================================== */
+#search input[type=text] {
+  width: 300px;
+}
+
+.search-results {
+  border: 1px solid hsl(200, 3, 76);
+  background-color: #eee;
+  border-radius: 5px;
+  margin-top: 1px;
+  position: absolute;
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-results li {
+  width: 300px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0.25rem 0.3rem;
+  border-bottom: 1px solid #ddd;
+  
+  font-size: 0.8rem;
+}
+
+.search-results li:last-of-type {
+  border-bottom: none;
+}
+
+.search-results li:hover {
+  background: white;
+}
+
+.search-results li a {
+  text-decoration: none;
+}
