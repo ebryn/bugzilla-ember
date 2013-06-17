@@ -76,7 +76,6 @@ GEM
     mime-types (1.23)
     multi_json (1.7.6)
     newrelic_rpm (3.5.7.59)
-    pg (0.15.1)
     polyglot (0.3.3)
     qunit-rails (0.0.3)
       railties (>= 3.2.3)
@@ -140,7 +139,6 @@ DEPENDENCIES
   ember-source (= 1.0.0.rc5)
   handlebars-source (= 1.0.0.rc4)
   newrelic_rpm (~> 3.5.7.57.beta)
-  pg
   qunit-rails
   rails (= 3.2.13)
   sass-rails (~> 3.2.3)
