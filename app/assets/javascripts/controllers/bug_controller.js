@@ -2,7 +2,8 @@ App.BugController = Ember.ObjectController.extend({
   isShowingRemainingComments: false,
 
   keywords: function() {
-    return this.get('content.keywords').join(', ')
+    var keywords = this.get('content.keywords');
+    return keywords && keywords.join(', ')
   }.property('content.keywords'),
 
   showRemainingComments: function() {
