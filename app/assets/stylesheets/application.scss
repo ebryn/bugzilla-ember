@@ -89,6 +89,7 @@ a {
 }
 .bug > .detail {
   margin-bottom: 1rem;
+  font-size: 0.85rem;
 }
 .bug > .detail > * {
   display: inline-block;
@@ -101,8 +102,8 @@ a {
   width: 5%;
 }
 .bug > .detail > * > * {
-  margin-bottom: 0.125rem;
-  padding-bottom: 0.125rem;
+  margin-bottom: 0.2rem;
+  padding-bottom: 0.2rem;
   border-bottom: 1px dotted hsl(200, 15%, 94%);
 }
 .bug > .detail > * > * > :first-child {
