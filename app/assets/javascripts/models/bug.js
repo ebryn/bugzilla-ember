@@ -37,6 +37,18 @@ App.Bug = Ember.Model.extend({
     return App.Comment.find({bug_id: this.get('id')});
   }.property(),
 
+  firstTenComments: function() {
+    if (!this.get('comments.isLoaded')) { return; }
+
+    return this.get('comments').slice(0, 10);
+  }.property('comments.isLoaded'),
+
+  remainingComments: function() {
+    if (!this.get('comments.isLoaded')) { return; }
+
+    return this.get('comments').slice(10);
+  }.property('comments.isLoaded'),
+
   depends_on_bugs: function() {
     var depends_on = this.get('depends_on') || [];
     return depends_on.map(function(id) {

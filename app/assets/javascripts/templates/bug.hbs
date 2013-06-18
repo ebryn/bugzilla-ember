@@ -124,13 +124,13 @@
       Loading comments...
     {{/if}}
 
-    {{#each comments itemViewClass="App.CommentView"}}
-      <div class="header">
-        <span>{{unbound creator.name}}</span>
-        <span>{{unbound creation_time}}</span>
-        <span></span>
-      </div>
-      <pre>{{unbound text}}</pre>
-    {{/each}}
+    {{each firstTenComments itemViewClass="App.CommentView"}}
+    {{#unless isShowingRemainingComments}}
+      {{#if remainingComments}}
+        <a href="#" {{action showRemainingComments}}>Show remaining {{remainingComments.length}} comments</a>
+      {{/if}}
+    {{else}}
+      {{each remainingComments itemViewClass="App.CommentView"}}
+    {{/unless}}
   </div>
 </div>
