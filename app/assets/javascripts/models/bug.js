@@ -38,6 +38,10 @@ App.Bug = Ember.Model.extend({
   unobsoleteAttachments: function() {
     return this.get('attachments').filter(function(attachment) {
       return !attachment.is_obsolete;
+    }).map(function(attachment) {
+      var record = App.Attachment.create({data: attachment, isLoaded: true});
+      record.then = null; // FIXME: We need to get rid of records-as-promises :(
+      return record;
     });
   }.property('attachments.@each.is_obsolete'),
 
