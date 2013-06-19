@@ -24,6 +24,7 @@ App.Bug = Ember.Model.extend({
   creation_time: attr(Date),
   last_change_time: attr(Date),
   cc: attr(),
+  flags: attr(),
 
   aliasOrId: function() {
     return this.get('alias') || this.get('id');
