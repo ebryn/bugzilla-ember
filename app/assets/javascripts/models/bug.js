@@ -48,7 +48,7 @@ App.Bug = Ember.Model.extend({
     if (!this.get('comments.isLoaded')) { return; }
 
     return this.get('comments').slice(10);
-  }.property('comments.isLoaded'),
+  }.property('comments.isLoaded', 'comments.[]'),
 
   depends_on_bugs: function() {
     var depends_on = this.get('depends_on') || [];
@@ -81,6 +81,20 @@ App.Bug = Ember.Model.extend({
     var attrs = this.getProperties('summary');
     attrs.id = this.get('id').toString(); // lunr doesn't like numbers :/
     return attrs;
+  },
+
+  reload: function() {
+    this._super();
+
+    // Check for new comments. TODO: This can be made cleaner.
+    var existingComments = this.get('comments'),
+        latestComments = App.Comment.find({bug_id: this.get('id')});
+
+    latestComments.forEach(function(comment) {
+      if (!existingComments.contains(comment)) {
+        existingComments.pushObject(comment);
+      }
+    });
   }
 });
 
