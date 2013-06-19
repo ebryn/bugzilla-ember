@@ -25,6 +25,7 @@ App.Bug = Ember.Model.extend({
   last_change_time: attr(Date),
   cc: attr(),
   flags: attr(),
+  attachments: attr(),
 
   aliasOrId: function() {
     return this.get('alias') || this.get('id');
@@ -34,14 +35,20 @@ App.Bug = Ember.Model.extend({
     return this.get('status') === "RESOLVED";
   }.property('status'),
 
+  unobsoleteAttachments: function() {
+    return this.get('attachments').filter(function(attachment) {
+      return !attachment.is_obsolete;
+    });
+  }.property('attachments.@each.is_obsolete'),
+
   comments: function() {
     return App.Comment.find({bug_id: this.get('id')});
   }.property(),
 
-  firstTenComments: function() {
+  firstComment: function() {
     if (!this.get('comments.isLoaded')) { return; }
 
-    return this.get('comments').slice(0, 10);
+    return this.get('comments.firstObject');
   }.property('comments.isLoaded'),
 
   remainingComments: function() {

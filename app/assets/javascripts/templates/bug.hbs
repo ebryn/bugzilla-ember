@@ -129,12 +129,35 @@
     </div>
   </div>
 
+  <table class="attachments">
+    {{#each unobsoleteAttachments}}
+      <tr>
+        <td>
+          <a href="#">{{description}}</a> ({{formatBytes size}}{{#if is_patch}}, patch{{/if}})<br>
+          {{last_change_time}}, {{attacher.name}}
+        </td>
+        <td>
+          {{#if flags}}
+            {{#each flags}}
+              {{setter.name}}: {{name}}{{status}}
+            {{/each}}
+          {{else}}
+            <em>No flags</em>
+          {{/if}}
+        </td>
+        <td>
+          <a href="#">Details</a> | <a href="#">Diff</a> | <a href="#">Review</a>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+
   <div class="comments">
     {{#if comments.isLoading}}
       Loading comments...
     {{/if}}
 
-    {{each firstTenComments itemViewClass="App.CommentView"}}
+    {{view App.CommentView contextBinding="firstComment"}}
     {{#unless isShowingRemainingComments}}
       {{#if remainingComments}}
         <a href="#" {{action showRemainingComments}}>Show remaining {{remainingComments.length}} comments</a>
