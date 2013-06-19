@@ -36,7 +36,11 @@ App.Bug = Ember.Model.extend({
   }.property('status'),
 
   unobsoleteAttachments: function() {
-    return this.get('attachments').filter(function(attachment) {
+    var attachments = this.get('attachments');
+
+    if (!attachments) { return []; }
+
+    return attachments.filter(function(attachment) {
       return !attachment.is_obsolete;
     }).map(function(attachment) {
       var record = App.Attachment.create({data: attachment, isLoaded: true});
