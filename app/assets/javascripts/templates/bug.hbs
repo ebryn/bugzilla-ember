@@ -150,7 +150,9 @@
             {{/if}}
           </td>
           <td>
-            <a href="#">Details</a> | <a href="#">Diff</a> | <a href="#">Review</a>
+            {{#linkTo "attachment" this}}Details{{/linkTo}} |
+            <a {{bindAttr href="diffURL"}} target="_blank">Diff</a> |
+            <a {{bindAttr href="reviewURL"}} target="_blank">Review</a>
           </td>
         </tr>
       {{/each}}

@@ -15,7 +15,22 @@ App.Attachment = Ember.Model.extend({
   decodedData: function() {
     var encodedData = this.get('data.data');
     if (encodedData) { return atob(encodedData); }
-  }.property('data', 'data.data')
+  }.property('data', 'data.data'),
+
+  // FIXME: These belong in an itemController
+  reviewURL: function() {
+    var id = this.get('id'),
+        bugId = this.get('bug_id');
+
+    return "https://bugzilla.mozilla.org/page.cgi?id=splinter.html&bug=%@&attachment=%@".fmt(bugId, id);
+  }.property('id', 'bug_id'),
+
+  diffURL: function() {
+    var id = this.get('id'),
+        bugId = this.get('bugId');
+
+    return "https://bugzilla.mozilla.org/attachment.cgi?id=%@&action=diff".fmt(id);
+  }.property('id', 'bug_id'),
 });
 
 App.Attachment.reopenClass({
