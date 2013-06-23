@@ -12,8 +12,8 @@ group :assets do
   gem 'turbo-sprockets-rails3'
 end
 
-gem 'ember-rails', :git => 'http://github.com/emberjs/ember-rails.git'
-gem 'ember-source', '1.0.0.rc5'
+gem 'ember-rails'
+gem 'ember-source', '1.0.0.rc.6'
 gem 'handlebars-source', '1.0.0.rc4'
 
 group :development, :test do
