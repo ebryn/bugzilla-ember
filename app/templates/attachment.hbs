@@ -1,7 +1,9 @@
-<h1>{{description}}</h1>
+<article class="attachment-main">
+  <h1>{{description}}</h1>
 
-{{#unless decodedData}}
-  Loading attachment data...
-{{else}}
-  <pre><code>{{decodedData}}</code></pre>
-{{/unless}}
+  {{#unless decodedData}}
+    Loading attachment data...
+  {{else}}
+    <pre><code>{{decodedData}}</code></pre>
+  {{/unless}}
+</article>
