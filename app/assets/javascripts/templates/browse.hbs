@@ -1,0 +1,42 @@
+<table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
+  <thead> 
+    <tr>
+      {{view App.BrowseColumnHeaderView column="id" title="ID"}}
+      {{view App.BrowseColumnHeaderView column="product" title="Product"}}
+      {{view App.BrowseColumnHeaderView column="component" title="Comp"}}
+      {{view App.BrowseColumnHeaderView column="assigned_to.name" title="Assignee"}}
+      {{view App.BrowseColumnHeaderView column="status" title="Status"}}
+      {{view App.BrowseColumnHeaderView column="summary" title="Summary"}}
+      {{view App.BrowseColumnHeaderView column="last_change_time" title="Changed"}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each controller}}
+    <tr>
+      <td class="id">
+        {{#linkTo 'bug' this}} {{id}} {{/linkTo}}
+      </td>
+      <td class="product">
+        {{product}}
+      </td>
+      <td class="component">
+        {{component}}
+      </td>
+      <td class="assignee">
+        {{assigned_to.name}}
+      </td>
+      <td class="status">
+        {{status}}
+      </td>
+      <td class="summary">
+        {{#linkTo 'bug' this}} {{summary}} {{/linkTo}}
+      </td>
+      <td class="changed">
+        {{last_change_time}}
+      </td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+
+  <tfoot></tfoot></table>
