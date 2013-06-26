@@ -1,6 +1,7 @@
 {
   "predef": [
     "Bugzilla",
+    "Visibility",
     "Ember",
     "lunr",
     "asyncStorage",
