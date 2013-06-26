@@ -8,7 +8,7 @@
 // background: hsl(200, 1, 92);
 // border-bottom: 1px solid hsl(200, 3, 76);
 
-$highlight-bg: hsl(200, 1, 92);
+$highlight-bg: hsl(200, 15, 92);
 $highlight-border: hsl(200, 3, 76);
 
 @mixin highlight-bg {
@@ -31,7 +31,7 @@ body {
 
   margin-bottom: 3rem;
 
-  line-height: 1.25;
+  line-height: 1.3;
   color: hsl(200, 1, 15);
 }
 h3 {
@@ -57,6 +57,12 @@ button {
   }
 }
 
+%container {
+  width: 92%;
+  margin-right: auto;
+  margin-left: auto;  
+}
+
 /** Site Elements
 ========================================================================== */
 .app-status {
@@ -77,9 +83,7 @@ a {
 }
 
 .bug {
-  width: 92%;
-  margin-right: auto;
-  margin-left: auto;
+  @extend %container;
 }
 .bug > .header {
   @include highlight-bg;
@@ -133,6 +137,8 @@ a {
   text-decoration: none;
 }
 
+/** Comment
+========================================================================== */
 .bug .comment-template, .bug .comment-template * {
   visibility: none;
 }
@@ -151,6 +157,7 @@ a {
 }
 .bug .comment:last-of-type {
   border-bottom: 5px solid hsl(200, 3, 90);
+  margin-bottom: 0.5rem; 
 }
 
 .bug pre {
@@ -166,6 +173,66 @@ a {
 .fade-in {
   transition: background-color 0.5s ease-in;
   background-color: #ccc;
+}
+
+/** Attachment
+========================================================================== */
+
+// Attachment Page
+.attachment-main {
+  @extend %container;
+  h1 {
+    @include highlight-bg;
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    margin-bottom: 0;
+    font-weight: 600;
+  }
+
+  pre {
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    // background-color: #f7f7f7;
+    border: 1px solid hsl(200, 1, 85);
+    padding: 1em;
+    // border-left: 5px solid #eee;
+  }
+}
+
+// Attachment as part of bug
+.attachments {
+  width: 100%;
+  @media all and (min-width: 75em) {
+    width: 75%;
+  } 
+}
+.attachments {
+  font-size: 0.825rem;
+  margin: 0.75rem 0 1.25rem;
+  line-height: 1.65;
+  border: 1px solid #eee;
+  
+  td {
+    padding: 0.35rem 0.75rem;
+  }
+  // Markup is a little hard for this section
+  // so need to style parent and then reset in the 'a' tag
+  tr td:first-child {
+    // font-style: italic;
+    color: hsl(200, 1, 20);
+    font-size: 0.775rem;
+    a {
+      font-size: 0.875rem;
+      font-style: normal;
+    }
+  }
+  tr:nth-of-type(1n) {
+    background-color: hsl(200, 1, 96);
+  }
+  tr:nth-of-type(2n) {
+    background-color: hsl(200, 1, 90);
+  }
 }
 
 /** Modal
