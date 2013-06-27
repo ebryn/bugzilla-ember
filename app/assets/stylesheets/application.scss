@@ -175,6 +175,24 @@ a {
   background-color: #ccc;
 }
 
+/** Browse Table
+    ========================================================================== */
+
+.browse-table{
+  th:hover{
+    cursor:pointer;
+  }
+  .sortUp:after {
+    content:" \2191";
+  }
+  .sortDown:after {
+    content:" \2193";
+  }
+  .product, .component, .assignee, .status, .changed{
+    white-space: nowrap;
+  }
+}
+
 /** Attachment
 ========================================================================== */
 
