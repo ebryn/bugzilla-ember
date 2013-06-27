@@ -22,12 +22,16 @@ App.AttachmentView = AttachmentView;
 
 import 'bugzilla/views/field' as FieldView;
 App.FieldView = FieldView;
+
+import 'bugzilla/views/browse_column_header' as BrowseColumnHeaderView;
+App.BrowseColumnHeaderView = BrowseColumnHeaderView;
 // #view hacks
 
 App.Router.map(function() {
   this.route("bug", {path: "bug/:bug_id"});
   this.route("attachment", {path: "attachment/:attachment_id"});
   this.route("dashboard");
+  this.route("browse");
 });
 
 export = App;
