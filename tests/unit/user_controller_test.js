@@ -1,15 +1,17 @@
 var userController,
     originalAdapter;
 
+import 'bugzilla/models/bug' as Bug;
+
 module("UserController", {
   setup: function(){
-    originalAdapter = App.Bug.adapter;
+    originalAdapter = Bug.adapter;
     App.reset();
     userController = App.__container__.lookup('controller:user');
   },
   teardown: function() {
-    App.Bug.adapter = originalAdapter;
-    delete App.Bug.FIXTURES;
+    Bug.adapter = originalAdapter;
+    delete Bug.FIXTURES;
   }
 });
 
@@ -37,7 +39,7 @@ test("when a user is logged in, on bug retrievsl,  bugs are fetched", function()
   Ember.run(function(){
     userController.set('isLoggedIn', true);
 
-    App.Bug.adapter = Ember.FixtureAdapter.create({
+    Bug.adapter = Ember.FixtureAdapter.create({
       findQuery: function(klass, records, params) {
         Ember.run.later(function() {
           records.load(klass, klass.FIXTURES);
@@ -45,7 +47,7 @@ test("when a user is logged in, on bug retrievsl,  bugs are fetched", function()
       }
     });
 
-    App.Bug.FIXTURES = [
+    Bug.FIXTURES = [
       {id: 1, summary: 'foo'},
       {id: 2, summary: 'foo'},
       {id: 3, summary: 'foo'},

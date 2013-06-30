@@ -28,7 +28,13 @@ test("dashboard link is not visible if the user is not logged in", function(){
 test("dashboard link is visible if the user is logged in", function(){
   login();
   visit('/').then(function(){
-    ok(exists('a:contains("My Dashboard")'), 'my dashboard link is visible');
+    stop();
+
+    // redirect + transition with async thenable doesn't seem to hold visit (yet)
+    setTimeout(function(){
+      start();
+      ok(exists('a:contains("My Dashboard")'), 'my dashboard link is visible');
+    }, 100);
   });
 });
 
@@ -48,11 +54,18 @@ test("visit to your dashboard, when logged in", function(){
   });
 });
 
-test("navigation to the dashboard, when logged in.", function(){
+test("navigat to the dashboard, when logged in.", function(){
   login();
 
   visit('/').then(function(){
-    return click('a:contains("My Dashboard")');
+    stop();
+    // temp workaround until we sort out router level transitions & ember-testing
+    return Ember.RSVP.Promise(function(resolve){
+      setTimeout(function(){
+        start();
+        resolve(click('a:contains("My Dashboard")'));
+      }, 100);
+    });
   }).then(function(){
     equal(currentPath(), '/dashboard', 'url is correct');
   });

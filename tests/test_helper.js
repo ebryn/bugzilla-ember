@@ -16,3 +16,12 @@ function exists(selector) {
 
 window.exists =exists;
 window.mockBug = mockBug;
+
+$(function(){
+  $('html').addClass('testing');
+});
+
+Ember.Container.prototype.stub = function(fullName, instance) {
+  instance.destroy = instance.destroy || function() {};
+  this.cache.dict[fullName] = instance;
+};

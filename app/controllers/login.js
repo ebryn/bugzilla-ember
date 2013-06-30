@@ -1,4 +1,3 @@
-import 'bugzilla/actions/login' as login;
 import 'bugzilla/utils/unhandled_rejection' as unhandledRejection;
 
 var LoginController = Ember.Controller.extend({
@@ -14,6 +13,9 @@ var LoginController = Ember.Controller.extend({
 
       return;
     }
+
+    // this.actionFor
+    var login = this.container.lookup('action:login');
 
     login(username, password).then(function(data) {
       self.send('hideLoginModal');

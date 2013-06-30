@@ -57,7 +57,9 @@ define("resolver",
     view: 'views',
     util: 'utils',
     route: 'routes',
+    action: 'actions',
     service: 'services',
+    behaviour: 'behaviour',
     controller: 'controllers'
   };
 

@@ -1,12 +1,9 @@
-var originalLogin;
+var container;
 
 module("login", {
   setup: function(){
-    originalLogin = App.login;
     App.reset();
-  },
-  teardown: function(){
-    App.login = originalLogin;
+    container = App.__container__;
   }
 });
 
@@ -26,16 +23,28 @@ test("failed login attempt", function() {
 test("successful login", function() {
   expect(5);
 
-  App.login = function(username, password){
+  var login = function(username, password){
     equal('foo', username);
     equal('bar', password);
 
     return Ember.RSVP.resolve({ });
   };
 
+  container.stub('action:login', login);
+
+  // we ened a better way to swap out stuff for testing
+
   visit("/").then(function() {
-    ok(exists('li a:contains("Login")'), "The login link is visible");
-    return click('li a:contains("Login")');
+    stop();
+
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      setTimeout(function(){
+        start();
+        ok(exists('li a:contains("Login")'), "The login link is visible");
+        resolve(click('li a:contains("Login")'));
+      }, 100);
+    });
+
   }).then(function() {
     fillIn('input[placeholder="Username"]', 'foo');
     fillIn('input[placeholder="Password"]', 'bar');
