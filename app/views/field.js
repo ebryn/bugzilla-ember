@@ -4,20 +4,24 @@ var FieldView = Ember.View.extend({
   flashOnValueChange: true,
 
   controllerContextWillChange: function() {
-  	this.set('flashOnValueChange', false);
+    this.set('flashOnValueChange', false);
   }.observesBefore('controller.context'),
 
   controllerContextDidChange: function() {
-  	Ember.run.scheduleOnce('afterRender', this, 'set', 'flashOnValueChange', true);
+    Ember.run.scheduleOnce('afterRender', this, 'set', 'flashOnValueChange', true);
   }.observes('controller.context'),
 
   _valueDidChange: function() {
-  	if (!this.get('flashOnValueChange')) { return; }
+    if (!this.get('flashOnValueChange')) {
+      return;
+    }
 
     this.$('span').addClass('fade-in');
+
     setTimeout(function() {
       this.$('span').removeClass('fade-in');
     }, 500);
+
   }.observes('value')
 });
 

@@ -1,7 +1,5 @@
 //= require async_storage
 
-var attr = Ember.attr;
-
 import 'bugzilla/models/comment' as Comment;
 import 'bugzilla/models/attachment' as Attachment;
 
@@ -124,8 +122,8 @@ var Bug = Ember.Model.extend({
 Bug.reopenClass({
   index: lunr(function() {
     this.field('summary', {boost: 10});
-    this.field('id')
-    this.ref('id')
+    this.field('id');
+    this.ref('id');
   }),
 
   search: function(text) {

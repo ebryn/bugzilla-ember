@@ -7,6 +7,6 @@ function login(username, password){
   };
 
   return getJSON("https://api-dev.bugzilla.mozilla.org/latest/user/persona@erikbryn.com", params);
-};
+}
 
 export = login;

@@ -1,5 +1,3 @@
-var attr = Ember.attr;
-
 import 'bugzilla/utils/get_json' as getJSON;
 
 var attr = Ember.attr;
@@ -47,6 +45,6 @@ Attachment.reopenClass({
       });
     }
   })
-})
+});
 
 export = Attachment;

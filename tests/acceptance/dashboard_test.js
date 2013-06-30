@@ -1,4 +1,9 @@
 var container;
+var App = requireModule('bugzilla/app');
+
+function mockBug() {
+  return {};
+}
 
 module("dashboard", {
   setup: function() {

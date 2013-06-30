@@ -1,4 +1,5 @@
 var container;
+var App = requireModule('bugzilla/app');
 
 module("login", {
   setup: function(){

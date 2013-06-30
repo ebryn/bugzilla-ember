@@ -1,5 +1,6 @@
-var userController,
-    originalAdapter;
+var userController;
+var originalAdapter;
+var App = requireModule('bugzilla/app');
 
 import 'bugzilla/models/bug' as Bug;
 

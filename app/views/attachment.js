@@ -10,11 +10,12 @@ var AttachmentView = Ember.View.extend({
     Ember.run.schedule('afterRender', this, function() {
       hljs.highlightBlock($codeEl[0]);
     });
+
   }.observes('controller.decodedData'),
 
   didInsertElement: function() {
     this.controllerDecodedDataDidChange();
   }
-})
+});
 
 export = AttachmentView;

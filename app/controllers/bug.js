@@ -3,7 +3,7 @@ var BugController = Ember.ObjectController.extend({
 
   keywords: function() {
     var keywords = this.get('content.keywords');
-    return keywords && keywords.join(', ')
+    return keywords && keywords.join(', ');
   }.property('content.keywords'),
 
   showRemainingComments: function() {
@@ -14,7 +14,9 @@ var BugController = Ember.ObjectController.extend({
   _pollingTimer: null,
 
   _contentWillChange: function() {
-    if (this._pollingTimer) { Ember.run.cancel(this._pollingTimer); }
+    if (this._pollingTimer) {
+      Ember.run.cancel(this._pollingTimer);
+    }
   }.observesBefore('content'),
 
   _contentDidChange: function() {

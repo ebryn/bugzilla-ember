@@ -27,6 +27,7 @@ module.exports = function(grunt) {
                      'lock',
                      'clean',
                      'transpile',
+                     'jshint',
                      'copy',
                      'ember_handlebars:compile',
                      'sass:app',
