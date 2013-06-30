@@ -24,12 +24,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['build']);
   grunt.registerTask('build',   [
+                     'lock',
                      'clean',
                      'transpile',
                      'copy',
                      'ember_handlebars:compile',
                      'sass:app',
-                     'concat']);
+                     'concat',
+                     'unlock' ]);
 
   grunt.registerTask('test',    ['build',  'qunit']);
   grunt.registerTask('server',  ['build', 'connect', 'watch']);
