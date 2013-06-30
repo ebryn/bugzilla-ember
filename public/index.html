@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bugzilla</title>
+  <link rel="stylesheet" href="/assets/vendor.css" media="all">
+  <link rel="stylesheet" href="/assets/app.css" media="all">
+  <script src="/assets/vendor.js"></script>
+  <script src="/assets/app.js"></script>
+</head>
+<body>
+  <script>
+    window.Bugzilla = requireModule('bugzilla/app');
+    window.App = Bugzilla; // TODO: hack
+  </script>
+</body>
+</html>
