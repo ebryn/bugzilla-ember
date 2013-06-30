@@ -2,15 +2,17 @@
 <html>
 <head>
   <title>Bugzilla</title>
-  <link rel="stylesheet" href="../assets/app.css" media="all">
-  <link rel="stylesheet" href="../assets/vendor.css" media="all">
-  <link rel="stylesheet" href="vendor/qunit.css" media="all">
+  <link rel="stylesheet" href="/assets/vendor.css" media="all">
+  <link rel="stylesheet" href="/assets/app.css"    media="all">
+  <link rel="stylesheet" href="vendor/qunit.css"   media="all">
 
-  <script src="../assets/vendor.js"></script>
-  <script src="../assets/app.js"></script>
+  <script src="/assets/vendor.js"></script>
+  <script>
+    console.log('tttttttt', Ember, Ember.Model, Ember.Model.find, 'XXXXXXXXX');
+  </script>
+  <script src="/assets/app.js"></script>
 
-  <script src="vendor/qunit.js"></script>
-  <script src="tests.js"></script>
+  <script src="/tests/vendor/qunit.js"></script>
 </head>
 <body>
   <div id="qunit"></div>
@@ -18,8 +20,13 @@
   <script>
     window.Bugzilla = requireModule('bugzilla/app');
     window.App = Bugzilla; // TODO: hack
+  </script>
 
-    // load based on params
+  <script src="/tests/test_helper.js"></script>
+  <script src="/tests/tests.js"></script>
+
+  <script>
+    // TODO: load based on params
     Ember.keys(define.registry).filter(function(key) {
       return /tests\//.test(key);
     }).forEach(requireModule);

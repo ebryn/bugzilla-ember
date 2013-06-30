@@ -54,7 +54,7 @@ test("visit to your dashboard, when logged in", function(){
   });
 });
 
-test("navigat to the dashboard, when logged in.", function(){
+test("navigate to the dashboard, when logged in.", function(){
   login();
 
   visit('/').then(function(){

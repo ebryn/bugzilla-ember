@@ -14,7 +14,7 @@ function exists(selector) {
   return !!find(selector).length;
 }
 
-window.exists =exists;
+window.exists = exists;
 window.mockBug = mockBug;
 
 $(function(){
