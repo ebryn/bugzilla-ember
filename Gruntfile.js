@@ -31,6 +31,6 @@ module.exports = function(grunt) {
                      'sass:app',
                      'concat']);
 
-  grunt.registerTask('test',    ['build',  'qunit:all']);
+  grunt.registerTask('test',    ['build',  'qunit']);
   grunt.registerTask('server',  ['build', 'connect', 'watch']);
 }; 
