@@ -62,12 +62,12 @@
       <div class="depends_on">
         <span>Depends on:</span>
         <ul>
-          {{#each depends_on_bugs}}
+          {{#each depends_on}}
             <li {{bindAttr title="summary"}}>
               {{#linkTo "bug" this classNameBindings="isResolved"}}{{field aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
-            {{#if depends_on_bugs.isLoaded}}
+            {{#if depends_on.isLoaded}}
               <em>none</em>
             {{/if}}
           {{/each}}
@@ -77,12 +77,12 @@
         <span>Blocks:</span>
         <ul>
 
-          {{#each blocks_bugs}}
+          {{#each blocks}}
             <li {{bindAttr title="summary"}}>
               {{#linkTo "bug" this classNameBindings="isResolved"}}{{field aliasOrId}}{{/linkTo}}
             </li>
           {{else}}
-            {{#if blocks_bugs.isLoaded}}
+            {{#if blocks.isLoaded}}
               <em>none</em>
             {{/if}}
           {{/each}}

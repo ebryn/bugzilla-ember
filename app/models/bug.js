@@ -1,14 +1,12 @@
-//= require async_storage
-
 import 'bugzilla/models/comment' as Comment;
 import 'bugzilla/models/attachment' as Attachment;
 
 import 'bugzilla/utils/get_json'  as getJSON;
 import 'bugzilla/utils/promise_storage'  as promiseStorage;
 
-var attr = Ember.attr;
+var attr = Ember.attr, hasMany = Ember.hasMany;
 
-var Bug = Ember.Model.extend({
+var Bug = App.Bug = Ember.Model.extend({
   id: attr(),
   alias: attr(),
   status: attr(),
@@ -24,8 +22,9 @@ var Bug = Ember.Model.extend({
   assigned_to: attr(),
   qa_contact: attr(),
   url: attr(),
-  depends_on: attr(), // array
-  blocks: attr(), // array
+  // FIXME: can't do self-referential relationships in the body of the model definition
+  depends_on: hasMany("App.Bug", {key: 'depends_on'}),
+  blocks: hasMany("App.Bug", {key: 'blocks'}),
   creator: attr(), // aka reporter
   creation_time: attr(Date),
   last_change_time: attr(Date),
@@ -70,24 +69,6 @@ var Bug = Ember.Model.extend({
 
     return this.get('comments').slice(10);
   }.property('comments.isLoaded', 'comments.[]'),
-
-  depends_on_bugs: function() {
-    var depends_on = this.get('depends_on') || [];
-    return depends_on.map(function(id) {
-      var bug = Bug.find(id);
-      bug.set('id', id); // FIXME
-      return bug;
-    });
-  }.property('depends_on'),
-
-  blocks_bugs: function() {
-    var blocks = this.get('blocks') || [];
-    return blocks.map(function(id) {
-      var bug = Bug.find(id);
-      bug.set('id', id); // FIXME
-      return bug;
-    });
-  }.property('blocks'),
 
   init: function() {
     this._super();
