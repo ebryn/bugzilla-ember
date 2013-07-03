@@ -1,4 +1,5 @@
 import 'bugzilla/utils/get_json' as getJSON;
+import 'bugzilla/utils/url_for' as urlFor;
 
 var attr = Ember.attr;
 
@@ -38,7 +39,7 @@ var Attachment = Ember.Model.extend({
 Attachment.reopenClass({
   adapter: Ember.Adapter.create({
     find: function(record, id) {
-      var url = "https://api-dev.bugzilla.mozilla.org/latest/attachment/%@?attachmentdata=1".fmt(id);
+      var url = urlFor("attachment/%@?attachmentdata=1".fmt(id));
 
       getJSON(url).then(function(data) {
         record.load(id, data);

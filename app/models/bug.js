@@ -2,6 +2,7 @@ import 'bugzilla/models/comment' as Comment;
 import 'bugzilla/models/attachment' as Attachment;
 
 import 'bugzilla/utils/get_json'  as getJSON;
+import 'bugzilla/utils/url_for'   as urlFor;
 import 'bugzilla/utils/promise_storage'  as promiseStorage;
 
 var attr = Ember.attr, hasMany = Ember.hasMany;
@@ -67,7 +68,7 @@ var Bug = App.Bug = Ember.Model.extend({
   remainingComments: function() {
     if (!this.get('comments.isLoaded')) { return; }
 
-    return this.get('comments').slice(10);
+    return this.get('comments').slice(1);
   }.property('comments.isLoaded', 'comments.[]'),
 
   init: function() {
@@ -116,7 +117,7 @@ Bug.reopenClass({
 
   adapter: Ember.Adapter.create({
     _getJSON: function(id, params) {
-      return getJSON("https://api-dev.bugzilla.mozilla.org/latest/bug/" + id, params);
+      return getJSON(urlFor("bug/" + id), params);
     },
 
     _loadFromServer: function(record, id) {

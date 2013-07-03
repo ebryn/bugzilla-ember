@@ -10,7 +10,10 @@ var App = Ember.Application.create({
   LOG_ACTIVE_GENERATION: true,
   LOG_VIEW_LOOKUPS: true,
   modulePrefix: 'bugzilla', // TODO: loaded via config
-  resolver: Resolver
+  resolver: Resolver,
+
+  // Enable to use the BZ sandbox at: https://landfill.bugzilla.org/bzapi_sandbox
+  USE_TEST_SERVER: true
 });
 
 // #views aren't looked up via the container, so we must place them on the app still

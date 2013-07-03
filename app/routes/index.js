@@ -2,8 +2,9 @@ import 'bugzilla/models/bug' as Bug;
 
 var IndexRoute = Ember.Route.extend({
   redirect: function() {
-    var bug = Bug.find(856410);
-    bug.set('id', 856410); // FIXME: why isn't the ID loaded?
+    var id = App.USE_TEST_SERVER ? 11736 : 856410,
+        bug = Bug.find(id);
+    bug.set('id', id); // FIXME: why isn't the ID loaded?
 
     this.transitionTo("bug", bug);
   }

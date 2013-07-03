@@ -1,4 +1,5 @@
 import 'bugzilla/utils/get_json' as getJSON;
+import 'bugzilla/utils/url_for' as urlFor;
 import 'bugzilla/utils/promise_storage' as promiseStorage;
 import 'bugzilla/utils/unhandled_rejection' as unhandledRejection;
 
@@ -16,7 +17,7 @@ Comment.reopenClass({
     findQuery: function(klass, records, params) {
       var bugId = params.bug_id,
           cacheKey = "bug-" + bugId + "-comments",
-          url = "https://api-dev.bugzilla.mozilla.org/latest/bug/" + bugId + "/comment";
+          url = urlFor("bug/" + bugId + "/comment");
 
       return promiseStorage.getItem(cacheKey).then(function(cachedComments){
         if (cachedComments !== null) { // we've got cached comments, just look for new ones

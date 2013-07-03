@@ -1,4 +1,5 @@
 import 'bugzilla/utils/get_json' as getJSON;
+import 'bugzilla/utils/url_for' as urlFor;
 
 function login(username, password){
   var params =  {
@@ -6,7 +7,8 @@ function login(username, password){
     password: password
   };
 
-  return getJSON("https://api-dev.bugzilla.mozilla.org/latest/user/persona@erikbryn.com", params);
+  // FIXME: proper auth API endpoint
+  return getJSON(urlFor("bug/" + (App.USE_TEST_SERVER ? 11736 : 856410)), params);
 }
 
 export = login;
