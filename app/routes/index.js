@@ -1,5 +1,8 @@
 import 'bugzilla/models/bug' as Bug;
 
+// TODO: remove app dependency
+import 'bugzilla/app' as App;
+
 var IndexRoute = Ember.Route.extend({
   redirect: function() {
     var id = App.USE_TEST_SERVER ? 11736 : 856410,

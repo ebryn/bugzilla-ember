@@ -1,4 +1,6 @@
 // FIXME: This is kinda hacky. We have a plan for making this cleaner with the container.
+import 'bugzilla/app' as App;
+
 function urlFor(url) {
   var container = App.__container__,
       userController = container.lookup("controller:user"),

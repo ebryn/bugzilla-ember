@@ -61,13 +61,13 @@ Comment.reopenClass({
         data: JSON.stringify(record.toJSON()),
       }).then(function(data) {
         Ember.run(function() {
-          record.set('id', parseInt(data.id)); // FIXME (in EM): shouldn't have to parseInt here
+          record.set('id', parseInt(data.id, 10)); // FIXME (in EM): shouldn't have to parseInt here
           record.didCreateRecord();
           record.reload(); // FIXME: hack to workaround lack of good API response (noted in API_TODOS)
         });
       }, function(xhr) {
         // TODO: better error handling
-        alert(xhr.responseJSON.message)
+        alert(xhr.responseJSON.message);
       });
     }
   })

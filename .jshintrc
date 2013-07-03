@@ -32,7 +32,8 @@
     "exists",
     "fillIn",
     "click",
-    "find"
+    "find",
+    "alert"
   ],
   "node" : false,
   "browser" : true,

@@ -5,6 +5,9 @@ import 'bugzilla/utils/get_json'  as getJSON;
 import 'bugzilla/utils/url_for'   as urlFor;
 import 'bugzilla/utils/promise_storage'  as promiseStorage;
 
+// TODO: remove app dependency
+import 'bugzilla/app' as App;
+
 var attr = Ember.attr, hasMany = Ember.hasMany;
 
 var Bug = App.Bug = Ember.Model.extend({
