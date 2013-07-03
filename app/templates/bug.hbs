@@ -162,15 +162,17 @@
   <div class="comments">
     {{#if comments.isLoading}}
       Loading comments...
-    {{/if}}
-
-    {{view App.CommentView contextBinding="firstComment"}}
-    {{#unless isShowingRemainingComments}}
-      {{#if remainingComments}}
-        <a href="#" {{action showRemainingComments}}>Show remaining {{remainingComments.length}} comments</a>
-      {{/if}}
     {{else}}
-      {{each remainingComments itemViewClass="App.CommentView"}}
-    {{/unless}}
+      {{view Ember.TextArea valueBinding="newCommentText"}}
+      <button {{action saveComment}}>Save</button>
+      {{view App.CommentView contextBinding="firstComment"}}
+      {{#unless isShowingRemainingComments}}
+        {{#if remainingComments}}
+          <a href="#" {{action showRemainingComments}}>Show remaining {{remainingComments.length}} comments</a>
+        {{/if}}
+      {{else}}
+        {{each remainingComments itemViewClass="App.CommentView"}}
+      {{/unless}}
+    {{/if}}
   </div>
 </div>

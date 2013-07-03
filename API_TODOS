@@ -1,0 +1,10 @@
+API painpoints
+
+* Lack of user authentication endpoint
+* Lack of API token requires us to keep the users' password in memory and pass it along with every request
+* Can't fetch a comment on it's own, and the response from creating a comment only includes the ID
+
+API ideas
+
+* Read-only node app on top of MySQL database
+* Passthrough write operations to existing JSON RPC or REST APIs

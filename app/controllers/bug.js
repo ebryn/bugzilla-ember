@@ -1,3 +1,5 @@
+import 'bugzilla/models/comment' as Comment;
+
 var BugController = Ember.ObjectController.extend({
   isShowingRemainingComments: false,
 
@@ -8,6 +10,20 @@ var BugController = Ember.ObjectController.extend({
 
   showRemainingComments: function() {
     this.set('isShowingRemainingComments', true);
+  },
+
+  saveComment: function() {
+    // TODO: figure out how to make comments a legit relationship on bug
+    var newComment = Comment.create({
+      text: this.get('newCommentText'),
+      bug_id: this.get('id')
+    });
+
+    var self = this;
+    newComment.save().then(function() {
+      self.get('comments').pushObject(newComment);
+      self.set('newCommentText', null);
+    });
   },
 
   _pollingInterval: 30 * 1000,

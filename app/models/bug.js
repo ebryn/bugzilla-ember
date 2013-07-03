@@ -55,6 +55,7 @@ var Bug = App.Bug = Ember.Model.extend({
     });
   }.property('attachments.@each.is_obsolete'),
 
+  // TODO: figure out how to make comments a legit relationship
   comments: function() {
     return Comment.find({bug_id: this.get('id')});
   }.property(),

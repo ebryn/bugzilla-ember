@@ -7,13 +7,26 @@ var attr = Ember.attr;
 
 var Comment = Ember.Model.extend({
   id: attr(),
+  bug_id: attr(),
   text: attr(),
   creator: attr(),
-  creation_time: attr(Date)
+  creation_time: attr(Date),
+  is_private: attr()
 });
 
 Comment.reopenClass({
   adapter: Ember.Adapter.create({
+    // FIXME: The API should support fetching a single comment (noted in API_TODOS)
+    // Instead, we have to fetch all comments and find the one we're looking for
+    find: function(record, id) {
+      var url = urlFor("bug/" + record.get('bug_id') + "/comment");
+
+      return getJSON(url).then(function(data) {
+        var comments = data.comments;
+        record.load(id, comments.findProperty('id', id));
+      });
+    },
+
     findQuery: function(klass, records, params) {
       var bugId = params.bug_id,
           cacheKey = "bug-" + bugId + "-comments",
@@ -37,6 +50,25 @@ Comment.reopenClass({
           });
         }
       }).then(null, unhandledRejection);
+    },
+
+    createRecord: function(record) {
+      var url = urlFor("bug/" + record.get('bug_id') + "/comment");
+
+      return $.ajax(url, {
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(record.toJSON()),
+      }).then(function(data) {
+        Ember.run(function() {
+          record.set('id', parseInt(data.id)); // FIXME (in EM): shouldn't have to parseInt here
+          record.didCreateRecord();
+          record.reload(); // FIXME: hack to workaround lack of good API response (noted in API_TODOS)
+        });
+      }, function(xhr) {
+        // TODO: better error handling
+        alert(xhr.responseJSON.message)
+      });
     }
   })
 });
