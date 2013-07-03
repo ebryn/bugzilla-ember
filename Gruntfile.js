@@ -1,9 +1,12 @@
 function loadFrom(path, config) {
-  var glob = require('glob'),
-  object = {};
+  var string = require('string');
+  var glob = require('glob');
+  var object = {};
+  var key;
 
-  glob.sync('*', {cwd: path}).forEach(function(option) {
-    var key = option.replace(/\.js$/,'');
+  glob.sync('*', { cwd: path }).forEach(function(option) {
+    key = option.replace(/\.js$/,'');
+    key = string(key).camelize().s;
     config[key] = require(path + option);
   });
 }
@@ -29,7 +32,7 @@ module.exports = function(grunt) {
                      'transpile',
                      'jshint',
                      'copy',
-                     'ember_templates:compile',
+                     'emberTemplates:compile',
                      'sass:app',
                      'concat',
                      'unlock' ]);
