@@ -2,6 +2,10 @@
   "predef": [
     "Bugzilla",
     "Visibility",
+    "document",
+    "window",
+    "location",
+    "setTimeout",
     "Ember",
     "lunr",
     "asyncStorage",
@@ -36,7 +40,7 @@
     "alert"
   ],
   "node" : false,
-  "browser" : true,
+  "browser" : false,
   "boss" : true,
   "curly": false,
   "debug": false,
