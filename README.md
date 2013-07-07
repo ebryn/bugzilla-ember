@@ -1,6 +1,6 @@
 # bugzilla-ember
 
-A [Bugzilla](https://bugzilla.mozilla.org) frontend written in Ember.js.
+A [Bugzilla](https://bugzilla.mozilla.org) frontend written in Ember.js. Also check out [bugzilla-node](https://github.com/ebryn/bugzilla-node), which is a prototype REST API on top of the Bugzilla database.
 
 ## Running bugzilla-ember
 
@@ -12,3 +12,4 @@ A [Bugzilla](https://bugzilla.mozilla.org) frontend written in Ember.js.
 6. The app will be running at http://0.0.0.0:8000
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ebryn/bugzilla-ember/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+![](https://d3oi6fmp1dfbdb.cloudfront.net/g.gif?repo=ebryn/bugzilla-ember)
