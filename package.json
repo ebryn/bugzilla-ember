@@ -28,10 +28,10 @@
     "matchdep": "~0.1.2",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-clean": "~0.4.1",
-    "grunt-contrib-sass": "~0.3.0",
     "grunt-contrib-qunit": "~0.2.2",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-ember-templates": "~0.4.10",
-    "string": "~1.4.0"
+    "string": "~1.4.0",
+    "grunt-sass": "~0.6.0"
   }
 }
