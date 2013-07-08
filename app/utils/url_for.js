@@ -7,7 +7,7 @@ function urlFor(url) {
       isLoggedIn = userController.get('isLoggedIn'),
       authParams = $.param(userController.getProperties('username', 'password'));
 
-  var fullURL = "https://api-dev.bugzilla.mozilla.org" + (App.USE_TEST_SERVER ? "/test" : "") + "/latest/" + url;
+  var fullURL = (App.USE_TEST_SERVER ? "http://bzapi.staging.bugzilla.erikbryn.com/" : "https://api-dev.bugzilla.mozilla.org/latest/") + url;
 
   if (isLoggedIn) {
     fullURL += (url.indexOf("?") === -1 ? "?" : "&" ) + authParams;
