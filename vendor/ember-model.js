@@ -1,7 +1,5 @@
-// Last commit: fdb9adc (2013-07-02 00:54:47 +0200)
-
-
 (function() {
+
 Ember.Adapter = Ember.Object.extend({
   find: function(record, id) {
     throw new Error('Ember.Adapter subclasses must implement find');
@@ -35,11 +33,11 @@ Ember.Adapter = Ember.Object.extend({
     throw new Error('Ember.Adapter subclasses must implement deleteRecord');
   }
 });
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get;
 
 Ember.FixtureAdapter = Ember.Adapter.extend({
@@ -54,13 +52,12 @@ Ember.FixtureAdapter = Ember.Adapter.extend({
   find: function(record, id) {
     var data = this._findData(record.constructor, id);
 
-    if (!record.get('isLoaded')) {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
       setTimeout(function() {
         Ember.run(record, record.load, id, data);
+        resolve(record);
       });
-    }
-
-    return record;
+    });
   },
 
   findMany: function(klass, records, ids) {
@@ -71,69 +68,66 @@ Ember.FixtureAdapter = Ember.Adapter.extend({
       requestedData.push(this._findData(klass, ids[i]));
     }
 
-    setTimeout(function() {
-      Ember.run(records, records.load, klass, requestedData);
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      setTimeout(function() {
+        Ember.run(records, records.load, klass, requestedData);
+        resolve(records);
+      });
     });
-
-    return records;
   },
 
   findAll: function(klass, records) {
     var fixtures = klass.FIXTURES;
 
-    setTimeout(function() {
-      Ember.run(records, records.load, klass, fixtures);
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      setTimeout(function() {
+        Ember.run(records, records.load, klass, fixtures);
+        resolve(records);
+      });
     });
-
-    return records;
   },
 
   createRecord: function(record) {
     var klass = record.constructor,
         fixtures = klass.FIXTURES;
 
-    setTimeout(function() {
-      Ember.run(function() {
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      setTimeout(function() {
         fixtures.push(klass.findFromCacheOrLoad(record.toJSON()));
         record.didCreateRecord();
+        resolve(record);
       });
     });
-
-    return record;
   },
 
   saveRecord: function(record) {
-    var deferred = Ember.Deferred.create();
-    deferred.then(function() {
-      record.didSaveRecord();
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      setTimeout(function() {
+        record.didSaveRecord();
+        resolve(record);
+      });
     });
-    setTimeout(function() {
-      Ember.run(deferred, deferred.resolve, record);
-    });
-    return deferred;
   },
 
   deleteRecord: function(record) {
-    var deferred = Ember.Deferred.create();
-    deferred.then(function() {
-      record.didDeleteRecord();
+    return new Ember.RSVP.Promise(function(resolve, reject) {
+      setTimeout(function() {
+        record.didDeleteRecord();
+        resolve(record);
+      });
     });
-    setTimeout(function() {
-      Ember.run(deferred, deferred.resolve, record);
-    });
-    return deferred;
   }
 });
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get,
     set = Ember.set;
 
-Ember.RecordArray = Ember.ArrayProxy.extend(Ember.Evented, Ember.DeferredMixin, {
+Ember.RecordArray = Ember.ArrayProxy.extend(Ember.Evented, {
   isLoaded: false,
   isLoading: Ember.computed.not('isLoaded'),
 
@@ -151,7 +145,6 @@ Ember.RecordArray = Ember.ArrayProxy.extend(Ember.Evented, Ember.DeferredMixin, 
   notifyLoaded: function() {
     set(this, 'isLoaded', true);
     this.trigger('didLoad');
-    this.resolve(this);
   },
 
   materializeData: function(klass, data) {
@@ -161,11 +154,11 @@ Ember.RecordArray = Ember.ArrayProxy.extend(Ember.Evented, Ember.DeferredMixin, 
   }
 });
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get;
 
 Ember.FilteredRecordArray = Ember.RecordArray.extend({
@@ -221,11 +214,11 @@ Ember.FilteredRecordArray = Ember.RecordArray.extend({
     }
   }
 });
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get;
 
 Ember.ManyArray = Ember.RecordArray.extend({
@@ -252,6 +245,14 @@ Ember.ManyArray = Ember.RecordArray.extend({
     return Ember.RSVP.all(this.map(function(record) {
       return record.save();
     }));
+  },
+
+  replaceContent: function(index, removed, added) {
+    added = Ember.EnumerableUtils.map(added, function(record) {
+      return record._reference;
+    }, this);
+
+    this._super(index, removed, added);
   }
 });
 
@@ -269,14 +270,6 @@ Ember.HasManyArray = Ember.ManyArray.extend({
     }
 
     return record;
-  },
-
-  replaceContent: function(index, removed, added) {
-    added = Ember.EnumerableUtils.map(added, function(record) {
-      return record._reference;
-    }, this);
-
-    this._super(index, removed, added);
   },
 
   toJSON: function() {
@@ -297,24 +290,27 @@ Ember.EmbeddedHasManyArray = Ember.ManyArray.extend({
     var klass = get(this, 'modelClass'),
         record = klass.create(attrs);
 
-    this.pushObject(attrs);
-
-    // TODO: Create a LazilyMaterializedRecordArray class and test it
-    if (!this._records) { this._records = {}; }
-    this._records[get(this, 'length') - 1] = record;
+    this.pushObject(record);
 
     return record; // FIXME: inject parent's id
   },
 
   materializeRecord: function(idx) {
     var klass = get(this, 'modelClass'),
-        record = klass.create(),
         primaryKey = get(klass, 'primaryKey'),
         content = get(this, 'content'),
-        attrs = content.objectAt(idx);
+        reference = content.objectAt(idx),
+        attrs = reference.data;
 
-    record.load(attrs[primaryKey], attrs);
-    return record;
+    if (reference.record) {
+      return reference.record;
+    } else {
+      var record = klass.create({ _reference: reference });
+      if(attrs) {
+        record.load(attrs[primaryKey], attrs);
+      }
+      return record;
+    }
   },
 
   toJSON: function() {
@@ -324,11 +320,11 @@ Ember.EmbeddedHasManyArray = Ember.ManyArray.extend({
   }
 });
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get,
     set = Ember.set,
     setProperties = Ember.setProperties,
@@ -360,7 +356,7 @@ function hasCachedValue(object, key) {
 
 Ember.run.queues.push('data');
 
-Ember.Model = Ember.Object.extend(Ember.Evented, Ember.DeferredMixin, {
+Ember.Model = Ember.Object.extend(Ember.Evented, {
   isLoaded: true,
   isLoading: Ember.computed.not('isLoaded'),
   isNew: true,
@@ -421,7 +417,6 @@ Ember.Model = Ember.Object.extend(Ember.Evented, Ember.DeferredMixin, {
 
   init: function() {
     this._createReference();
-    if (!get(this, 'isNew')) { this.resolve(this); }
     this._super();
   },
 
@@ -454,7 +449,6 @@ Ember.Model = Ember.Object.extend(Ember.Evented, Ember.DeferredMixin, {
     set(this, 'isNew', false);
     this._createReference();
     this.trigger('didLoad');
-    this.resolve(this);
   },
 
   didDefineProperty: function(proto, key, value) {
@@ -535,11 +529,13 @@ Ember.Model = Ember.Object.extend(Ember.Evented, Ember.DeferredMixin, {
       return adapter.createRecord(this);
     } else if (get(this, 'isDirty')) {
       return adapter.saveRecord(this);
-    } else {
-      var deferred = Ember.Deferred.create();
-      deferred.resolve(this);
+    } else { // noop, return a resolved promise
+      var self = this,
+          promise = new Ember.RSVP.Promise(function(resolve, reject) {
+            resolve(self);
+          });
       set(this, 'isSaving', false);
-      return deferred;
+      return promise;
     }
   },
 
@@ -631,8 +627,19 @@ Ember.Model = Ember.Object.extend(Ember.Evented, Ember.DeferredMixin, {
   _getHasManyContent: function(key, type, embedded) {
     var content = get(this, 'data.' + key);
 
-    if (!embedded && content) {
-      content = Ember.EnumerableUtils.map(content, function(id) { return type._referenceForId(id); });
+    if (content) {
+      var mapFunction, primaryKey, reference;
+      if (embedded) {
+        primaryKey = get(type, 'primaryKey');
+        mapFunction = function(attrs) {
+          reference = type._referenceForId(attrs[primaryKey]);
+          reference.data = attrs;
+          return reference;
+        };
+      } else {
+        mapFunction = function(id) { return type._referenceForId(id); };
+      }
+      content = Ember.EnumerableUtils.map(content, mapFunction);
     }
 
     return Ember.A(content || []);
@@ -645,6 +652,10 @@ Ember.Model.reopenClass({
   adapter: Ember.Adapter.create(),
 
   _clientIdCounter: 1,
+
+  fetch: function() {
+    return Ember.loadPromise(this.find.apply(this, arguments));
+  },
 
   find: function(id) {
     if (!arguments.length) {
@@ -721,8 +732,9 @@ Ember.Model.reopenClass({
       }
 
       Ember.run.scheduleOnce('data', this, this._executeBatch);
+      // TODO: return a promise here
     } else {
-      adapter.find(record, id);
+      return adapter.find(record, id);
     }
   },
 
@@ -731,7 +743,7 @@ Ember.Model.reopenClass({
         batchRecordArrays = this._currentBatchRecordArrays,
         self = this,
         requestIds = [],
-        recordOrRecordArray,
+        promise,
         i;
 
     this._currentBatchIds = null;
@@ -744,18 +756,18 @@ Ember.Model.reopenClass({
     }
 
     if (batchIds.length === 1) {
-      recordOrRecordArray = get(this, 'adapter').find(this.cachedRecordForId(batchIds[0]), batchIds[0]);
+      promise = get(this, 'adapter').find(this.cachedRecordForId(batchIds[0]), batchIds[0]);
     } else {
-      recordOrRecordArray = Ember.RecordArray.create({_ids: batchIds});
-
+      var recordArray = Ember.RecordArray.create({_ids: batchIds});
       if (requestIds.length === 0) {
-        recordOrRecordArray.notifyLoaded();
+        promise = new Ember.RSVP.Promise(function(resolve, reject) { resolve(recordArray); });
+        recordArray.notifyLoaded();
       } else {
-        get(this, 'adapter').findMany(this, recordOrRecordArray, requestIds);
+        promise = get(this, 'adapter').findMany(this, recordArray, requestIds);
       }
     }
 
-    recordOrRecordArray.then(function() {
+    promise.then(function() {
       for (var i = 0, l = batchRecordArrays.length; i < l; i++) {
         batchRecordArrays[i].loadForFindMany(self);
       }
@@ -888,11 +900,11 @@ Ember.Model.reopenClass({
   }
 });
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get;
 
 Ember.hasMany = function(type, options) {
@@ -929,11 +941,11 @@ Ember.Model.reopen({
   }
 });
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get;
 
 Ember.belongsTo = function(type, options) {
@@ -972,11 +984,11 @@ Ember.Model.reopen({
   }
 });
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get,
     set = Ember.set,
     meta = Ember.meta;
@@ -1062,11 +1074,11 @@ Ember.attr = function(type) {
   }).property('data').meta({isAttribute: true, type: type});
 };
 
+
 })();
 
-
-
 (function() {
+
 var get = Ember.get;
 
 Ember.RESTAdapter = Ember.Adapter.extend({
@@ -1210,11 +1222,38 @@ Ember.RESTAdapter = Ember.Adapter.extend({
   }
 });
 
+
 })();
-
-
 
 (function() {
 
-})();
+var get = Ember.get;
 
+Ember.LoadPromise = Ember.Object.extend(Ember.DeferredMixin, {
+  init: function() {
+    this._super.apply(this, arguments);
+
+    var target = get(this, 'target');
+
+    if (get(target, 'isLoaded') && !get(target, 'isNew')) {
+      this.resolve(target);
+    } else {
+      target.one('didLoad', this, function() {
+        this.resolve(target);
+      });
+    }
+  }
+});
+
+Ember.loadPromise = function(target) {
+  if (Ember.isNone(target)) {
+    return null;
+  } else if (target.then) {
+    return target;
+  } else {
+    return Ember.LoadPromise.create({target: target});
+  }
+};
+
+
+})();
