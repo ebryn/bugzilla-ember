@@ -1,11 +1,11 @@
-%reset-list {
+.reset-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .nav {
-  @extend %reset-list;
+  @extend .reset-list;
   display: -webkit-flex;
   display: flex;
   > li {

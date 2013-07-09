@@ -1,9 +1,6 @@
-/* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
-
-@import "normalize";
-@import "fonts";
-@import "header";
+@import "includes/fonts";
+@import "includes/header";
+@import "includes/normalize";
 
 // background: hsl(200, 1, 92);
 // border-bottom: 1px solid hsl(200, 3, 76);
@@ -57,7 +54,7 @@ button {
   }
 }
 
-%container {
+.container {
   width: 92%;
   margin-right: auto;
   margin-left: auto;  
@@ -83,7 +80,7 @@ a {
 }
 
 .bug {
-  @extend %container;
+  @extend .container;
 }
 .bug > .header {
   @include highlight-bg;
@@ -198,7 +195,7 @@ a {
 
 // Attachment Page
 .attachment-main {
-  @extend %container;
+  @extend .container;
   h1 {
     @include highlight-bg;
     font-size: 1rem;
