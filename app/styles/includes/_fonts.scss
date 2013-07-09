@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'OpenSans';
-  src: url('opensans/opensans-regular.woff') format('woff'),
+  src: url('fonts/opensans/opensans-regular.woff') format('woff'),
        url('opensans/opensans-regular.ttf')  format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'OpenSans';
-  src: url('opensans/opensans-semibold.woff') format('woff'),
+  src: url('fonts/opensans/opensans-semibold.woff') format('woff'),
        url('opensans/opensans-semibold.ttf')  format('truetype');
   font-weight: 600;
   font-style: normal;
@@ -16,7 +16,7 @@
 
 @font-face {
   font-family: 'OpenSans';
-  src: url('opensans/opensans-bold.woff') format('woff'),
+  src: url('fonts/opensans/opensans-bold.woff') format('woff'),
        url('opensans/opensans-bold.ttf')  format('truetype');
   font-weight: 700;
   font-style: normal;
