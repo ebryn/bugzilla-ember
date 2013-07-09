@@ -139,6 +139,13 @@ a {
   text-decoration: none;
 }
 
+/** textarea
+========================================================================== */
+textarea {
+  @include rounded;
+  width: 412px;
+}
+
 /** Comment
 ========================================================================== */
 .bug .comment-template, .bug .comment-template * {
@@ -177,9 +184,18 @@ a {
   background-color: #ccc;
 }
 
-.comment {
+.ember-view .comment {
   margin-top: 0.4rem;
   @include rounded;
+  max-width: 29.25rem;
+
+  .header {
+    font-size: 0.85rem;
+    span:first-child {
+      font-weight:  600;
+
+    }
+  }
 }
 
 /** Browse Table
