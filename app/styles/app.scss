@@ -13,6 +13,11 @@ $highlight-border: hsl(200, 3, 76);
   border: 1px solid $highlight-border;
 }
 
+@mixin rounded($radius: 0.25em) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
 // Reset
 * {
   -moz-box-sizing: border-box;
@@ -170,6 +175,11 @@ a {
 .fade-in {
   transition: background-color 0.5s ease-in;
   background-color: #ccc;
+}
+
+.comment {
+  margin-top: 0.4rem;
+  @include rounded;
 }
 
 /** Browse Table
