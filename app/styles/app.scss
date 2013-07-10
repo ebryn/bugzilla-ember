@@ -289,11 +289,14 @@ textarea {
 
 .modal {
   position: absolute;
-  top: 25vh;
+  left: 50%;
+  top: 50%;
+
   width: 250px;
-  left: -webkit-calc(50% - (250px/2));
-  left: -moz-calc(50% - (250px/2));
   
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 // Modal style
