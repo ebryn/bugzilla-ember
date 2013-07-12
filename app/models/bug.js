@@ -125,7 +125,8 @@ Bug.reopenClass({
     },
 
     _loadFromServer: function(record, id) {
-      this._getJSON(id).then(function(data) {
+      this._getJSON(id).then(function(json) {
+        var data = json.bugs[0];
         record.load(id, data);
         asyncStorage.setItem('bug-' + id, data);
       });
