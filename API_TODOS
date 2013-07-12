@@ -1,9 +1,19 @@
-API painpoints
+BzAPI
 
 * Lack of user authentication endpoint
 * Lack of API token requires us to keep the users' password in memory and pass it along with every request
 * Can't fetch a comment on it's own, and the response from creating a comment only includes the ID
 * API responses don't include ETags
+
+Native REST API
+
+* Lack of user authentication endpoint / lack of API token
+* Response is always an array even though a single record is being returned
+* API responses don't include ETags
+* Attachments no longer embedded in bug response
+	* Would like to just get "unobsolete" attachments
+* What is returned in faults?
+
 
 API ideas
 
