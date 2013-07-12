@@ -11,7 +11,7 @@ function login(username, password){
   };
 
   // FIXME: proper auth API endpoint
-  return getJSON(urlFor("bug/" + (App.USE_TEST_SERVER ? 11736 : 856410)), params);
+  return getJSON(urlFor("bug/" + (App.USE_TEST_SERVER ? 1 : 856410)), params);
 }
 
 export = login;
