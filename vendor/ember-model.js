@@ -1,36 +1,24 @@
 (function() {
 
+function mustImplement(message) {
+  var fn = function() {
+    throw new Error(message);
+  };
+  fn.isUnimplemented = true;
+  return fn;
+}
+
 Ember.Adapter = Ember.Object.extend({
-  find: function(record, id) {
-    throw new Error('Ember.Adapter subclasses must implement find');
-  },
-
-  findQuery: function(klass, records, params) {
-    throw new Error('Ember.Adapter subclasses must implement findQuery');
-  },
-
-  findMany: function(klass, records, ids) {
-    throw new Error('Ember.Adapter subclasses must implement findMany');
-  },
-
-  findAll: function(klass, records) {
-    throw new Error('Ember.Adapter subclasses must implement findAll');
-  },
+  find: mustImplement('Ember.Adapter subclasses must implement find'),
+  findQuery: mustImplement('Ember.Adapter subclasses must implement findQuery'),
+  findMany: mustImplement('Ember.Adapter subclasses must implement findMany'),
+  findAll: mustImplement('Ember.Adapter subclasses must implement findAll'),
+  createRecord: mustImplement('Ember.Adapter subclasses must implement createRecord'),
+  saveRecord: mustImplement('Ember.Adapter subclasses must implement saveRecord'),
+  deleteRecord: mustImplement('Ember.Adapter subclasses must implement deleteRecord'),
 
   load: function(record, id, data) {
     record.load(id, data);
-  },
-
-  createRecord: function(record) {
-    throw new Error('Ember.Adapter subclasses must implement createRecord');
-  },
-
-  saveRecord: function(record) {
-    throw new Error('Ember.Adapter subclasses must implement saveRecord');
-  },
-
-  deleteRecord: function(record) {
-    throw new Error('Ember.Adapter subclasses must implement deleteRecord');
   }
 });
 
@@ -229,15 +217,7 @@ Ember.ManyArray = Ember.RecordArray.extend({
 
     if (!content.length) { return; }
 
-    // TODO: Create a LazilyMaterializedRecordArray class and test it
-    if (this._records && this._records[idx]) { return this._records[idx]; }
-
-    var record = this.materializeRecord(idx);
-
-    if (!this._records) { this._records = {}; }
-    this._records[idx] = record;
-
-    return record;
+    return this.materializeRecord(idx);
   },
 
   save: function() {
@@ -306,7 +286,8 @@ Ember.EmbeddedHasManyArray = Ember.ManyArray.extend({
       return reference.record;
     } else {
       var record = klass.create({ _reference: reference });
-      if(attrs) {
+      reference.record = record;
+      if (attrs) {
         record.load(attrs[primaryKey], attrs);
       }
       return record;
@@ -412,6 +393,10 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
 
   dataKey: function(key) {
     var camelizeKeys = get(this.constructor, 'camelizeKeys');
+    var meta = this.constructor.metaForProperty(key);
+    if (meta.options && meta.options.key) {
+      return camelizeKeys ? underscore(meta.options.key) : meta.options.key;
+    }
     return camelizeKeys ? underscore(key) : key;
   },
 
@@ -483,22 +468,27 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
 
   toJSON: function() {
     var key, meta,
-        properties = this.getProperties(this.attributes);
+        json = {},
+        properties = this.attributes ? this.getProperties(this.attributes) : {};
 
     for (key in properties) {
       meta = this.constructor.metaForProperty(key);
       if (meta.type && meta.type.serialize) {
-        properties[key] = meta.type.serialize(properties[key]);
+        json[this.dataKey(key)] = meta.type.serialize(properties[key]);
       } else if (meta.type && Ember.Model.dataTypes[meta.type]) {
-        properties[key] = Ember.Model.dataTypes[meta.type].serialize(properties[key]);
+        json[this.dataKey(key)] = Ember.Model.dataTypes[meta.type].serialize(properties[key]);
+      } else {
+        json[this.dataKey(key)] = properties[key];
       }
     }
 
     if (this.relationships) {
-      var data;
+      var data, relationshipKey;
+
       for(var i = 0; i < this.relationships.length; i++) {
         key = this.relationships[i];
         meta = this.constructor.metaForProperty(key);
+        relationshipKey = meta.options.key || key;
 
         if (meta.kind === 'belongsTo') {
           data = this.serializeBelongsTo(key, meta);
@@ -507,18 +497,18 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
         }
 
         if (data) {
-          properties[key] = data;
+          json[relationshipKey] = data;
         }
       }
     }
 
     if (this.constructor.rootKey) {
-      var json = {};
-      json[this.constructor.rootKey] = properties;
+      var jsonRoot = {};
+      jsonRoot[this.constructor.rootKey] = json;
 
-      return json;
+      return jsonRoot;
     } else {
-      return properties;
+      return json;
     }
   },
 
@@ -564,7 +554,7 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
     if (!this.constructor.recordCache) this.constructor.recordCache = {};
     this.constructor.recordCache[id] = this;
 
-    this.load(id, this.getProperties(this.attributes));
+    this._copyDirtyAttributesToData();
     this.constructor.addToRecordArrays(this);
     this.trigger('didCreateRecord');
     this.didSaveRecord();
@@ -723,7 +713,7 @@ Ember.Model.reopenClass({
   _fetchById: function(record, id) {
     var adapter = get(this, 'adapter');
 
-    if (adapter.findMany) {
+    if (adapter.findMany && !adapter.findMany.isUnimplemented) {
       if (this._currentBatchIds) {
         if (!contains(this._currentBatchIds, id)) { this._currentBatchIds.push(id); }
       } else {
@@ -1054,7 +1044,7 @@ function deserialize(value, type) {
 }
 
 
-Ember.attr = function(type) {
+Ember.attr = function(type, options) {
   return Ember.computed(function(key, value) {
     var data = get(this, 'data'),
         dataKey = this.dataKey(key),
@@ -1071,7 +1061,7 @@ Ember.attr = function(type) {
     }
 
     return this.getAttr(key, deserialize(dataValue, type));
-  }).property('data').meta({isAttribute: true, type: type});
+  }).property('data').meta({isAttribute: true, type: type, options: options});
 };
 
 
