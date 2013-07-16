@@ -121,7 +121,7 @@ Bug.reopenClass({
 
   adapter: Ember.Adapter.create({
     _getJSON: function(id, params) {
-      return getJSON(urlFor("bug/" + id), params);
+      return getJSON(urlFor("bug" + (id ? "/" + id : "")), params);
     },
 
     _loadFromServer: function(record, id) {
@@ -139,8 +139,8 @@ Bug.reopenClass({
         if (value !== null) {
           record.load(id, value);
 
-          return self._getJSON(id, {include_fields: "last_change_time"}).then(function(data) {
-            if (data.last_change_time !== value.last_change_time) {
+          return self._getJSON(id, {include_fields: "last_change_time"}).then(function(json) {
+            if (json.bugs[0].last_change_time !== value.last_change_time) {
               self._loadFromServer(record, id);
             }
           });

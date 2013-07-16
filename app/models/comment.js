@@ -19,10 +19,11 @@ Comment.reopenClass({
     // FIXME: The API should support fetching a single comment (noted in API_TODOS)
     // Instead, we have to fetch all comments and find the one we're looking for
     find: function(record, id) {
-      var url = urlFor("bug/" + record.get('bug_id') + "/comment");
+      var bugId = record.get('bug_id'),
+          url = urlFor("comment/" + id);
 
-      return getJSON(url).then(function(data) {
-        var comments = data.comments;
+      return getJSON(url).then(function(json) {
+        var comments = json.bugs[bugId].comments;
         record.load(id, comments.findProperty('id', id));
       });
     },
@@ -38,15 +39,15 @@ Comment.reopenClass({
 
           var lastComment = cachedComments[cachedComments.length-1];
 
-          return getJSON(url, {new_since: lastComment.creation_time}).then(function(data) {
+          return getJSON(url, {new_since: lastComment.creation_time}).then(function(json) {
             // TODO: Make this easier to do with EM
-            var newComments = records.materializeData(klass, data.comments);
+            var newComments = records.materializeData(klass, json.bugs[bugId].comments);
             records.pushObjects(newComments);
           });
         } else { // not cached locally, fetch all comments
-          return getJSON(url).then(function(data) {
-            records.load(klass, data.comments);
-            asyncStorage.setItem(cacheKey, data.comments);
+          return getJSON(url).then(function(json) {
+            records.load(klass, json.bugs[bugId].comments);
+            asyncStorage.setItem(cacheKey, json.bugs[bugId].comments);
           });
         }
       }).then(null, unhandledRejection);
@@ -58,7 +59,7 @@ Comment.reopenClass({
       return $.ajax(url, {
         type: "POST",
         contentType: "application/json",
-        data: JSON.stringify(record.toJSON()),
+        data: JSON.stringify({comment: record.toJSON()}),
       }).then(function(data) {
         Ember.run(function() {
           record.set('id', parseInt(data.id, 10)); // FIXME (in EM): shouldn't have to parseInt here
