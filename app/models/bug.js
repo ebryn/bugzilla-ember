@@ -34,7 +34,10 @@ var Bug = App.Bug = Ember.Model.extend({
   last_change_time: attr(Date),
   cc: attr(),
   flags: attr(),
-  attachments: attr(),
+
+  attachments: function() {
+    return Attachment.find({bug_id: this.get('id')});
+  }.property(),
 
   aliasOrId: function() {
     return this.get('alias') || this.get('id');
