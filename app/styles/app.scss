@@ -5,7 +5,11 @@
 // background: hsl(200, 1, 92);
 // border-bottom: 1px solid hsl(200, 3, 76);
 
-$highlight-bg: hsl(200, 15, 92);
+// old $highlight-bg: hsl(200, 15, 92);
+// unused darker $attachment-color: #8A8780;
+
+$background: #d7d3c8;
+$highlight-bg: #EBE6DA;
 $highlight-border: hsl(200, 3, 76);
 
 @mixin highlight-bg {
@@ -35,6 +39,7 @@ body {
 
   line-height: 1.3;
   color: hsl(200, 1, 15);
+  background-color: $background;
 }
 h3 {
   margin-top: 0;
