@@ -1,12 +1,8 @@
-import 'bugzilla/models/bug' as Bug;
+import 'bugzilla/models/product' as Product;
 
 var BrowseRoute = Ember.Route.extend({
-  model: function(params) {
-    return Bug.find({
-      product: 'Core',
-      component: 'DOM: Core & HTML',
-      changed_after: '24h'
-    });
+  setupController: function(controller, model) {
+    controller.set('products', Product.find());
   }
 });
 

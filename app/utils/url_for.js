@@ -5,7 +5,7 @@ function urlFor(url) {
   var container = App.__container__,
       userController = container.lookup("controller:user"),
       isLoggedIn = userController.get('isLoggedIn'),
-      authParams = $.param(userController.getProperties('token'));
+      authParams = $.param({Bugzilla_token: userController.get('token')});
 
   var fullURL = (App.USE_TEST_SERVER ? "http://staging.bugzilla.erikbryn.com/rest.cgi/" : "https://bugzilla-dev.allizom.org/rest/") + url;
 

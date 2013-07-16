@@ -11,6 +11,8 @@
     </tr>
   </thead>
   <tbody>
+    {{view Ember.Select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
+    {{view Ember.Select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
     {{#each controller}}
     <tr>
       <td class="id">
