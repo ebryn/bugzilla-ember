@@ -19,12 +19,10 @@ Comment.reopenClass({
     // FIXME: The API should support fetching a single comment (noted in API_TODOS)
     // Instead, we have to fetch all comments and find the one we're looking for
     find: function(record, id) {
-      var bugId = record.get('bug_id'),
-          url = urlFor("comment/" + id);
+      var url = urlFor("bug/comment/" + id);
 
       return getJSON(url).then(function(json) {
-        var comments = json.bugs[bugId].comments;
-        record.load(id, comments.findProperty('id', id));
+        record.load(id, json.comments[id]);
       });
     },
 
@@ -54,12 +52,14 @@ Comment.reopenClass({
     },
 
     createRecord: function(record) {
-      var url = urlFor("bug/" + record.get('bug_id') + "/comment");
+      var bugId = record.get('bug_id'),
+          url = urlFor("bug/" + bugId + "/comment");
 
       return $.ajax(url, {
         type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({comment: record.toJSON()}),
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({id: bugId, comment: record.get('text')})
       }).then(function(data) {
         Ember.run(function() {
           record.set('id', parseInt(data.id, 10)); // FIXME (in EM): shouldn't have to parseInt here
