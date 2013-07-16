@@ -5,9 +5,9 @@ function urlFor(url) {
   var container = App.__container__,
       userController = container.lookup("controller:user"),
       isLoggedIn = userController.get('isLoggedIn'),
-      authParams = $.param(userController.getProperties('username', 'password'));
+      authParams = $.param(userController.getProperties('token'));
 
-  var fullURL = (App.USE_TEST_SERVER ? "http://bugzilla-api.erikbryn.com/staging/rest.cgi/" : "https://api-dev.bugzilla.mozilla.org/latest/") + url;
+  var fullURL = (App.USE_TEST_SERVER ? "http://staging.bugzilla.erikbryn.com/rest.cgi/" : "https://bugzilla-dev.allizom.org/rest/") + url;
 
   if (isLoggedIn) {
     fullURL += (url.indexOf("?") === -1 ? "?" : "&" ) + authParams;

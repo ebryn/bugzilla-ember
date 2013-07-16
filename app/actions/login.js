@@ -6,12 +6,12 @@ import 'bugzilla/app' as App;
 
 function login(username, password){
   var params =  {
-    username: username,
+    login: username,
     password: password
   };
 
   // FIXME: proper auth API endpoint
-  return getJSON(urlFor("bug/" + (App.USE_TEST_SERVER ? 1 : 856410)), params);
+  return getJSON(urlFor("login"), params);
 }
 
 export = login;

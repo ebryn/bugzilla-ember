@@ -17,16 +17,14 @@ var LoginController = Ember.Controller.extend({
     // this.actionFor
     var login = this.container.lookup('action:login');
 
-    login(username, password).then(function(data) {
+    login(username, password).then(function(json) {
       self.send('hideLoginModal');
 
       self.set('username', null);
       self.set('password', null);
 
-      userController.set('username', username);
-      userController.set('password', password);
+      userController.set('token', json.Bugzilla_token);
       userController.set('isLoggedIn', true);
-
     }, function(jqXHR) {
       self.set('errorMessage', 'Invalid username or password');
     }).then(null, unhandledRejection);

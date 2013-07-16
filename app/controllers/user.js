@@ -1,9 +1,18 @@
 import 'bugzilla/models/bug' as Bug;
 
 var UserController = Ember.Controller.extend({
-  username: null,
-  password: null,
-  isLoggedIn: false,
+  token: function(key, value) {
+    if (arguments.length === 2) {
+      sessionStorage.token = value;
+      return value;
+    }
+    return sessionStorage.token;
+  }.property(),
+
+  isLoggedIn: function(key, value) {
+    if (arguments.length === 2) { return value; }
+    return !!this.get('token');
+  }.property('token'),
 
   bugs: function() {
     var username = this.get('username'),
