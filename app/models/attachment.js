@@ -14,6 +14,7 @@ var Attachment = Ember.Model.extend({
   attacher: attr(),
   flags: attr(),
   last_change_time: attr(),
+  contentType: attr(),
   encodedData: attr(),
 
   decodedData: function() {
@@ -65,6 +66,31 @@ Attachment.reopenClass({
         }
 
         records.load(klass, attachmentsJson);
+      });
+    },
+
+    createRecord: function(record) {
+      var adapter = this,
+          data = record.toJSON(),
+          url = urlFor("bug/" + data.bug_id + "/attachment");
+
+      return $.ajax(url, {
+        type: "POST",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.contentType})
+      }).then(function(json) {
+        var id = json.ids[0];
+        var url = urlFor("bug/attachment/" + id);
+
+        getJSON(url).then(function(json) {
+          var attachmentJson = json.attachments[id];
+          // FIXME: workaround data being a special property in EM
+          attachmentJson.encodedData = attachmentJson.data;
+          delete attachmentJson.data;
+          record.didCreateRecord();
+          record.load(id, attachmentJson);
+        });
       });
     }
   })

@@ -28,6 +28,12 @@ App.FieldView = FieldView;
 
 import 'bugzilla/views/browse_column_header' as BrowseColumnHeaderView;
 App.BrowseColumnHeaderView = BrowseColumnHeaderView;
+
+import 'bugzilla/views/flag_select' as FlagSelect;
+App.FlagSelect = FlagSelect;
+
+import 'bugzilla/views/file_field' as FileField;
+App.FileField = FileField;
 // #view hacks
 
 import 'bugzilla/routes' as routes;
