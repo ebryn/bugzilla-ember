@@ -7,4 +7,4 @@ function unhandledRejection(reason){
   }, 0);
 }
 
-export = unhandledRejection;
+export default unhandledRejection;

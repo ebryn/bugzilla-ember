@@ -7,4 +7,4 @@ var Routes = function() {
   this.route("browse");
 };
 
-export = Routes;
+export default Routes;

@@ -3,4 +3,4 @@ var DashboardController = Ember.Controller.extend({
   myBugs: Ember.computed.alias('controllers.user.bugs')
 });
 
-export = DashboardController;
+export default DashboardController;

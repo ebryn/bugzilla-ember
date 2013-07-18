@@ -1,5 +1,5 @@
-import 'bugzilla/utils/get_json' as getJSON;
+import getJSON from 'bugzilla/utils/get_json';
 
 var AttachmentController = Ember.ObjectController.extend();
 
-export = AttachmentController;
+export default AttachmentController;

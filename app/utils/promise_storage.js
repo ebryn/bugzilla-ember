@@ -8,4 +8,4 @@ var promiseStorage = {
   }
 };
 
-export = promiseStorage;
+export default promiseStorage;

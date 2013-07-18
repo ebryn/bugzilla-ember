@@ -10,4 +10,4 @@ function getJSON(url, params) {
   });
 }
 
-export = getJSON;
+export default getJSON;

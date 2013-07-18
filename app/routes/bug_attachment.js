@@ -1,4 +1,4 @@
-import 'bugzilla/models/attachment' as Attachment;
+import Attachment from 'bugzilla/models/attachment';
 
 var Route = Ember.Route.extend({
   model: function(params) {
@@ -15,4 +15,4 @@ var Route = Ember.Route.extend({
   }
 });
 
-export = Route;
+export default Route;

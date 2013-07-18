@@ -1,8 +1,8 @@
-import 'bugzilla/utils/get_json' as getJSON;
-import 'bugzilla/utils/url_for' as urlFor;
+import getJSON from 'bugzilla/utils/get_json';
+import urlFor from 'bugzilla/utils/url_for';
 
 // TODO: remove app dependency
-import 'bugzilla/app' as App;
+import App from 'bugzilla/app';
 
 function login(username, password){
   var params =  {
@@ -14,4 +14,4 @@ function login(username, password){
   return getJSON(urlFor("login"), params);
 }
 
-export = login;
+export default login;

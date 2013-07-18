@@ -1,5 +1,5 @@
-import 'bugzilla/utils/get_json' as getJSON;
-import 'bugzilla/utils/url_for' as urlFor;
+import getJSON from 'bugzilla/utils/get_json';
+import urlFor from 'bugzilla/utils/url_for';
 
 var attr = Ember.attr;
 
@@ -96,4 +96,4 @@ Attachment.reopenClass({
   })
 });
 
-export = Attachment;
+export default Attachment;

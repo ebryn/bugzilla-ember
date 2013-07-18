@@ -1,4 +1,4 @@
-import 'bugzilla/models/bug' as Bug;
+import Bug from 'bugzilla/models/bug';
 
 var ApplicationController = Ember.Controller.extend({
   needs: ['user', 'login'],
@@ -16,4 +16,4 @@ var ApplicationController = Ember.Controller.extend({
   }
 });
 
-export = ApplicationController;
+export default ApplicationController;

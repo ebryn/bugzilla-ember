@@ -25,4 +25,4 @@ var FieldView = Ember.View.extend({
   }.observes('value')
 });
 
-export = FieldView;
+export default FieldView;

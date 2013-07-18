@@ -1,4 +1,4 @@
-import 'bugzilla/models/bug' as Bug;
+import Bug from 'bugzilla/models/bug';
 
 var BugRoute = Ember.Route.extend({
   model: function(params) {
@@ -6,4 +6,4 @@ var BugRoute = Ember.Route.extend({
   }
 });
 
-export = BugRoute;
+export default BugRoute;

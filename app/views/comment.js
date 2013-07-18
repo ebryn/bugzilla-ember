@@ -3,4 +3,4 @@ var CommentView = Ember.View.extend({
   classNames: ['comment']
 });
 
-export = CommentView;
+export default CommentView;

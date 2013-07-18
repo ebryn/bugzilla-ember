@@ -6,4 +6,4 @@ var FlagSelect = Ember.Select.extend({
   }.property()
 });
 
-export = FlagSelect;
+export default FlagSelect;

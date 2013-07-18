@@ -1,7 +1,7 @@
-import 'bugzilla/utils/get_json' as getJSON;
-import 'bugzilla/utils/url_for' as urlFor;
-import 'bugzilla/utils/promise_storage' as promiseStorage;
-import 'bugzilla/utils/unhandled_rejection' as unhandledRejection;
+import getJSON from 'bugzilla/utils/get_json';
+import urlFor from 'bugzilla/utils/url_for';
+import promiseStorage from 'bugzilla/utils/promise_storage';
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var attr = Ember.attr;
 
@@ -74,4 +74,4 @@ Comment.reopenClass({
   })
 });
 
-export = Comment;
+export default Comment;

@@ -1,5 +1,5 @@
 // FIXME: This is kinda hacky. We have a plan for making this cleaner with the container.
-import 'bugzilla/app' as App;
+import App from 'bugzilla/app';
 
 function urlFor(url) {
   var container = App.__container__,
@@ -16,4 +16,4 @@ function urlFor(url) {
   return fullURL;
 }
 
-export = urlFor;
+export default urlFor;

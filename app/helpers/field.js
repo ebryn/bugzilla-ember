@@ -1,4 +1,4 @@
-import 'bugzilla/views/field' as FieldView;
+import FieldView from 'bugzilla/views/field';
 
 Ember.Handlebars.registerHelper('field', function(key, options) {
   options.hash.valueBinding = key;

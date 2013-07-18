@@ -28,4 +28,4 @@ var FileField = Ember.View.extend({
   }
 });
 
-export = FileField;
+export default FileField;

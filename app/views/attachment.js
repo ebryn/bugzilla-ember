@@ -18,4 +18,4 @@ var AttachmentView = Ember.View.extend({
   }
 });
 
-export = AttachmentView;
+export default AttachmentView;

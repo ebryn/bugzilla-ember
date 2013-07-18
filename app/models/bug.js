@@ -1,12 +1,12 @@
-import 'bugzilla/models/comment' as Comment;
-import 'bugzilla/models/attachment' as Attachment;
+import Comment from 'bugzilla/models/comment';
+import Attachment from 'bugzilla/models/attachment';
 
-import 'bugzilla/utils/get_json'  as getJSON;
-import 'bugzilla/utils/url_for'   as urlFor;
-import 'bugzilla/utils/promise_storage'  as promiseStorage;
+import getJSON from 'bugzilla/utils/get_json' ;
+import urlFor from 'bugzilla/utils/url_for'  ;
+import promiseStorage from 'bugzilla/utils/promise_storage' ;
 
 // TODO: remove app dependency
-import 'bugzilla/app' as App;
+import App from 'bugzilla/app';
 
 var attr = Ember.attr, hasMany = Ember.hasMany;
 
@@ -168,4 +168,4 @@ Bug.reopenClass({
   })
 });
 
-export = Bug;
+export default Bug;

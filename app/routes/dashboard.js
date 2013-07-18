@@ -9,4 +9,4 @@ var DashboardRoute = Ember.Route.extend({
   }
 });
 
-export = DashboardRoute;
+export default DashboardRoute;

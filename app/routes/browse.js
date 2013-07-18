@@ -1,4 +1,4 @@
-import 'bugzilla/models/product' as Product;
+import Product from 'bugzilla/models/product';
 
 var BrowseRoute = Ember.Route.extend({
   setupController: function(controller, model) {
@@ -6,4 +6,4 @@ var BrowseRoute = Ember.Route.extend({
   }
 });
 
-export = BrowseRoute;
+export default BrowseRoute;

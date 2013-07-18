@@ -1,4 +1,4 @@
-import 'bugzilla/models/bug' as Bug;
+import Bug from 'bugzilla/models/bug';
 
 var UserController = Ember.Controller.extend({
   token: function(key, value) {
@@ -30,4 +30,4 @@ var UserController = Ember.Controller.extend({
   }.property()
 });
 
-export = UserController;
+export default UserController;

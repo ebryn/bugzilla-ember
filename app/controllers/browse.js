@@ -1,4 +1,4 @@
-import 'bugzilla/models/bug' as Bug;
+import Bug from 'bugzilla/models/bug';
 
 var BrowseController = Ember.ArrayController.extend({
   products: null,
@@ -30,4 +30,4 @@ var BrowseController = Ember.ArrayController.extend({
   }
 });
 
-export = BrowseController;
+export default BrowseController;

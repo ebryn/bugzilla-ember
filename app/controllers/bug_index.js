@@ -1,4 +1,4 @@
-import 'bugzilla/models/comment' as Comment;
+import Comment from 'bugzilla/models/comment';
 
 var BugController = Ember.ObjectController.extend({
   isShowingRemainingComments: false,
@@ -62,4 +62,4 @@ var BugController = Ember.ObjectController.extend({
   }.observes('content')
 });
 
-export = BugController;
+export default BugController;

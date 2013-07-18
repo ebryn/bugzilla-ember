@@ -1,8 +1,8 @@
-import 'resolver' as Resolver;
+import Resolver from 'resolver';
 
 // #preload stuff not yet loaded via the container
-import 'bugzilla/helpers/field' as FieldHelper;
-import 'bugzilla/helpers/format_bytes' as FormatBytesHelper;
+import FieldHelper from 'bugzilla/helpers/field';
+import FormatBytesHelper from 'bugzilla/helpers/format_bytes';
 
 // /preload
 
@@ -17,26 +17,28 @@ var App = Ember.Application.create({
 });
 
 // #views aren't looked up via the container, so we must place them on the app still
-import 'bugzilla/views/comment' as CommentView;
+import CommentView from 'bugzilla/views/comment';
 App.CommentView = CommentView;
 
-import 'bugzilla/views/attachment' as AttachmentView;
+import AttachmentView from 'bugzilla/views/attachment';
 App.AttachmentView = AttachmentView;
 
-import 'bugzilla/views/field' as FieldView;
+import FieldView from 'bugzilla/views/field';
 App.FieldView = FieldView;
 
-import 'bugzilla/views/browse_column_header' as BrowseColumnHeaderView;
+import BrowseColumnHeaderView from 'bugzilla/views/browse_column_header';
 App.BrowseColumnHeaderView = BrowseColumnHeaderView;
 
-import 'bugzilla/views/flag_select' as FlagSelect;
+import FlagSelect from 'bugzilla/views/flag_select';
 App.FlagSelect = FlagSelect;
 
-import 'bugzilla/views/file_field' as FileField;
+import FileField from 'bugzilla/views/file_field';
 App.FileField = FileField;
+
+Ember.Handlebars.helper('select', Ember.Select);
 // #view hacks
 
-import 'bugzilla/routes' as routes;
+import routes from 'bugzilla/routes';
 App.Router.map(routes);
 
-export = App;
+export default App;

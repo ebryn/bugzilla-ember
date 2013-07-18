@@ -12,4 +12,4 @@ var BrowseColumnHeaderView = Ember.View.extend({
   }
 });
 
-export = BrowseColumnHeaderView;
+export default BrowseColumnHeaderView;

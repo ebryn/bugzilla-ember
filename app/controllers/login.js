@@ -1,4 +1,4 @@
-import 'bugzilla/utils/unhandled_rejection' as unhandledRejection;
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var LoginController = Ember.Controller.extend({
   needs: ['user'],
@@ -31,4 +31,4 @@ var LoginController = Ember.Controller.extend({
   }
 });
 
-export = LoginController;
+export default LoginController;

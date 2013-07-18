@@ -1,7 +1,7 @@
-import 'bugzilla/models/bug' as Bug;
+import Bug from 'bugzilla/models/bug';
 
 // TODO: remove app dependency
-import 'bugzilla/app' as App;
+import App from 'bugzilla/app';
 
 var IndexRoute = Ember.Route.extend({
   redirect: function() {
@@ -13,4 +13,4 @@ var IndexRoute = Ember.Route.extend({
   }
 });
 
-export = IndexRoute;
+export default IndexRoute;
