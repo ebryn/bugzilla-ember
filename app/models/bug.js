@@ -87,6 +87,11 @@ var Bug = App.Bug = Ember.Model.extend({
     });
   },
 
+  load: function(id, hash) {
+    this._super(id, hash);
+    asyncStorage.setItem('bug-' + id, hash);
+  },
+
   attributesForIndex: function() {
     var attrs = this.getProperties('summary');
     attrs.id = this.get('id').toString(); // lunr doesn't like numbers :/
@@ -109,6 +114,16 @@ var Bug = App.Bug = Ember.Model.extend({
 });
 
 Bug.reopenClass({
+  cachedRecordForId: function(id) {
+    var record = this._super(id);
+    promiseStorage.getItem('bug-' + id).then(function(value){
+      if (value !== null) {
+        record.load(id, value);
+      }
+    });
+    return record;
+  },
+
   index: lunr(function() {
     this.field('summary', {boost: 10});
     this.field('id');
@@ -131,7 +146,6 @@ Bug.reopenClass({
       this._getJSON(id).then(function(json) {
         var data = json.bugs[0];
         record.load(id, data);
-        asyncStorage.setItem('bug-' + id, data);
       });
     },
 
@@ -155,7 +169,8 @@ Bug.reopenClass({
     },
 
     findMany: function(klass, records, ids) {
-      return this._getJSON("", {id: ids.join(',')}).then(function(data) {
+      var idParams = ids.map(function(id) { return "id=" + id; }).join('&');
+      return this._getJSON("", idParams).then(function(data) {
         records.load(klass, data.bugs);
       });
     },
@@ -163,6 +178,22 @@ Bug.reopenClass({
     findQuery: function(klass, records, params) {
       this._getJSON("", params).then(function(data) {
         records.load(klass, data.bugs);
+      });
+    },
+
+    createRecord: function(record) {
+      var url = urlFor("bug");
+      return $.ajax(url, {
+        type: "POST",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(record.toJSON())
+      }).then(function(json) {
+        record.set('id', parseInt(json.id, 10));
+        record.didCreateRecord();
+      }, function(xhr) {
+        var json = xhr.responseJSON;
+        alert(json.message); // TODO: better error handling
       });
     }
   })

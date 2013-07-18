@@ -1,0 +1,80 @@
+<h1>New bug</h1>
+
+<form {{action "save" on="submit"}}>
+  <table>
+    <tr>
+      <th>Summary:</th>
+      <td>{{input type="text" value=summary}}</td>
+    </tr>
+    <tr>
+      <th>Product:</th>
+      <td>{{select content=products selection=product optionLabelPath="content.name" prompt="[Product]"}}</td>
+    </tr>
+    <tr>
+      <th>Component:</th>
+      <td>{{select content=components selection=component optionLabelPath="content.name" prompt="[Component]"}}</td>
+    </tr>
+    <tr>
+      <th>Version:</th>
+      <td>{{select content=versions selection=version optionLabelPath="content.name" prompt="[Version]"}}</td>
+    </tr>
+    <tr>
+      <th>Severity:</th>
+      <td>{{select content=configuration.bug_severity.values selection=severity optionLabelPath="content.name" prompt="[Severity]"}}</td>
+    </tr>
+    <tr>
+      <th>Hardware:</th>
+      <td>{{select content=configuration.rep_platform.values selection=platform optionLabelPath="content.name" prompt="[Hardware]"}}</td>
+    </tr>
+    <tr>
+      <th>OS:</th>
+      <td>{{select content=configuration.op_sys.values selection=op_sys optionLabelPath="content.name" prompt="[OS]"}}</td>
+    </tr>
+    <tr>
+      <th>Priority:</th>
+      <td>{{select content=configuration.priority.values selection=priority optionLabelPath="content.name" prompt="[Priority]"}}</td>
+    </tr>
+    <tr>
+      <th>Flags:</th>
+      <td>
+        {{#each selectedComponent.flag_types.bug}}
+          {{name}}: {{select}}
+        {{/each}}
+      </td>
+    </tr>
+    <tr>
+      <th>Status:</th>
+      <td>{{select content=configuration.bug_status.values selection=status optionLabelPath="content.name" prompt="[Status]"}}</td>
+    </tr>
+    <tr>
+      <th>Assignee:</th>
+      <td>{{input type="text" value=assigned_to}}</td>
+    </tr>
+    <tr>
+      <th>CC:</th>
+      <td>{{input type="text" value=cc}}</td>
+    </tr>
+    <tr>
+      <th>Alias:</th>
+      <td>{{input type="text" value=alias}}</td>
+    </tr>
+    <tr>
+      <th>URL:</th>
+      <td>{{input type="text" value=url}}</td>
+    </tr>
+    <tr>
+      <th>Description:</th>
+      <td>{{textarea value=description}}</td>
+    </tr>
+    <tr>
+      <th>Depends on:</th>
+      <td>{{!input type="text" value=depends_on}}</td>
+    </tr>
+    <tr>
+      <th>Blocks:</th>
+      <td>{{!input type="text" value=blocks}}</td>
+    </tr>
+  </table>
+
+  <button type="submit">Save</button>
+</form>
