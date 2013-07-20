@@ -16,7 +16,7 @@
   </div>
 
   <ul class="nav">
-    <li><a href="#">New</a></li>
+    <li>{{#linkTo 'bugNew'}}New{{/linkTo}}</li>
     <li>{{#linkTo 'browse'}}Browse{{/linkTo}}</li>
     <li><a href="#">My Requests</a></li>
     {{#if user.isLoggedIn}}
