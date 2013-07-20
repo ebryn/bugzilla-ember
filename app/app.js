@@ -16,25 +16,6 @@ var App = Ember.Application.create({
   USE_TEST_SERVER: true
 });
 
-// #views aren't looked up via the container, so we must place them on the app still
-import CommentView from 'bugzilla/views/comment';
-App.CommentView = CommentView;
-
-import AttachmentView from 'bugzilla/views/attachment';
-App.AttachmentView = AttachmentView;
-
-import FieldView from 'bugzilla/views/field';
-App.FieldView = FieldView;
-
-import BrowseColumnHeaderView from 'bugzilla/views/browse_column_header';
-App.BrowseColumnHeaderView = BrowseColumnHeaderView;
-
-import FlagSelect from 'bugzilla/views/flag_select';
-App.FlagSelect = FlagSelect;
-
-import FileField from 'bugzilla/views/file_field';
-App.FileField = FileField;
-
 Ember.Handlebars.helper('select', Ember.Select);
 // #view hacks
 

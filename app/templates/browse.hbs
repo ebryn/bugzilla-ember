@@ -1,18 +1,18 @@
 <table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
   <thead> 
     <tr>
-      {{view App.BrowseColumnHeaderView column="id" title="ID"}}
-      {{view App.BrowseColumnHeaderView column="product" title="Product"}}
-      {{view App.BrowseColumnHeaderView column="component" title="Comp"}}
-      {{view App.BrowseColumnHeaderView column="assigned_to.name" title="Assignee"}}
-      {{view App.BrowseColumnHeaderView column="status" title="Status"}}
-      {{view App.BrowseColumnHeaderView column="summary" title="Summary"}}
-      {{view App.BrowseColumnHeaderView column="last_change_time" title="Changed"}}
+      {{view 'browse-column-header' column="id" title="ID"}}
+      {{view 'browse-column-header' column="product" title="Product"}}
+      {{view 'browse-column-header' column="component" title="Comp"}}
+      {{view 'browse-column-header' column="assigned_to.name" title="Assignee"}}
+      {{view 'browse-column-header' column="status" title="Status"}}
+      {{view 'browse-column-header' column="summary" title="Summary"}}
+      {{view 'browse-column-header' column="last_change_time" title="Changed"}}
     </tr>
   </thead>
   <tbody>
-    {{view Ember.Select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
-    {{view Ember.Select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
+    {{select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
+    {{select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
     {{#each controller}}
     <tr>
       <td class="id">

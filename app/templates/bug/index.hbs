@@ -121,7 +121,7 @@
         <ul>
           {{#each flags}}
             <li>
-              {{setter}}: {{name}} {{view App.FlagSelect selectionBinding="status"}}
+              {{setter}}: {{name}} {{view 'flagSelect' selectionBinding="status"}}
             </li>
           {{/each}}
         </ul>
@@ -166,7 +166,7 @@
     {{else}}
       {{view Ember.TextArea valueBinding="newCommentText"}}
       <button {{action saveComment}}>Save</button>
-      {{view App.CommentView contextBinding="firstComment"}}
+      {{view 'comment' contextBinding="firstComment"}}
       {{#unless isShowingRemainingComments}}
         {{#if remainingComments}}
           <a href="#" {{action showRemainingComments}}>Show remaining {{remainingComments.length}} comments</a>
