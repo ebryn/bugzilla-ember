@@ -1,5 +1,9 @@
 {
   "predef": [
+    "atob",
+    "FileReader",
+    "sessionStorage",
+    "Em",
     "Bugzilla",
     "Visibility",
     "document",
