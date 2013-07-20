@@ -1,0 +1,29 @@
+<table class="attachments">
+  <tbody>
+    {{#each}}
+      <tr>
+        <td>
+          {{#linkTo "attachment" this}}
+            {{description}}
+          {{/linkTo}}
+          ({{formatBytes size}}{{#if is_patch}}, patch{{/if}})<br>
+          {{last_change_time}}, {{attacher.name}}
+        </td>
+        <td>
+          {{#if flags}}
+            {{#each flags}}
+              {{setter.name}}: {{name}}{{status}}
+            {{/each}}
+          {{else}}
+            <em>No flags</em>
+          {{/if}}
+        </td>
+        <td>
+          {{#linkTo "attachment" this}}Details{{/linkTo}} |
+          <a {{bindAttr href="diffURL"}} target="_blank">Diff</a> |
+          <a {{bindAttr href="reviewURL"}} target="_blank">Review</a>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -1,0 +1,9 @@
+<ul class="nav">
+  <li>{{#linkTo 'bugNew'}}New{{/linkTo}}</li>
+  <li>{{#linkTo 'browse'}}Browse{{/linkTo}}</li>
+  <li><a href="#">My Requests</a></li>
+  {{#if user.isLoggedIn}}
+    <li>{{#linkTo 'dashboard'}}My Dashboard{{/linkTo}}</li>
+  {{/if}}
+  <li>{{render 'user'}}</li>
+</ul>

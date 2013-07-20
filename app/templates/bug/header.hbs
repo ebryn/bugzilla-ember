@@ -1,0 +1,10 @@
+<div class="header">
+  <span>
+    {{#linkTo "bug" this}}Bug {{id}}{{/linkTo}}
+    {{#if isLoading}}
+      <img src="/assets/images/loading.gif">
+    {{else}}
+      <span> - {{#if alias}}({{alias}}) {{/if}}{{summary}}</span>
+    {{/if}}
+  </span>
+</div>
