@@ -56,9 +56,9 @@ test("when a user is logged in, on bug retrievsl,  bugs are fetched", function()
     ];
 
     stop();
-    userController.get('bugs').then(function(issues) {
+    userController.get('bugs').one('didLoad', function() {
       start();
-      equal(issues.get('length'), 4);
+      equal(this.get('length'), 4);
     });
   });
 });
