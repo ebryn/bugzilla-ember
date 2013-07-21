@@ -52,9 +52,17 @@ var Bug = App.Bug = Ember.Model.extend({
   }.property('status'),
 
   unobsoleteAttachments: function() {
+    // EM needs a better solution for this.
     var attachments = this.get('attachments');
 
     if (!attachments) { return []; }
+
+    var result = attachments.filter(isntObsolete).map(toAttachement);
+
+    Ember.set(result, '_source', attachments);
+    Ember.defineProperty(result, 'isLoading', Ember.computed.alias('_source.isLoading'));
+
+    return result;
 
     function isntObsolete(attachment) {
       return !attachment.is_obsolete;
@@ -66,8 +74,6 @@ var Bug = App.Bug = Ember.Model.extend({
         isLoaded: true
       });
     }
-
-    return attachments.filter(isntObsolete).map(toAttachement);
   }.property('attachments.@each.is_obsolete'),
 
   // TODO: figure out how to make comments a legit relationship

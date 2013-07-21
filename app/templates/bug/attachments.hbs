@@ -1,5 +1,10 @@
 <table class="attachments">
   <tbody>
+  {{#if content.isLoading}}
+    <tr>
+      <td>checking for attachments...</td>
+    </tr>
+  {{else}}
     {{#each itemController="attachment"}}
       <tr>
         <td>
@@ -24,6 +29,11 @@
           <a {{bindAttr href="reviewURL"}} target="_blank">Review</a>
         </td>
       </tr>
+    {{else}}
+      <tr>
+        <td>No Attachments</td>
+      </tr>
     {{/each}}
+  {{/if}}
   </tbody>
 </table>

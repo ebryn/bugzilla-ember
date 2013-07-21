@@ -1,3 +1,5 @@
+{{select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
+{{select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
 <table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
   <thead>
     <tr>
@@ -11,33 +13,41 @@
     </tr>
   </thead>
   <tbody>
-    {{select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
-    {{select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
-    {{#each controller}}
-    <tr>
-      <td class="id">
-        {{#linkTo 'bug' this}} {{id}} {{/linkTo}}
-      </td>
-      <td class="product">
-        {{product}}
-      </td>
-      <td class="component">
-        {{component}}
-      </td>
-      <td class="assignee">
-        {{assigned_to.name}}
-      </td>
-      <td class="status">
-        {{status}}
-      </td>
-      <td class="summary">
-        {{#linkTo 'bug' this}} {{summary}} {{/linkTo}}
-      </td>
-      <td class="changed">
-        {{last_change_time}}
-      </td>
-    </tr>
-    {{/each}}
+    {{#if isLoading}}
+      <tr>
+        <td collspan="7"> Loading...</td>
+      </tr>
+    {{else}}
+      {{#each}}
+      <tr>
+        <td class="id">
+          {{#linkTo 'bug' this}} {{id}} {{/linkTo}}
+        </td>
+        <td class="product">
+          {{product}}
+        </td>
+        <td class="component">
+          {{component}}
+        </td>
+        <td class="assignee">
+          {{assigned_to.name}}
+        </td>
+        <td class="status">
+          {{status}}
+        </td>
+        <td class="summary">
+          {{#linkTo 'bug' this}} {{summary}} {{/linkTo}}
+        </td>
+        <td class="changed">
+          {{last_change_time}}
+        </td>
+      </tr>
+      {{/each}}
+    {{/if}}
   </tbody>
-  <tfoot></tfoot>
+  <tfoot>
+    <tr>
+      <td>Length: {{length}} </td>
+    </tr>
+  </tfoot>
 </table>

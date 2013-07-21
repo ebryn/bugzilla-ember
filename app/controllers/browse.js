@@ -3,10 +3,10 @@ import Bug from 'bugzilla/models/bug';
 var BrowseController = Ember.ArrayController.extend({
   products: null,
   selectedProduct: null,
-
+  isLoading: Ember.computed.alias('content.isLoading'),
+  isLoaded: Ember.computed.alias('content.isLoaded'),
   components: Em.computed.alias('selectedProduct.components'),
   selectedComponent: null,
-
   content: function() {
     return Bug.find({
       product: this.get('selectedProduct.name'),
