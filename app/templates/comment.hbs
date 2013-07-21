@@ -1,6 +1,9 @@
 <div class="header">
   <span>{{creator}}</span>
   <span>{{creation_time}}</span>
-  <span></span>
+  {{! FIXME: this could be better }}
+  {{#if controller.user.isLoggedIn}}
+    <span><button {{action reply this}}>reply</button></span>
+  {{/if}}
 </div>
 <pre>{{text}}</pre>

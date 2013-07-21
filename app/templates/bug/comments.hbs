@@ -3,7 +3,7 @@
     Loading comments...
   {{else}}
     {{#if user.isLoggedIn}}
-      {{textarea value=newCommentText}}
+      {{textarea value=newCommentText cols=80 rows=25}}
       <button {{action saveComment}}>Save</button>
     {{else}}
       Log in to create a comment

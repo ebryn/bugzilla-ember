@@ -6,6 +6,7 @@ var BugController = Ember.ObjectController.extend({
   user: Em.computed.alias('controllers.user'),
   
   isShowingRemainingComments: false,
+  newCommentText: null,
 
   keywords: function() {
     var keywords = this.get('content.keywords');
@@ -28,6 +29,17 @@ var BugController = Ember.ObjectController.extend({
       self.get('comments').pushObject(newComment);
       self.set('newCommentText', null);
     }).then(null, unhandledRejection);
+  },
+
+  reply: function(comment) {
+    var newCommentText = this.get('newCommentText') || "",
+        commentIndex = this.get('comments').indexOf(comment);
+
+    newCommentText += "(In reply to %@ from comment #%@)\n".fmt(comment.get('creator'), commentIndex);
+    newCommentText += comment.get("text").replace(/^/m, "> ");
+    newCommentText += "\n";
+
+    this.set('newCommentText', newCommentText);
   },
 
   _pollingInterval: 30 * 1000,
