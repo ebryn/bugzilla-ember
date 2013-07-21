@@ -39,7 +39,7 @@
   <tfoot>
     <tr><td>
       {{#if user.isLoggedIn}}
-        {{#linkTo 'bug.attachment' this}}Upload a new attachment{{/linkTo}}
+        {{#linkTo 'bug.attachment' bug}}Upload a new attachment{{/linkTo}}
       {{else}}
         Log in to upload an attachment
       {{/if}}
