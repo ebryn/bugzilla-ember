@@ -2,8 +2,12 @@
   {{#if comments.isLoading}}
     Loading comments...
   {{else}}
-    {{view Ember.TextArea valueBinding="newCommentText"}}
-    <button {{action saveComment}}>Save</button>
+    {{#if user.isLoggedIn}}
+      {{textarea value=newCommentText}}
+      <button {{action saveComment}}>Save</button>
+    {{else}}
+      Log in to create a comment
+    {{/if}}
     {{view 'comment' contextBinding="firstComment"}}
     {{#unless isShowingRemainingComments}}
       {{#if remainingComments}}

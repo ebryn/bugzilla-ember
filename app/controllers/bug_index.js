@@ -2,6 +2,9 @@ import Comment from 'bugzilla/models/comment';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var BugController = Ember.ObjectController.extend({
+  needs: ['user'],
+  user: Em.computed.alias('controllers.user'),
+  
   isShowingRemainingComments: false,
 
   keywords: function() {

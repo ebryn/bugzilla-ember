@@ -36,4 +36,13 @@
     {{/each}}
   {{/if}}
   </tbody>
+  <tfoot>
+    <tr><td>
+      {{#if user.isLoggedIn}}
+        {{#linkTo 'bug.attachment' this}}Upload a new attachment{{/linkTo}}
+      {{else}}
+        Log in to upload an attachment
+      {{/if}}
+    </td></tr>
+  </tfoot>
 </table>
