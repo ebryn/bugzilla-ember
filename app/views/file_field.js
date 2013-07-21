@@ -18,8 +18,7 @@ var FileField = Ember.View.extend({
       self.setProperties({
         name: name,
         contentType: contentType,
-        // TODO: need to strip data URI prefix
-        encodedData: onloadEvent.target.result
+        encodedData: onloadEvent.target.result.replace(/data:.*;base64,/, "")
       });
     };
 
