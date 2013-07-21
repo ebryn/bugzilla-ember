@@ -8,9 +8,12 @@ var Route = Ember.Route.extend({
 
   events: {
     save: function() {
-      // TODO: move me into the bug attachment controller
-      var model = this.modelFor('bug_attachment');
-      model.save();
+      var self = this,
+          bug = this.modelFor('bug'),
+          attachment = this.modelFor('bug_attachment');
+      attachment.save().then(function() {
+        self.transitionTo('bug', bug);
+      });
     }
   }
 });
