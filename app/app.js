@@ -16,6 +16,11 @@ var App = Ember.Application.create({
   USE_TEST_SERVER: true
 });
 
+import _ from 'bugzilla/ext/route';
+
+// maybe load this by convention?
+import config from 'bugzilla/config';
+
 Ember.Handlebars.helper('select', Ember.Select);
 // #view hacks
 

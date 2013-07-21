@@ -2,8 +2,10 @@ import Comment from 'bugzilla/models/comment';
 import Attachment from 'bugzilla/models/attachment';
 
 import getJSON from 'bugzilla/utils/get_json' ;
+import ajax from 'bugzilla/utils/ajax' ;
 import urlFor from 'bugzilla/utils/url_for'  ;
 import promiseStorage from 'bugzilla/utils/promise_storage' ;
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 // TODO: remove app dependency
 import App from 'bugzilla/app';
@@ -36,7 +38,9 @@ var Bug = App.Bug = Ember.Model.extend({
   flags: attr(),
 
   attachments: function() {
-    return Attachment.find({bug_id: this.get('id')});
+    return Attachment.find({
+      bug_id: this.get('id')
+    });
   }.property(),
 
   aliasOrId: function() {
@@ -52,18 +56,25 @@ var Bug = App.Bug = Ember.Model.extend({
 
     if (!attachments) { return []; }
 
-    return attachments.filter(function(attachment) {
+    function isntObsolete(attachment) {
       return !attachment.is_obsolete;
-    }).map(function(attachment) {
-      var record = Attachment.create({data: attachment, isLoaded: true});
-      record.then = null; // FIXME: We need to get rid of records-as-promises :(
-      return record;
-    });
+    }
+
+    function toAttachement(data) {
+      return Attachment.create({
+        data: data,
+        isLoaded: true
+      });
+    }
+
+    return attachments.filter(isntObsolete).map(toAttachement);
   }.property('attachments.@each.is_obsolete'),
 
   // TODO: figure out how to make comments a legit relationship
   comments: function() {
-    return Comment.find({bug_id: this.get('id')});
+    return Comment.find({
+      bug_id: this.get('id')
+    });
   }.property(),
 
   firstComment: function() {
@@ -165,7 +176,7 @@ Bug.reopenClass({
         } else {
           return self._loadFromServer(record, id);
         }
-      }).then(null, Ember.unhandledRejection);
+      }).then(null, unhandledRejection);
     },
 
     findMany: function(klass, records, ids) {
@@ -183,7 +194,7 @@ Bug.reopenClass({
 
     createRecord: function(record) {
       var url = urlFor("bug");
-      return $.ajax(url, {
+      return ajax(url, {
         type: "POST",
         dataType: 'json',
         contentType: 'application/json',

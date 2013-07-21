@@ -1,5 +1,7 @@
 import getJSON from 'bugzilla/utils/get_json';
 import urlFor from 'bugzilla/utils/url_for';
+import ajax from 'bugzilla/utils/ajax';
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var attr = Ember.attr;
 
@@ -20,22 +22,8 @@ var Attachment = Ember.Model.extend({
   decodedData: function() {
     var encodedData = this.get('encodedData');
     if (encodedData) { return atob(encodedData); }
-  }.property('encodedData'),
+ }.property('encodedData')
 
-  // FIXME: These belong in an itemController
-  reviewURL: function() {
-    var id = this.get('id'),
-        bugId = this.get('bug_id');
-
-    return "https://bugzilla.mozilla.org/page.cgi?id=splinter.html&bug=%@&attachment=%@".fmt(bugId, id);
-  }.property('id', 'bug_id'),
-
-  diffURL: function() {
-    var id = this.get('id'),
-        bugId = this.get('bugId');
-
-    return "https://bugzilla.mozilla.org/attachment.cgi?id=%@&action=diff".fmt(id);
-  }.property('id', 'bug_id'),
 });
 
 Attachment.reopenClass({
@@ -49,7 +37,7 @@ Attachment.reopenClass({
         attachmentJson.encodedData = attachmentJson.data;
         delete attachmentJson.data;
         record.load(id, attachmentJson);
-      });
+      }).then(null, unhandledRejection);
     },
 
     findQuery: function(klass, records, params) {
@@ -66,7 +54,7 @@ Attachment.reopenClass({
         }
 
         records.load(klass, attachmentsJson);
-      });
+      }).then(null, unhandledRejection);
     },
 
     createRecord: function(record) {
@@ -74,7 +62,7 @@ Attachment.reopenClass({
           data = record.toJSON(),
           url = urlFor("bug/" + data.bug_id + "/attachment");
 
-      return $.ajax(url, {
+      return ajax(url, {
         type: "POST",
         dataType: 'json',
         contentType: 'application/json',
@@ -83,7 +71,7 @@ Attachment.reopenClass({
         var id = json.ids[0];
         var url = urlFor("bug/attachment/" + id);
 
-        getJSON(url).then(function(json) {
+        return getJSON(url).then(function(json) {
           var attachmentJson = json.attachments[id];
           // FIXME: workaround data being a special property in EM
           attachmentJson.encodedData = attachmentJson.data;

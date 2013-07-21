@@ -1,8 +1,11 @@
 var container;
 var App = requireModule('bugzilla/app');
-
+var bugId = 0;
 function mockBug() {
-  return {};
+  return {
+    id: bugId++,
+    summary: "Summary For: Bug #" + bugId
+  };
 }
 
 module("dashboard", {

@@ -4,12 +4,4 @@
 <p>The bug has been assigned to you and it is not resolved or closed yet.</p>
 
 {{user}}
-
-<table class="my-bugs">
-  {{#each myBugs}}
-  <tr class="bug">
-    <td>{{id}}</td>
-    <td>{{summary}}</td>
-  </tr>
-  {{/each}}
-</table>
+{{render 'dashboard/my_bugs' myBugs}}

@@ -1,9 +1,9 @@
-import Attachment from 'bugzilla/models/attachment';
-
 var Route = Ember.Route.extend({
   model: function(params) {
     var bug = this.modelFor('bug');
-    return Attachment.create({bug_id: bug.get('id')});
+    return this.create('attachment', {
+      bug_id: bug.get('id')
+    });
   },
 
   events: {

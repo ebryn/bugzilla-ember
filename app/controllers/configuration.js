@@ -1,20 +1,28 @@
 import getJSON from 'bugzilla/utils/get_json' ;
 import urlFor from 'bugzilla/utils/url_for'  ;
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
+
+function setFieldsOn(obj) {
+  return function(json) {
+    var fieldsByName = {};
+
+    json.fields.forEach(function(field) {
+      fieldsByName[field.name] = field;
+    });
+
+    Ember.setProperties(obj, fieldsByName);
+
+    return json;
+  };
+}
 
 var Controller = Ember.Controller.extend({
   init: function() {
     this._super();
 
-    var self = this,
-        url = urlFor("field/bug");
+    var url = urlFor('field/bug');
 
-    getJSON(url).then(function(json) {
-      var fieldsByName = {};
-      json.fields.forEach(function(field) {
-        fieldsByName[field.name] = field;
-      });
-      Ember.setProperties(self, fieldsByName);
-    });
+    getJSON(url).then(setFieldsOn(this)).then(null, unhandledRejection);
 
     return this;
   }

@@ -1,4 +1,5 @@
 import Bug from 'bugzilla/models/bug';
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 function cpProxySetName(dependentKey) {
   return function(key, value) {
@@ -32,10 +33,11 @@ var Controller = Ember.ObjectController.extend({
   save: function() {
     var self = this,
         model = this.get('content');
+
     model.save().then(function() {
       self.set('content', Bug.create());
       self.transitionToRoute("bug", model);
-    });
+    }).then(null, unhandledRejection);
   }
 });
 

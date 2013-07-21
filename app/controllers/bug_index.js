@@ -1,4 +1,5 @@
 import Comment from 'bugzilla/models/comment';
+import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var BugController = Ember.ObjectController.extend({
   isShowingRemainingComments: false,
@@ -23,7 +24,7 @@ var BugController = Ember.ObjectController.extend({
     newComment.save().then(function() {
       self.get('comments').pushObject(newComment);
       self.set('newCommentText', null);
-    });
+    }).then(null, unhandledRejection);
   },
 
   _pollingInterval: 30 * 1000,

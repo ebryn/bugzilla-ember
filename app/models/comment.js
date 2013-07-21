@@ -2,6 +2,7 @@ import getJSON from 'bugzilla/utils/get_json';
 import urlFor from 'bugzilla/utils/url_for';
 import promiseStorage from 'bugzilla/utils/promise_storage';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
+import ajax from 'bugzilla/utils/ajax';
 
 var attr = Ember.attr;
 
@@ -45,7 +46,7 @@ Comment.reopenClass({
         } else { // not cached locally, fetch all comments
           return getJSON(url).then(function(json) {
             records.load(klass, json.bugs[bugId].comments);
-            asyncStorage.setItem(cacheKey, json.bugs[bugId].comments);
+            return promiseStorage.setItem(cacheKey, json.bugs[bugId].comments);
           });
         }
       }).then(null, unhandledRejection);
@@ -53,23 +54,31 @@ Comment.reopenClass({
 
     createRecord: function(record) {
       var bugId = record.get('bug_id'),
-          url = urlFor("bug/" + bugId + "/comment");
+          url = urlFor('bug/' + bugId + '/comment'),
+          data = JSON.stringify({
+            id: bugId,
+            comment: record.get('text')
+      });
 
-      return $.ajax(url, {
-        type: "POST",
+      return ajax(url, {
+        type: 'POST',
         dataType: 'json',
         contentType: 'application/json',
-        data: JSON.stringify({id: bugId, comment: record.get('text')})
-      }).then(function(data) {
-        Ember.run(function() {
-          record.set('id', parseInt(data.id, 10)); // FIXME (in EM): shouldn't have to parseInt here
-          record.didCreateRecord();
-          record.reload(); // FIXME: hack to workaround lack of good API response (noted in API_TODOS)
-        });
-      }, function(xhr) {
+        data: data,
+      }).then(setRecordData, handleError);
+
+      function setRecordData(data) {
+        record.set('id', parseInt(data.id, 10)); // FIXME (in EM): shouldn't have to parseInt here
+        record.didCreateRecord();
+        record.reload(); // FIXME: hack to workaround lack of good API response (noted in API_TODOS)
+      }
+
+      function handleError(reason) {
         // TODO: better error handling
-        alert(xhr.responseJSON.message);
-      });
+        var message = reason && reason[0].responseJSON && reason[0].responseJSON.message || 'Sorry, Something went wrong';
+        alert(message);
+        throw reason;
+      }
     }
   })
 });
