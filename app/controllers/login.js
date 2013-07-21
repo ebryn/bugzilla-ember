@@ -2,6 +2,11 @@ import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var LoginController = Ember.Controller.extend({
   needs: ['user'],
+
+  username: null,
+  password: null,
+  errorMessage: null,
+  
   login: function() {
     var self = this,
         username = this.get('username'),
@@ -28,6 +33,13 @@ var LoginController = Ember.Controller.extend({
     }, function(jqXHR) {
       self.set('errorMessage', 'Invalid username or password');
     }).then(null, unhandledRejection);
+  },
+
+  logout: function() {
+    this.get('controllers.user').setProperties({
+      token: null,
+      isLoggedIn: false
+    });
   }
 });
 

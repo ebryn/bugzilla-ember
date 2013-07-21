@@ -10,6 +10,10 @@ var ApplicationRoute = Ember.Route.extend({
       var controller = this.controllerFor('application');
 
       controller.set('showingLoginModal', false);
+    },
+
+    logout: function() {
+      this.controllerFor('login').logout();
     }
   }
 });

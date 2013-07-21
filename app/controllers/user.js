@@ -3,7 +3,11 @@ import Bug from 'bugzilla/models/bug';
 var UserController = Ember.Controller.extend({
   token: function(key, value) {
     if (arguments.length === 2) {
-      sessionStorage.token = value;
+      if (value === null) {
+        delete sessionStorage.token;
+      } else {
+        sessionStorage.token = value;
+      }
       return value;
     }
     return sessionStorage.token;

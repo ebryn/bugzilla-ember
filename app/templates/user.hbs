@@ -1,5 +1,5 @@
 {{#if isLoggedIn}}
-  Welcome {{username}}
+  <a href="#" {{action logout}}>Logout</a>
 {{else}}
   <a href="#" {{action showLoginModal}}>Login</a>
 {{/if}}
