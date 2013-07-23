@@ -37,7 +37,7 @@ var BugController = Ember.ObjectController.extend({
 
     newCommentText += "(In reply to %@ from comment #%@)\n".fmt(comment.get('creator'), commentIndex);
     newCommentText += comment.get("text").replace(/^/m, "> ");
-    newCommentText += "\n";
+    newCommentText += "\n\n";
 
     this.set('newCommentText', newCommentText);
   },
