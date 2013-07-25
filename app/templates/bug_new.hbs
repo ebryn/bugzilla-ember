@@ -1,80 +1,77 @@
-<h1>New bug</h1>
+<form {{action "save" on="submit"}} class="container form--long">
+  
+  <h1 class="newBug__header">New bug</h1>
+  
+  <div class="form__item">
+    {{input type="text" value=summary}}
+    <label>Summary:</label>
+  </div>
+  <div class="form__item">
+    <label>Product:</label>
+    {{select content=products selection=product optionLabelPath="content.name" prompt="[Product]"}}
+  </div>
+  <div class="form__item">
+    <label>Component:</label>
+    {{select content=components selection=component optionLabelPath="content.name" prompt="[Component]"}}
+  </div>
+  <div class="form__item">
+    <label>Version:</label>
+    {{select content=versions selection=version optionLabelPath="content.name" prompt="[Version]"}}
+  </div>
+  <div class="form__item">
+    <label>Severity:</label>
+    {{select content=configuration.bug_severity.values selection=severity optionLabelPath="content.name" prompt="[Severity]"}}
+  </div>
+  <div class="form__item">
+    <label>Hardware:</label>
+    {{select content=configuration.rep_platform.values selection=platform optionLabelPath="content.name" prompt="[Hardware]"}}
+  </div>
+  <div class="form__item">
+    <label>OS:</label>
+    {{select content=configuration.op_sys.values selection=op_sys optionLabelPath="content.name" prompt="[OS]"}}
+  </div>
+  <div class="form__item">
+    <label>Priority:</label>
+    {{select content=configuration.priority.values selection=priority optionLabelPath="content.name" prompt="[Priority]"}}
+  </div>
+  <div class="form__item">
+    <label>Flags:</label>
+      {{#each selectedComponent.flag_types.bug}}
+        {{name}}: {{select}}
+      {{/each}}
+  </div>
+  <div class="form__item">
+    <label>Status:</label>
+    {{select content=configuration.bug_status.values selection=status optionLabelPath="content.name" prompt="[Status]"}}
+  </div>
+  <div class="form__item">
+    <label>Assignee:</label>
+    {{input type="text" value=assigned_to}}
+  </div>
+  <div class="form__item">
+    <label>CC:</label>
+    {{input type="text" value=cc}}
+  </div>
+  <div class="form__item">
+    <label>Alias:</label>
+    {{input type="text" value=alias}}
+  </div>
+  <div class="form__item">
+    <label>URL:</label>
+    {{input type="text" value=url}}
+  </div>
+  <div class="form__item">
+    <label>Description:</label>
+    {{textarea value=description}}
+  </div>
+  <div class="form__item">
+    <label>Depends on:</label>
+    {{!input type="text" value=depends_on}}
+  </div>
+  <div class="form__item">
+    <label>Blocks:</label>
+    {{!input type="text" value=blocks}}
+  </div>
 
-<form {{action "save" on="submit"}}>
-  <table>
-    <tr>
-      <th>Summary:</th>
-      <td>{{input type="text" value=summary}}</td>
-    </tr>
-    <tr>
-      <th>Product:</th>
-      <td>{{select content=products selection=product optionLabelPath="content.name" prompt="[Product]"}}</td>
-    </tr>
-    <tr>
-      <th>Component:</th>
-      <td>{{select content=components selection=component optionLabelPath="content.name" prompt="[Component]"}}</td>
-    </tr>
-    <tr>
-      <th>Version:</th>
-      <td>{{select content=versions selection=version optionLabelPath="content.name" prompt="[Version]"}}</td>
-    </tr>
-    <tr>
-      <th>Severity:</th>
-      <td>{{select content=configuration.bug_severity.values selection=severity optionLabelPath="content.name" prompt="[Severity]"}}</td>
-    </tr>
-    <tr>
-      <th>Hardware:</th>
-      <td>{{select content=configuration.rep_platform.values selection=platform optionLabelPath="content.name" prompt="[Hardware]"}}</td>
-    </tr>
-    <tr>
-      <th>OS:</th>
-      <td>{{select content=configuration.op_sys.values selection=op_sys optionLabelPath="content.name" prompt="[OS]"}}</td>
-    </tr>
-    <tr>
-      <th>Priority:</th>
-      <td>{{select content=configuration.priority.values selection=priority optionLabelPath="content.name" prompt="[Priority]"}}</td>
-    </tr>
-    <tr>
-      <th>Flags:</th>
-      <td>
-        {{#each selectedComponent.flag_types.bug}}
-          {{name}}: {{select}}
-        {{/each}}
-      </td>
-    </tr>
-    <tr>
-      <th>Status:</th>
-      <td>{{select content=configuration.bug_status.values selection=status optionLabelPath="content.name" prompt="[Status]"}}</td>
-    </tr>
-    <tr>
-      <th>Assignee:</th>
-      <td>{{input type="text" value=assigned_to}}</td>
-    </tr>
-    <tr>
-      <th>CC:</th>
-      <td>{{input type="text" value=cc}}</td>
-    </tr>
-    <tr>
-      <th>Alias:</th>
-      <td>{{input type="text" value=alias}}</td>
-    </tr>
-    <tr>
-      <th>URL:</th>
-      <td>{{input type="text" value=url}}</td>
-    </tr>
-    <tr>
-      <th>Description:</th>
-      <td>{{textarea value=description}}</td>
-    </tr>
-    <tr>
-      <th>Depends on:</th>
-      <td>{{!input type="text" value=depends_on}}</td>
-    </tr>
-    <tr>
-      <th>Blocks:</th>
-      <td>{{!input type="text" value=blocks}}</td>
-    </tr>
-  </table>
-
-  <button type="submit">Save</button>
+  <button type="submit" class="button--form button--large">Save</button>
 </form>
