@@ -1,0 +1,86 @@
+select {
+  background-color: #f7f7f7;
+  -webkit-appearance: none;
+}
+
+select,
+input,
+textarea,
+label {
+  font-size: 0.85rem;
+}
+
+select,
+input,
+textarea {
+  border-radius: 2px;
+  border: 1px solid hsl(200, 3, 76);
+}
+
+select:focus,
+input:focus {
+  background-color: #f2f2f2;
+  border-color: hsl(200, 3, 64);
+}
+
+input:focus {
+  background-color: #eee;
+}
+
+input {
+  padding: 0.35rem 0.45rem;
+}
+select {
+  padding: 0.35rem 0.45rem;  
+}
+
+button {
+  border: 1px solid blue;
+  background-color: hsl(200, 25, 90);
+  border: 1px solid hsl(200, 25, 85);
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    background-color: hsl(200, 25, 80);
+  }
+
+  &.button--large {
+    padding: 0.5rem 1rem;
+    font-size: 1.125rem;
+  }
+}
+
+textarea {
+  min-height: 6rem;
+}
+
+.form__item {
+  margin: 1.75rem 0;
+}
+
+/** Layout
+========================================================================== */
+
+.form--long {
+  max-width: 650px;
+}
+
+.form__item {
+  display: flex;
+  display: -webkit-flex;
+}
+
+.form__item label {
+  width: 25%;
+  padding-right: 10px;
+  -webkit-order: 1;
+  order: 1;
+}
+
+.form__item input,
+.form__item select,
+.form__item textarea {
+  width: 75%;
+  -webkit-order: 2;
+  order: 2;
+}

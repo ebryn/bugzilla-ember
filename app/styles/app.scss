@@ -1,6 +1,9 @@
-@import "includes/fonts";
-@import "includes/header";
 @import "includes/normalize";
+
+@import "includes/fonts";
+
+@import "includes/form-elements";
+@import "includes/header";
 
 // background: hsl(200, 1, 92);
 // border-bottom: 1px solid hsl(200, 3, 76);
@@ -44,26 +47,35 @@ p {
   margin: 1rem 0;
 }
 
-input {
-  border: 1px solid hsl(200, 3, 76);
-  padding: 0.25rem 0.35rem;
-}
-button {
-  border: 1px solid blue;
-  background-color: hsl(200, 25, 90);
-  border: 1px solid hsl(200, 25, 85);
-  padding: 0.25rem 0.5rem;
-
-  &:hover {
-    background-color: hsl(200, 25, 80);
-  }
-}
-
 .container {
   width: 92%;
   margin-right: auto;
   margin-left: auto;  
 }
+
+/** Bug New
+========================================================================== */
+.newBug__header {
+  @include highlight-bg;
+  font-weight: normal;
+  font-size: 1.25rem;
+  padding: 0.5em;
+  margin-bottom: 1rem;
+}
+
+/** Browse Table
+========================================================================== */
+.browse-table-filters {
+  @include highlight-bg;
+  padding: 1rem;
+
+  margin-bottom: 1.5rem;
+
+  select {
+    margin-right: 1em;
+  }
+}
+
 
 /** Site Elements
 ========================================================================== */
@@ -121,6 +133,14 @@ a {
 .bug > .detail > * > * > :nth-child(2) {
   display: inline-block;
   width: 79%;
+}
+
+.flags select {
+  font-size: 11px;
+  padding: 0;
+}
+.flags li {
+  margin-bottom: 0.5rem;
 }
 
 .bug ul {
