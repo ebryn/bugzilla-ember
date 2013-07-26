@@ -42,13 +42,14 @@ var Adapter = Ember.Adapter.extend({
     return ajax(url, {
       type: "POST",
       dataType: 'json',
-      contentType: 'application/json',
-      data: JSON.stringify(record.toJSON())
+      // contentType: 'application/json',
+      data: record.toJSON()
     }).then(function(json) {
       // FIXME: EM should be able to load just an ID
       record.set('id', json.id);
       record.didCreateRecord();
       record.set('id', json.id);
+      record.reload();
 
       return record;
     }, function(err) {

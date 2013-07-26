@@ -7,7 +7,7 @@ function setFieldsOn(obj) {
     var fieldsByName = {};
 
     json.fields.forEach(function(field) {
-      fieldsByName[field.name] = field;
+      fieldsByName[field.name.replace(".", "|")] = field;
     });
 
     Ember.setProperties(obj, fieldsByName);

@@ -28,7 +28,7 @@ var LoginController = Ember.Controller.extend({
       self.set('username', null);
       self.set('password', null);
 
-      userController.set('token', json.Bugzilla_token);
+      userController.set('token', json.token || json.Bugzilla_token);
       userController.set('isLoggedIn', true);
     }, function(jqXHR) {
       self.set('errorMessage', 'Invalid username or password');

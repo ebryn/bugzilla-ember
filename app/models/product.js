@@ -20,20 +20,11 @@ var ProductAdapter = Ember.Adapter.extend({
   findAll: function(klass, records) {
     var url = urlFor("product");
 
-    return getJSON(url).then(function(json) {
-      var products = [];
-      var ids = json.ids;
-
-      products = ids.map(function(id) {
-        var url = urlFor("product/" + id);
-        return getJSON(url).then(function(json) {
-          return json.products[0];
-        });
+    return getJSON(url, {type: "accessible"}).then(function(json) {
+      var sortedProducts = json.products.sort(function(a, b) {
+        return Ember.compare(a.name, b.name);
       });
-
-      return Ember.RSVP.all(products).then(function(data) {
-        records.load(klass, data);
-      });
+      records.load(klass, sortedProducts);
     });
   }
 });

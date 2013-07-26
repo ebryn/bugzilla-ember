@@ -8,31 +8,31 @@
     </tr>
     <tr>
       <th>Product:</th>
-      <td>{{select content=products selection=product optionLabelPath="content.name" prompt="[Product]"}}</td>
+      <td>{{select content=products selection=selectedProduct value=product optionLabelPath="name" optionValuePath="name" prompt="[Product]"}}</td>
     </tr>
     <tr>
       <th>Component:</th>
-      <td>{{select content=components selection=component optionLabelPath="content.name" prompt="[Component]"}}</td>
+      <td>{{select content=components selection=selectedComponent value=component optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}</td>
     </tr>
     <tr>
       <th>Version:</th>
-      <td>{{select content=versions selection=version optionLabelPath="content.name" prompt="[Version]"}}</td>
+      <td>{{select content=versions selection=version optionLabelPath="name" prompt="[Version]"}}</td>
     </tr>
     <tr>
       <th>Severity:</th>
-      <td>{{select content=configuration.bug_severity.values selection=severity optionLabelPath="content.name" prompt="[Severity]"}}</td>
+      <td>{{select content=configuration.bug_severity.values selection=severity optionLabelPath="name" prompt="[Severity]"}}</td>
     </tr>
     <tr>
       <th>Hardware:</th>
-      <td>{{select content=configuration.rep_platform.values selection=platform optionLabelPath="content.name" prompt="[Hardware]"}}</td>
+      <td>{{select content=configuration.rep_platform.values selection=platform optionLabelPath="name" prompt="[Hardware]"}}</td>
     </tr>
     <tr>
       <th>OS:</th>
-      <td>{{select content=configuration.op_sys.values selection=op_sys optionLabelPath="content.name" prompt="[OS]"}}</td>
+      <td>{{select content=configuration.op_sys.values selection=op_sys optionLabelPath="name" prompt="[OS]"}}</td>
     </tr>
     <tr>
       <th>Priority:</th>
-      <td>{{select content=configuration.priority.values selection=priority optionLabelPath="content.name" prompt="[Priority]"}}</td>
+      <td>{{select content=configuration.priority.values selection=priority optionLabelPath="name" prompt="[Priority]"}}</td>
     </tr>
     <tr>
       <th>Flags:</th>
@@ -44,7 +44,7 @@
     </tr>
     <tr>
       <th>Status:</th>
-      <td>{{select content=configuration.bug_status.values selection=status optionLabelPath="content.name" prompt="[Status]"}}</td>
+      <td>{{select content=configuration.bug_status.values selection=status optionLabelPath="name" prompt="[Status]"}}</td>
     </tr>
     <tr>
       <th>Assignee:</th>
