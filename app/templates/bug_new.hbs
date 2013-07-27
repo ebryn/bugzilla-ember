@@ -1,48 +1,50 @@
 <form {{action "save" on="submit"}} class="container form--long">
-  
+
   <h1 class="newBug__header">New bug</h1>
-  
+
   <div class="form__item">
-    {{input type="text" value=summary}}
     <label>Summary:</label>
+    {{input type="text" value=summary}}
   </div>
   <div class="form__item">
     <label>Product:</label>
-    {{select content=products selection=product optionLabelPath="content.name" prompt="[Product]"}}
+    {{select content=products selection=selectedProduct value=product optionLabelPath="name" optionValuePath="name" prompt="[Product]"}}
   </div>
   <div class="form__item">
     <label>Component:</label>
-    {{select content=components selection=component optionLabelPath="content.name" prompt="[Component]"}}
+    {{select content=components selection=selectedComponent value=component optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}
   </div>
   <div class="form__item">
     <label>Version:</label>
-    {{select content=versions selection=version optionLabelPath="content.name" prompt="[Version]"}}
+    {{select content=versions selection=version optionLabelPath="name" prompt="[Version]"}}
   </div>
   <div class="form__item">
     <label>Severity:</label>
-    {{select content=configuration.bug_severity.values selection=severity optionLabelPath="content.name" prompt="[Severity]"}}
+    {{select content=configuration.bug_severity.values selection=severity optionLabelPath="name" prompt="[Severity]"}}
   </div>
   <div class="form__item">
     <label>Hardware:</label>
-    {{select content=configuration.rep_platform.values selection=platform optionLabelPath="content.name" prompt="[Hardware]"}}
+    {{select content=configuration.rep_platform.values selection=platform optionLabelPath="name" prompt="[Hardware]"}}
   </div>
   <div class="form__item">
     <label>OS:</label>
-    {{select content=configuration.op_sys.values selection=op_sys optionLabelPath="content.name" prompt="[OS]"}}
+    {{select content=configuration.op_sys.values selection=op_sys optionLabelPath="name" prompt="[OS]"}}
   </div>
   <div class="form__item">
     <label>Priority:</label>
-    {{select content=configuration.priority.values selection=priority optionLabelPath="content.name" prompt="[Priority]"}}
+    {{select content=configuration.priority.values selection=priority optionLabelPath="name" prompt="[Priority]"}}
   </div>
   <div class="form__item">
     <label>Flags:</label>
+    
       {{#each selectedComponent.flag_types.bug}}
         {{name}}: {{select}}
       {{/each}}
+    
   </div>
   <div class="form__item">
     <label>Status:</label>
-    {{select content=configuration.bug_status.values selection=status optionLabelPath="content.name" prompt="[Status]"}}
+    {{select content=configuration.bug_status.values selection=status optionLabelPath="name" prompt="[Status]"}}
   </div>
   <div class="form__item">
     <label>Assignee:</label>
