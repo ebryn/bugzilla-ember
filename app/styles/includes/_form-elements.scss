@@ -1,6 +1,6 @@
 select {
   background-color: #f7f7f7;
-  -webkit-appearance: none;
+  // -webkit-appearance: none;
 }
 
 select,
@@ -36,17 +36,18 @@ select {
 
 button {
   border: 1px solid blue;
-  background-color: hsl(200, 25, 90);
-  border: 1px solid hsl(200, 25, 85);
+  background-color: hsl(200, 45, 85);
+  border: 1px solid hsl(200, 25, 80);
   padding: 0.25rem 0.5rem;
 
   &:hover {
-    background-color: hsl(200, 25, 80);
+    background-color: hsl(200, 45, 75);
   }
 
   &.button--large {
-    padding: 0.5rem 1rem;
+    padding: 0.65rem 1.3rem;
     font-size: 1.125rem;
+    color: #222;
   }
 }
 
@@ -66,21 +67,31 @@ textarea {
 }
 
 .form__item {
-  display: flex;
-  display: -webkit-flex;
+  @media all and (min-width: 35em) {
+    display: flex;
+    display: -webkit-flex;
+  }
 }
 
 .form__item label {
-  width: 25%;
-  padding-right: 10px;
+  display: block;
+  width: 100%;
   -webkit-order: 1;
   order: 1;
+  @media all and (min-width: 35em) {
+    width: 25%;
+    padding-right: 10px; 
+  }
 }
 
 .form__item input,
 .form__item select,
 .form__item textarea {
-  width: 75%;
+  width: 100%;
   -webkit-order: 2;
   order: 2;
+  @media all and (min-width: 35em) {
+    display: block;
+    width: 75%;
+  }
 }
