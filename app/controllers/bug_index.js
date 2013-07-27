@@ -46,16 +46,21 @@ var BugController = Ember.ObjectController.extend({
   _pollingTimer: null,
 
   _startPolling: function() {
-    if (Ember.testing) { return; }
+    if (Ember.testing || this._pollingTimer) { return; }
 
     this._pollingTimer = Ember.run.later(this, function() {
-      this.get('content').reload();
-      this._contentDidChange();
+      var content = this.get('content');
+      content.reload();
+      this._pollingTimer = null;
+      this._startPolling();
     }, this._pollingInterval);
   },
 
   _stopPolling: function() {
-    if (this._pollingTimer) { Ember.run.cancel(this._pollingTimer); }
+    if (this._pollingTimer) {
+      Ember.run.cancel(this._pollingTimer);
+      this._pollingTimer = null;
+    }
   },
 
   init: function() {

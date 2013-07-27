@@ -16,12 +16,12 @@ var Controller = Ember.ObjectController.extend({
   configuration: Em.computed.alias('controllers.configuration'),
 
   products: null,
-  product: cpProxySetName('products'),
+  selectedProduct: null,
 
-  components: Em.computed.alias('product.components'),
-  component: cpProxySetName('components'),
+  components: Em.computed.alias('selectedProduct.components'),
+  selectedComponent: null,
 
-  versions: Em.computed.alias('product.versions'),
+  versions: Em.computed.alias('selectedProduct.versions'),
   version: cpProxySetName('versions'),
 
   severity: cpProxySetName(),
@@ -37,7 +37,7 @@ var Controller = Ember.ObjectController.extend({
     model.save().then(function() {
       self.set('content', Bug.create());
       self.transitionToRoute("bug", model);
-    }).then(null, unhandledRejection);
+    }); // errors being handled inside adapter for now
   }
 });
 

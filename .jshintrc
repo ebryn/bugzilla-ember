@@ -1,5 +1,6 @@
 {
   "predef": [
+    "Handlebars",
     "atob",
     "FileReader",
     "sessionStorage",

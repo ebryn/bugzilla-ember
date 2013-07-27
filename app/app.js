@@ -10,10 +10,7 @@ var App = Ember.Application.create({
   LOG_ACTIVE_GENERATION: true,
   LOG_VIEW_LOOKUPS: true,
   modulePrefix: 'bugzilla', // TODO: loaded via config
-  resolver: Resolver,
-
-  // Enable to use the BZ sandbox at: https://landfill.bugzilla.org/bzapi_sandbox
-  USE_TEST_SERVER: true
+  resolver: Resolver
 });
 
 import _ from 'bugzilla/ext/route';
@@ -21,7 +18,8 @@ import _ from 'bugzilla/ext/route';
 // maybe load this by convention?
 import config from 'bugzilla/config';
 
-Ember.Handlebars.helper('select', Ember.Select);
+import Select from 'bugzilla/views/select';
+Ember.Handlebars.helper('select', Select);
 // #view hacks
 
 import routes from 'bugzilla/routes';
