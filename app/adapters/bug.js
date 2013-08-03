@@ -70,7 +70,6 @@ var Adapter = Ember.Adapter.extend({
       data: record.toJSON()
     }).then(function(json) {
       // FIXME: EM should be able to load just an ID
-      debugger;
       record.set('id', json.id);
       record.didSaveRecord();
       record.set('id', json.id);
