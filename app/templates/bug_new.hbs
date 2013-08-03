@@ -16,23 +16,23 @@
   </div>
   <div class="form__item">
     <label>Version:</label>
-    {{select content=versions selection=version optionLabelPath="name" prompt="[Version]"}}
+    {{select content=versions value=version optionLabelPath="name" prompt="[Version]"}}
   </div>
   <div class="form__item">
     <label>Severity:</label>
-    {{select content=configuration.bug_severity.values selection=severity optionLabelPath="name" prompt="[Severity]"}}
+    {{select content=configuration.bug_severity.values value=severity optionLabelPath="name" prompt="[Severity]"}}
   </div>
   <div class="form__item">
     <label>Hardware:</label>
-    {{select content=configuration.rep_platform.values selection=platform optionLabelPath="name" prompt="[Hardware]"}}
+    {{select content=configuration.rep_platform.values value=platform optionLabelPath="name" prompt="[Hardware]"}}
   </div>
   <div class="form__item">
     <label>OS:</label>
-    {{select content=configuration.op_sys.values selection=op_sys optionLabelPath="name" prompt="[OS]"}}
+    {{select content=configuration.op_sys.values value=op_sys optionLabelPath="name" prompt="[OS]"}}
   </div>
   <div class="form__item">
     <label>Priority:</label>
-    {{select content=configuration.priority.values selection=priority optionLabelPath="name" prompt="[Priority]"}}
+    {{select content=configuration.priority.values value=priority optionLabelPath="name" prompt="[Priority]"}}
   </div>
   <div class="form__item">
     <label>Flags:</label>
@@ -44,7 +44,7 @@
   </div>
   <div class="form__item">
     <label>Status:</label>
-    {{select content=configuration.bug_status.values selection=status optionLabelPath="name" prompt="[Status]"}}
+    {{select content=configuration.bug_status.values value=status optionLabelPath="name" prompt="[Status]"}}
   </div>
   <div class="form__item">
     <label>Assignee:</label>

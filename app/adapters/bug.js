@@ -61,6 +61,31 @@ var Adapter = Ember.Adapter.extend({
     });
   },
 
+  saveRecord: function(record) {
+    var url = urlFor("bug/" + record.get('id'));
+    return ajax(url, {
+      type: "PUT",
+      dataType: 'json',
+      // contentType: 'application/json',
+      data: record.toJSON()
+    }).then(function(json) {
+      // FIXME: EM should be able to load just an ID
+      debugger;
+      record.set('id', json.id);
+      record.didSaveRecord();
+      record.set('id', json.id);
+      // record.reload();
+
+      return record;
+    }, function(err) {
+      var xhr = err[0],
+          json = xhr.responseJSON;
+      alert(json.message); // TODO: better error handling
+      
+      throw err;
+    });
+  },
+
   _getJSON: function(id, params) {
     return getJSON(urlFor("bug" + (id ? "/" + id : "")), params);
   },
