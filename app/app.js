@@ -3,6 +3,7 @@ import Resolver from 'resolver';
 // #preload stuff not yet loaded via the container
 import FieldHelper from 'bugzilla/helpers/field';
 import FormatBytesHelper from 'bugzilla/helpers/format_bytes';
+import LinkifyHelper from 'bugzilla/helpers/linkify';
 
 // /preload
 
