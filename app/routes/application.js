@@ -1,5 +1,5 @@
 var ApplicationRoute = Ember.Route.extend({
-  events: {
+  actions: {
     showLoginModal: function() {
       var controller = this.controllerFor('application');
 

@@ -6,7 +6,7 @@ var Route = Ember.Route.extend({
     });
   },
 
-  events: {
+  actions: {
     save: function() {
       var self = this,
           bug = this.modelFor('bug'),
