@@ -28,7 +28,7 @@ function currentPath() {
 
 test("dashboard link is not visible if the user is not logged in", function(){
   visit('/').then(function(){
-    ok(!exists('a:contains("My Dashboard")'), 'my dashboard link is not visible');
+    doesntExist('a:contains("My Dashboard")', 'my dashboard link is not visible');
   });
 
 });
@@ -41,7 +41,7 @@ test("dashboard link is visible if the user is logged in", function(){
     // redirect + transition with async thenable doesn't seem to hold visit (yet)
     setTimeout(function(){
       start();
-      ok(exists('a:contains("My Dashboard")'), 'my dashboard link is visible');
+      exists('a:contains("My Dashboard")', 'my dashboard link is visible');
     }, 100);
   });
 });
@@ -58,7 +58,7 @@ test("visit to your dashboard, when logged in", function(){
   visit('/dashboard').then(function(){
     equal(currentPath(), '/dashboard', 'at the current url');
 
-    ok(exists("h1:contains('My Dashboard')"), 'My Dashboard text is present');
+    exists("h1:contains('My Dashboard')", 'My Dashboard text is present');
   });
 });
 

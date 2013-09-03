@@ -9,11 +9,16 @@ App.rootElement = '#ember-testing';
 App.setupForTesting();
 App.injectTestHelpers();
 
-function exists(selector) {
-  return !!find(selector).length;
+function exists(selector, message) {
+  ok(!!find(selector).length, message);
+}
+
+function doesntExist(selector, message) {
+ ok(!find(selector).length, message);
 }
 
 window.exists = exists;
+window.doesntExist = doesntExist;
 
 $(function(){
   $('html').addClass('testing');
