@@ -1,5 +1,6 @@
 {
   "predef": [
+    "App",
     "Handlebars",
     "atob",
     "FileReader",
@@ -67,5 +68,6 @@
   "sub": true,
   "strict": false,
   "white": false,
-  "eqnull": true
+  "eqnull": true,
+  "esnext": true
 }
