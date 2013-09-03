@@ -1,5 +1,6 @@
-{{select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
-{{select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
+{{view Ember.Select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
+{{view Ember.Select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
+
 <table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
   <thead>
     <tr>
@@ -21,7 +22,7 @@
       {{#each}}
       <tr>
         <td class="id">
-          {{#linkTo 'bug' this}} {{id}} {{/linkTo}}
+          {{#linkTo 'bug' id}} {{id}} {{/linkTo}}
         </td>
         <td class="product">
           {{product}}
@@ -36,7 +37,7 @@
           {{status}}
         </td>
         <td class="summary">
-          {{#linkTo 'bug' this}} {{summary}} {{/linkTo}}
+          {{#linkTo 'bug' id}} {{summary}} {{/linkTo}}
         </td>
         <td class="changed">
           {{last_change_time}}

@@ -114,5 +114,20 @@
         {{/each}}
       </ul>
     </div>
+
+    {{#each customFields itemController="fieldShow"}}
+      {{#unless isHidden}}
+        <div {{bind-attr class="api_name"}}>
+          <span>
+            {{#if display_name}}
+              {{display_name}}:
+            {{else}}
+              {{api_name}}:
+            {{/if}}
+          </span>
+          {{field current_value}}
+        </div>
+      {{/unless}}
+    {{/each}}
   </div>
 </div>

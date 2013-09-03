@@ -2,34 +2,35 @@ import getJSON from 'bugzilla/utils/get_json';
 import ajax from 'bugzilla/utils/ajax';
 import urlFor from 'bugzilla/utils/url_for';
 import promiseStorage from 'bugzilla/utils/promise_storage';
-import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var Adapter = Ember.Adapter.extend({
   find: function(record, id) {
     var self = this;
 
-    return promiseStorage.getItem('bug-' + id).then(function(value){
-      if (value !== null) {
-        record.load(id, value);
+    // return promiseStorage.getItem('bug-' + id).then(function(value){
+    //   if (value !== null) {
+    //     record.load(id, value);
 
-        return self._getJSON(id, {include_fields: "last_change_time"}).then(function(json) {
-          if (json.bugs[0].last_change_time !== value.last_change_time) {
-            self._loadFromServer(record, id);
-          }
-        });
+    //     return self._getJSON(id, {include_fields: "last_change_time"}).then(function(json) {
+    //       if (json.error) { throw new Error(json.message); }
 
-      } else {
+    //       if (json.bugs[0].last_change_time !== value.last_change_time) {
+    //         self._loadFromServer(record, id);
+    //       }
+    //     });
+
+    //   } else {
         return self._loadFromServer(record, id);
-      }
-    }).then(null, unhandledRejection);
+    //   }
+    // });
   },
 
-  findMany: function(klass, records, ids) {
-    var idParams = ids.map(function(id) { return "id=" + id; }).join('&');
-    return this._getJSON("", idParams).then(function(data) {
-      records.load(klass, data.bugs);
-    });
-  },
+  // findMany: function(klass, records, ids) {
+  //   var idParams = ids.map(function(id) { return "id=" + id; }).join('&');
+  //   return this._getJSON("", idParams).then(function(data) {
+  //     records.load(klass, data.bugs);
+  //   });
+  // },
 
   findQuery: function(klass, records, params) {
     this._getJSON("", params).then(function(data) {
@@ -56,7 +57,7 @@ var Adapter = Ember.Adapter.extend({
       var xhr = err[0],
           json = xhr.responseJSON;
       alert(json.message); // TODO: better error handling
-      
+
       throw err;
     });
   },
@@ -80,7 +81,7 @@ var Adapter = Ember.Adapter.extend({
       var xhr = err[0],
           json = xhr.responseJSON;
       alert(json.message); // TODO: better error handling
-      
+
       throw err;
     });
   },
@@ -90,9 +91,23 @@ var Adapter = Ember.Adapter.extend({
   },
 
   _loadFromServer: function(record, id) {
-    this._getJSON(id).then(function(json) {
-      var data = json.bugs[0];
+    return getJSON(urlFor("ember/show/" + id)).then(function(json) {
+      var fields = json.fields, field, data = {};
+
+      for(var i = 0, l = fields.length; i < l; i++) {
+        field = fields[i];
+        data[field.api_name] = field.current_value;
+      }
+
+      data.attachments = json.attachments;
+      data.comments = json.comments;
+
       record.load(id, data);
+
+      var customFields = fields.filterProperty('is_custom');
+      record.set('customFields', customFields);
+
+      return record;
     });
   }
 });

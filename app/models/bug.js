@@ -34,11 +34,8 @@ var Bug = App.Bug = Ember.Model.extend({
   cc: attr(),
   flags: attr(),
 
-  attachments: function() {
-    return Attachment.find({
-      bug_id: this.get('id')
-    });
-  }.property(),
+  attachments: hasMany(Attachment, {key: 'attachments', embedded: true}),
+  comments: hasMany(Comment, {key: 'comments', embedded: true}),
 
   aliasOrId: function() {
     return this.get('alias') || this.get('id');
@@ -67,30 +64,23 @@ var Bug = App.Bug = Ember.Model.extend({
 
     function toAttachement(data) {
       return Attachment.create({
-        data: data,
+        _data: data,
         isLoaded: true
       });
     }
   }.property('attachments.@each.is_obsolete'),
 
-  // TODO: figure out how to make comments a legit relationship
-  comments: function() {
-    return Comment.find({
-      bug_id: this.get('id')
-    });
-  }.property(),
-
   firstComment: function() {
-    if (!this.get('comments.isLoaded')) { return; }
+    // if (!this.get('comments.isLoaded')) { return; }
 
     return this.get('comments.firstObject');
-  }.property('comments.isLoaded'),
+  }.property('comments.firstObject'),
 
   remainingComments: function() {
-    if (!this.get('comments.isLoaded')) { return; }
+    // if (!this.get('comments.isLoaded')) { return; }
 
     return this.get('comments').slice(1);
-  }.property('comments.isLoaded', 'comments.[]'),
+  }.property('comments.[]'),
 
   init: function() {
     this._super();
@@ -110,20 +100,6 @@ var Bug = App.Bug = Ember.Model.extend({
     var attrs = this.getProperties('summary');
     attrs.id = this.get('id').toString(); // lunr doesn't like numbers :/
     return attrs;
-  },
-
-  reload: function() {
-    this._super();
-
-    // Check for new comments. TODO: This can be made cleaner.
-    var existingComments = this.get('comments'),
-        latestComments = Comment.find({bug_id: this.get('id')});
-
-    latestComments.forEach(function(comment) {
-      if (!existingComments.contains(comment)) {
-        existingComments.pushObject(comment);
-      }
-    });
   }
 });
 
@@ -151,7 +127,9 @@ Bug.reopenClass({
     });
   },
 
-  adapter: BugAdapter.create()
+  adapter: BugAdapter.create(),
+
+  toString: function() { return "Bug"; }
 });
 
 export default Bug;
