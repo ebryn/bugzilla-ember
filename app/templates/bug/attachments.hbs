@@ -1,11 +1,11 @@
 <table class="attachments">
   <tbody>
-  {{#if content.isLoading}}
+  {{#if bug.isLoading}}
     <tr>
       <td>checking for attachments...</td>
     </tr>
   {{else}}
-    {{#each itemController="attachment"}}
+    {{#each}}
       <tr>
         <td>
           {{#linkTo "attachment" this}}
@@ -37,7 +37,7 @@
   {{/if}}
   </tbody>
   <tfoot>
-    <tr><td>
+    <tr><td colspan="3">
       {{#if user.isLoggedIn}}
         {{#linkTo 'bug.attachment' bug}}Upload a new attachment{{/linkTo}}
       {{else}}

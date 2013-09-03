@@ -4,7 +4,7 @@ import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 var BugController = Ember.ObjectController.extend({
   needs: ['user'],
   user: Em.computed.alias('controllers.user'),
-  
+
   isShowingRemainingComments: false,
   newCommentText: null,
 
@@ -48,12 +48,12 @@ var BugController = Ember.ObjectController.extend({
   _startPolling: function() {
     if (Ember.testing || this._pollingTimer) { return; }
 
-    this._pollingTimer = Ember.run.later(this, function() {
-      var content = this.get('content');
-      content.reload();
-      this._pollingTimer = null;
-      this._startPolling();
-    }, this._pollingInterval);
+    // this._pollingTimer = Ember.run.later(this, function() {
+    //   var content = this.get('content');
+    //   content.reload();
+    //   this._pollingTimer = null;
+    //   this._startPolling();
+    // }, this._pollingInterval);
   },
 
   _stopPolling: function() {

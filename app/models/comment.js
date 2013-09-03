@@ -49,7 +49,7 @@ Comment.reopenClass({
             return promiseStorage.setItem(cacheKey, json.bugs[bugId].comments);
           });
         }
-      }).then(null, unhandledRejection);
+      });
     },
 
     createRecord: function(record) {
