@@ -1,0 +1,17 @@
+<form {{action "save" on="submit"}} class="container form--long">
+
+  <h1 class="newBug__header">New bug</h1>
+
+  {{#each fields itemController="field"}}
+    <div class="form__item">
+      <label>{{display_name}}</label>
+      {{#if values}}
+        {{select content=values value=defaultValue optionLabelPath="name" optionValuePath="name" prompt=prompt disabled=isDisabled}}
+      {{else}}
+        {{input type="text"}}
+      {{/if}}
+    </div>
+  {{/each}}
+
+  <button type="submit" class="button--form button--large">Save</button>
+</form>
