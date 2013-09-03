@@ -31,7 +31,11 @@ var UserController = Ember.Controller.extend({
       email1_type: 'equals_any',
       email1_assigned_to: 1
     });
-  }.property()
+  }.property(),
+
+  willDestroy: function() {
+    delete sessionStorage.token;
+  }
 });
 
 export default UserController;
