@@ -8,7 +8,7 @@
       {{#if values}}
         {{select content=values value=defaultValue optionLabelPath="name" optionValuePath="name" prompt=prompt disabled=isDisabled}}
       {{else}}
-        {{input type="text"}}
+        {{input type="text" name=api_name}}
       {{/if}}
     </div>
   {{/each}}

@@ -1,6 +1,8 @@
 {
   "predef": [
     "App",
+    "Factory",
+    "sinon",
     "Handlebars",
     "atob",
     "FileReader",
