@@ -3,20 +3,25 @@ var escape = Handlebars.Utils.escapeExpression;
 var Select = Ember.View.extend({
   tagName: 'select',
 
-  prompt: null, // TODO
+  prompt: null,
   content: null,
   value: null,
   selection: null,
   optionLabelPath: null,
   optionValuePath: null,
+  disabled: false,
+
+  attributeBindings: ['disabled'],
 
   change: function(e) {
     this.selectIndex(e.target.selectedIndex);
   },
 
   selectIndex: function(idx) {
-    var content = this.get('content');
+    var content = this.get('content'),
+        prompt = this.get('prompt');
     if (!content) { return; }
+    if (prompt != null && idx === 0) { return; }
 
     var selectedObject = content.objectAt(idx),
         optionValuePath = this.get('optionValuePath'),
@@ -30,7 +35,7 @@ var Select = Ember.View.extend({
   init: function() {
     this._super();
     this.contentDidChange();
-    this.selectIndex(0);
+    this.selectIndex(0); // TODO: set selected option by value
   },
 
   render: function(buffer) {
@@ -39,8 +44,13 @@ var Select = Ember.View.extend({
         optionValuePath = this.get('optionValuePath'),
         optionLabelPath = this.get('optionLabelPath'),
         selectedValue = this.get('value'),
-        selectedObject = this.get('selection');
+        selectedObject = this.get('selection'),
+        prompt = this.get('prompt');
     if (!content) { return; }
+
+    if (prompt != null) {
+      buffer.push('<option>%@</option>'.fmt(prompt));
+    }
 
     var item, value, label, isSelected;
     for (var i = 0, l = contentLength; i < l; i++) {

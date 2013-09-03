@@ -6,8 +6,10 @@ var Route = Ember.Route.extend({
   },
 
   setupController: function(controller, model) {
-    controller.set('model', this.modelFor('bug'));
-    controller.set('products', this.find('product'));
+    model = this.modelFor('bug');
+    controller.set('model', model);
+    controller.set('fields', model.fields);
+    // controller.set('products', this.find('product'));
   }
 });
 

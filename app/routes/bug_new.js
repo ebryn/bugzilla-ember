@@ -1,7 +1,8 @@
+import Product from "bugzilla/models/product";
+
 var Route = Ember.Route.extend({
-  setupController: function(controller, model) {
-    controller.set('content', this.create('bug'));
-    controller.set('products', this.find('product'));
+  model: function() {
+    return Product.fetch();
   }
 });
 
