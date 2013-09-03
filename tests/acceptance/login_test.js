@@ -53,6 +53,6 @@ test("successful login", function() {
     return click('button[type="submit"]');
   }).then(function() {
     ok(!exists('.modal'), "The modal was closed");
-    ok(exists('.nav:contains("foo")'), "Username is displayed in the nav bar");
+    ok(exists('.nav:contains("Logout")'), "Logout link is displayed in the nav bar");
   });
 });
