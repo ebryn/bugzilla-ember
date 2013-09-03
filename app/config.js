@@ -1,8 +1,10 @@
 var Config = Ember.Object.extend({
-  host: "http://staging.bugzilla.erikbryn.com",
-  path: '/rest.cgi/',
-  //host: "https://bugzilla-dev.allizom.org/rest/",
-  defaultBugId: 1 // 856410
+  // host: "http://staging.bugzilla.erikbryn.com",
+  // path: '/rest.cgi/',
+  // defaultBugId: 1
+  host: "https://bugzilla-dev.allizom.org",
+  path: '/rest/',
+  defaultBugId: 432984
 });
 
 Ember.Application.initializer({
