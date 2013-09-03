@@ -20,15 +20,18 @@ var ProductAdapter = Ember.Adapter.extend({
   findAll: function(klass, records) {
     var url = urlFor("product");
 
-    return getJSON(url, {type: "accessible"}).then(function(json) {
+    return getJSON(url, {type: "enterable"}).then(function(json) {
       var sortedProducts = json.products.sort(function(a, b) {
         return Ember.compare(a.name, b.name);
       });
       records.load(klass, sortedProducts);
+      return records;
     });
   }
 });
 
-Product.adapter = ProductAdapter.create();
+Product.reopenClass({
+  adapter: ProductAdapter.create()
+});
 
 export default Product;
