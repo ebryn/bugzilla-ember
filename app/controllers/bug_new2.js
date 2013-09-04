@@ -10,16 +10,15 @@ var Controller = Ember.ObjectController.extend({
 
   versions: Em.computed.alias('product.versions'),
 
-  // fields: function(key, fields) {
-  //   if (arguments.length === 2) {
-  //     var obj = {}, field;
-  //     for (var i = 0, l = fields.length; i < l; i++) {
-  //       field = fields[i];
-  //       obj[field.name] = field; // not sure whether we should use name or api_name here
-  //     }
-  //     return obj;
-  //   }
-  // }.property('fields'),
+  selectedComponentDidChange: function() {
+    var selectedComponent = this.get('selectedComponent');
+    if (!selectedComponent) { return; }
+
+    // TODO: change real_name to email when create API is fixed for login
+    this.set('assigned_to', selectedComponent.default_assignee.real_name);
+    this.set('cc', (selectedComponent.initial_cc || []).mapProperty('real_name').join(', '));
+    this.set('qa_contact', selectedComponent.default_qa_contact.real_name);
+  }.observes('selectedComponent'),
 
   save: function() {
     var self = this,

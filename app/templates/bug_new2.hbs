@@ -2,9 +2,74 @@
 
   <h1 class="newBug__header">New bug</h1>
 
-  {{#each fields itemController="field"}}
+  <div class="form__item">
+    <label>Summary:</label>
+    {{input type="text" value=summary}}
+  </div>
+  <div class="form__item">
+    <label>Component:</label>
+    {{select content=fields.component.values selection=selectedComponent value=component optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}
+  </div>
+  <div class="form__item">
+    <label>Version:</label>
+    {{select content=fields.version.values value=version optionLabelPath="name" prompt="[Version]"}}
+  </div>
+  <div class="form__item">
+    <label>Severity:</label>
+    {{select content=fields.bug_severity.values value=fields.bug_severity.default_value optionLabelPath="name" optionValuePath="name"}}
+  </div>
+  <div class="form__item">
+    <label>Hardware:</label>
+    {{select content=fields.rep_platform.values value=platform optionLabelPath="name" prompt="[Hardware]"}}
+  </div>
+  <div class="form__item">
+    <label>OS:</label>
+    {{select content=fields.op_sys.values value=op_sys optionLabelPath="name" prompt="[OS]"}}
+  </div>
+  <div class="form__item">
+    <label>Priority:</label>
+    {{select content=fields.priority.values value=priority optionLabelPath="name"}}
+  </div>
+  <div class="form__item">
+    <label>Flags:</label>
+
+    {{#each selectedComponent.flag_types.bug}}
+      {{name}}: {{select}}
+    {{/each}}
+
+  </div>
+  <div class="form__item">
+    <label>Status:</label>
+    {{select content=fields.bug_status.values value=status optionLabelPath="name" disabled=true}}
+  </div>
+  <div class="form__item">
+    <label>Assignee:</label>
+    {{input type="text" value=assigned_to disabled=true}}
+  </div>
+  <div class="form__item">
+    <label>CC:</label>
+    {{input type="text" value=cc disabled=true}}
+  </div>
+  <div class="form__item">
+    <label>QA Contact:</label>
+    {{input type="text" value=qa_contact disabled=true}}
+  </div>
+  <div class="form__item">
+    <label>Alias:</label>
+    {{input type="text" value=alias}}
+  </div>
+  <div class="form__item">
+    <label>URL:</label>
+    {{input type="text" value=url}}
+  </div>
+  <div class="form__item">
+    <label>Description:</label>
+    {{textarea value=description}}
+  </div>
+
+  {{#each customFields itemController="field"}}
     <div class="form__item">
-      <label>{{display_name}}</label>
+      <label>{{description}}</label>
       {{#if values}}
         {{select content=values value=defaultValue optionLabelPath="name" optionValuePath="name" prompt=prompt disabled=isDisabled}}
       {{else}}
