@@ -3,9 +3,9 @@ import getJSON from "bugzilla/utils/get_json";
 
 var Route = Ember.Route.extend({
   model: function(params) {
-    return getJSON(urlFor("ember/create/" + params.product).replace(/\?.*$/, '') /* FIXME: remove replace when create API is fixed */).then(function(json) {
+    return getJSON(urlFor("ember/create/" + params.product)).then(function(json) {
       var ret = {
-        product: json.product,
+        product: params.product,
         fields: {},
         customFields: []
       };
