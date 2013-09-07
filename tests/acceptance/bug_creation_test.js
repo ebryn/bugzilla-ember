@@ -1,4 +1,4 @@
-var container, xhr, requests;
+var container, xhr;
 
 function respondWithJSON(req, json) {
   req.respond(200, { "Content-Type": "application/json" }, JSON.stringify(json));
