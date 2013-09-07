@@ -47,6 +47,7 @@ var Adapter = Ember.Adapter.extend({
       data: record.toJSON()
     }).then(function(json) {
       // FIXME: EM should be able to load just an ID
+      // https://github.com/ebryn/ember-model/issues/180
       record.set('id', json.id);
       record.didCreateRecord();
       record.set('id', json.id);
@@ -99,12 +100,22 @@ var Adapter = Ember.Adapter.extend({
         data[field.api_name] = field.current_value;
       }
 
+      data.id = json.id;
       data.attachments = json.attachments;
       data.comments = json.comments;
 
       record.load(id, data);
 
-      var customFields = fields.filterProperty('is_custom');
+      var fieldsByName = {}, customFields = [];
+      json.fields.forEach(function(field) {
+        if (field.is_custom) {
+          customFields.push(field);
+        } else {
+          fieldsByName[field.name] = field;
+        }
+      });
+
+      record.set('fields', fieldsByName);
       record.set('customFields', customFields);
 
       return record;

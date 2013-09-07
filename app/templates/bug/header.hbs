@@ -5,6 +5,7 @@
       <img src="/assets/images/loading.gif">
     {{else}}
       <span> - {{#if alias}}({{alias}}) {{/if}}{{summary}}</span>
+      {{#linkTo "bug.edit" this tagName="button"}}Edit{{/linkTo}}
     {{/if}}
   </span>
 </div>
