@@ -14,6 +14,15 @@ var ApplicationRoute = Ember.Route.extend({
 
     logout: function() {
       this.controllerFor('login').logout();
+    },
+
+
+    error: function(reason, transition) {
+      var json = reason.responseJSON;
+
+      if (json && json.code === 410) {
+        this.transitionTo('login');
+      }
     }
   }
 });

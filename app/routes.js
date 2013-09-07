@@ -8,6 +8,7 @@ var Routes = function() {
   this.route("attachment", {path: "attachment/:attachment_id"});
   this.route("dashboard");
   this.route("browse");
+  this.route("login");
 };
 
 export default Routes;
