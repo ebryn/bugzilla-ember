@@ -501,6 +501,27 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
     var data = {};
     data[get(this.constructor, 'primaryKey')] = id;
     set(this, '_data', Ember.merge(data, hash));
+
+    // eagerly load embedded data
+    var relationships = this.constructor._relationships || [], meta = Ember.meta(this), relationshipKey, relationship, relationshipMeta, relationshipData, relationshipType;
+    for (var i = 0, l = relationships.length; i < l; i++) {
+      relationshipKey = relationships[i];
+      relationship = meta.descs[relationshipKey];
+      relationshipMeta = relationship.meta();
+
+      if (relationshipMeta.options.embedded) {
+        relationshipType = relationshipMeta.type;
+        if (typeof relationshipType === "string") {
+          relationshipType = Ember.get(Ember.lookup, relationshipType);
+        }
+
+        relationshipData = data[relationshipKey];
+        if (relationshipData) {
+          relationshipType.load(relationshipData);
+        }
+      }
+    }
+
     set(this, 'isLoaded', true);
     set(this, 'isNew', false);
     this._createReference();
@@ -616,7 +637,7 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
 
     set(this, 'isNew', false);
 
-    this._copyDirtyAttributesToData();
+    set(this, '_dirtyAttributes', []);
     this.constructor.addToRecordArrays(this);
     this.trigger('didCreateRecord');
     this.didSaveRecord();
@@ -1062,12 +1083,20 @@ Ember.Model.reopenClass({
   },
 
   load: function(hashes) {
+    if (Ember.typeOf(hashes) !== 'array') { hashes = [hashes]; }
+
     if (!this.sideloadedData) { this.sideloadedData = {}; }
+
     for (var i = 0, l = hashes.length; i < l; i++) {
       var hash = hashes[i],
-        primaryKey = hash[get(this, 'primaryKey')];
-      this.removeFromCache(primaryKey);
-      this.sideloadedData[primaryKey] = hash;
+          primaryKey = hash[get(this, 'primaryKey')],
+          record = this.getCachedReferenceRecord(primaryKey);
+
+      if (record) {
+        record.load(primaryKey, hash);
+      } else {
+        this.sideloadedData[primaryKey] = hash;
+      }
     }
   },
 
