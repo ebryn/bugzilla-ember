@@ -2,13 +2,14 @@ import Bug from 'bugzilla/models/bug';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 
 var Controller = Ember.ObjectController.extend({
-  product: null,
-  selectedProduct: null,
-
-  components: Em.computed.alias('product.components'),
   selectedComponent: null,
+  fields: null,
+  customFields: null,
 
-  versions: Em.computed.alias('product.versions'),
+  // Prevent these from being set on the model
+  assigned_to: null,
+  cc: null,
+  qa_contact: null,
 
   selectedComponentDidChange: function() {
     var selectedComponent = this.get('selectedComponent');

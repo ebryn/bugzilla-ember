@@ -1,6 +1,6 @@
 <form {{action "save" on="submit"}} class="container form--long">
 
-  <h1 class="newBug__header">New bug</h1>
+  <h1 class="newBug__header">{{#if isNew}}New{{else}}Edit{{/if}} bug</h1>
 
   <div class="form__item">
     <label>Summary:</label>
