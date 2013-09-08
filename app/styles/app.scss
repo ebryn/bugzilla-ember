@@ -13,6 +13,8 @@
 
 $background: #d7d3c8;
 $highlight-bg: #EBE6DA;
+$highlight-attachment-bg: #F7F3E6;
+
 $highlight-border: hsl(200, 3, 76);
 
 @mixin highlight-bg {
@@ -271,7 +273,7 @@ textarea {
 .attachments {
   width: 100%;
   @media all and (min-width: 75em) {
-    width: 75%;
+    width: 45%;
   } 
 }
 .attachments {
@@ -279,9 +281,10 @@ textarea {
   margin: 0.75rem 0 1.25rem;
   line-height: 1.65;
   border: 1px solid #eee;
-  
+
   td {
     padding: 0.35rem 0.75rem;
+    background-color: lighten($highlight-attachment-bg, 2%);
   }
   // Markup is a little hard for this section
   // so need to style parent and then reset in the 'a' tag
