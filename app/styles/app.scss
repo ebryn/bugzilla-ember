@@ -16,6 +16,7 @@ $highlight-bg: #EBE6DA;
 $highlight-attachment-bg: #F7F3E6;
 
 $highlight-border: hsl(200, 3, 76);
+$heading-text-color: #0095DD;
 
 @mixin highlight-bg {
   background-color: $highlight-bg;
@@ -50,12 +51,18 @@ h3 {
   margin-top: 0;
   margin-bottom: 1rem;
 }
+
+h4 {
+  color: $heading-text-color;
+  margin-bottom: 5px;
+}
+
 p {
   margin: 1rem 0;
 }
 
 .container {
-  width: 92%;
+  width: 97%;
   margin-right: auto;
   margin-left: auto;  
 }
@@ -166,18 +173,34 @@ a {
   text-decoration: none;
 }
 
+.bug button {
+  float: right;
+  margin-top: -6px;
+}
+
 /** textarea
 ========================================================================== */
 textarea {
   @include rounded;
   font-family: monospace;
-  font-size: 10px;
+  font-size: 10pt;
 }
 
 /** Comment
 ========================================================================== */
 .bug .comment-template, .bug .comment-template * {
   visibility: none;
+}
+
+.comment-text {
+  textarea {
+    height: 150px;
+    width: 96%;
+  }
+  button {
+    margin-top: 3px;
+    float: none;
+  }
 }
 
 .bug .comment {
@@ -189,7 +212,7 @@ textarea {
 
   padding: 1rem;
 
-  max-width: 41.25rem;
+  max-width: 870px;
   word-wrap: break-word;
 }
 .bug .comment:last-of-type {
@@ -215,7 +238,11 @@ textarea {
 .ember-view .comment {
   margin-top: 0.4rem;
   @include rounded;
-  max-width: 29.25rem;
+  //max-width: 29.25rem;
+
+  button {
+    float: right;
+  }
 
   .header {
     font-size: 0.85rem;
@@ -305,6 +332,8 @@ textarea {
   }
 }
 
+
+
 /** Modal
 ========================================================================== */
 .modal-overlay {
@@ -340,7 +369,41 @@ textarea {
     width: 100%;
   }
 }
+/** Attachment Modal
+========================================================================== */
+.attachment {
+  @extend .modal;
+  width: 400px;
+  text-align: left;
 
+  h4 {
+    color: $heading-text-color;
+  }
+
+  th {
+    padding-right: 3px;
+  }
+
+  input {
+    margin-bottom: 6px;
+    border-radius: 2px;
+    width: 100%;
+  }
+
+  input[type="file"] {
+    border-style: none;
+  }
+
+  textarea {
+    width: 100%;
+    margin-bottom: 3px;
+  }
+
+  button {
+    float: right;
+  }
+
+}
 /** Animate
 ========================================================================== */
 @-webkit-keyframes fadeIn { 

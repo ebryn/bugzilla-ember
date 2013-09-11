@@ -1,9 +1,14 @@
-<form {{action "save" on="submit"}}>
-  <table>
-    <tr><th>File:</th><td>{{view 'file-field' nameBinding="file_name" encodedDataBinding="encodedData" contentTypeBinding="contentType"}}</td></tr>
-    <tr><th>Description:</th><td>{{input type="text" value=description}}</td></tr>
-    <tr><th>Content Type:</th><td>{{contentType}}</td></tr>
-    <tr><th>Comment:</th><td>{{view Ember.TextArea valueBinding="comment"}}</td></tr>
-  </table>
-  <button type="submit">Save</button>
-</form>
+
+<div class="modal-overlay"></div>
+<div class="attachment">
+  <h4> Upload Attachment </h4>
+  <form {{action "save" on="submit"}}>
+    <table>
+      <tr><th>File:</th><td>{{view 'file-field' nameBinding="file_name" encodedDataBinding="encodedData" contentTypeBinding="contentType"}}</td></tr>
+      <tr><th>Description:</th><td>{{input type="text" value=description}}</td></tr>
+      <tr><th>Content Type:</th><td>{{contentType}}</td></tr>
+      <tr><th>Comment:</th><td>{{view Ember.TextArea valueBinding="comment"}}</td></tr>
+    </table>
+    <button type="submit">Save</button>
+  </form>
+</div>
