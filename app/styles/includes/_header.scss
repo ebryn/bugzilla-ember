@@ -17,6 +17,13 @@ $header-links: #0095dd;
   }
 }
 
+header img {
+  border: 0px;
+  height: 42px;
+  width: 154px;
+  margin-top: -8px;
+}
+
 .nav {
   font-size: 0.85rem;
   line-height: 1;
@@ -26,6 +33,7 @@ $header-links: #0095dd;
 .nav a {
   text-decoration: none;
   color: $header-links;
+  font-size: 120%;
 }
 
 /** Search
@@ -56,9 +64,9 @@ $header-links: #0095dd;
 }
 
 .main-app-header {
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1.5rem;
 
-  margin-bottom: 2.5rem;
+  margin-bottom: 3px;
 
   background: $header-color;
   border-bottom: 1px solid hsl(200, 3, 76);

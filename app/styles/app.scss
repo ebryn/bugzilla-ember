@@ -13,7 +13,10 @@
 
 $background: #d7d3c8;
 $highlight-bg: #EBE6DA;
+$highlight-attachment-bg: #F7F3E6;
+
 $highlight-border: hsl(200, 3, 76);
+$heading-text-color: #0095DD;
 
 @mixin highlight-bg {
   background-color: $highlight-bg;
@@ -48,12 +51,18 @@ h3 {
   margin-top: 0;
   margin-bottom: 1rem;
 }
+
+h4 {
+  color: $heading-text-color;
+  margin-bottom: 5px;
+}
+
 p {
   margin: 1rem 0;
 }
 
 .container {
-  width: 92%;
+  width: 97%;
   margin-right: auto;
   margin-left: auto;  
 }
@@ -164,18 +173,35 @@ a {
   text-decoration: none;
 }
 
+.bug button {
+  float: right;
+  margin-top: -6px;
+}
+
 /** textarea
 ========================================================================== */
 textarea {
   @include rounded;
   font-family: monospace;
-  font-size: 10px;
+  font-size: 10pt;
 }
 
 /** Comment
 ========================================================================== */
 .bug .comment-template, .bug .comment-template * {
   visibility: none;
+}
+
+.comment-text {
+  textarea {
+    height: 150px;
+    width: 96%;
+    max-width: 869px;
+  }
+  button {
+    margin-top: 3px;
+    float: none;
+  }
 }
 
 .bug .comment {
@@ -187,7 +213,7 @@ textarea {
 
   padding: 1rem;
 
-  max-width: 41.25rem;
+  max-width: 870px;
   word-wrap: break-word;
 }
 .bug .comment:last-of-type {
@@ -213,7 +239,11 @@ textarea {
 .ember-view .comment {
   margin-top: 0.4rem;
   @include rounded;
-  max-width: 29.25rem;
+  //max-width: 29.25rem;
+
+  button {
+    float: right;
+  }
 
   .header {
     font-size: 0.85rem;
@@ -271,7 +301,7 @@ textarea {
 .attachments {
   width: 100%;
   @media all and (min-width: 75em) {
-    width: 75%;
+    width: 45%;
   } 
 }
 .attachments {
@@ -279,9 +309,10 @@ textarea {
   margin: 0.75rem 0 1.25rem;
   line-height: 1.65;
   border: 1px solid #eee;
-  
+
   td {
     padding: 0.35rem 0.75rem;
+    background-color: lighten($highlight-attachment-bg, 2%);
   }
   // Markup is a little hard for this section
   // so need to style parent and then reset in the 'a' tag
@@ -301,6 +332,8 @@ textarea {
     background-color: hsl(200, 1, 90);
   }
 }
+
+
 
 /** Modal
 ========================================================================== */
@@ -337,7 +370,41 @@ textarea {
     width: 100%;
   }
 }
+/** Attachment Modal
+========================================================================== */
+.attachment {
+  @extend .modal;
+  width: 400px;
+  text-align: left;
 
+  h4 {
+    color: $heading-text-color;
+  }
+
+  th {
+    padding-right: 3px;
+  }
+
+  input {
+    margin-bottom: 6px;
+    border-radius: 2px;
+    width: 100%;
+  }
+
+  input[type="file"] {
+    border-style: none;
+  }
+
+  textarea {
+    width: 100%;
+    margin-bottom: 3px;
+  }
+
+  button {
+    float: right;
+  }
+
+}
 /** Animate
 ========================================================================== */
 @-webkit-keyframes fadeIn { 

@@ -3,8 +3,11 @@
     Loading comments...
   {{else}}
     {{#if user.isLoggedIn}}
-      {{textarea value=newCommentText cols=80 rows=25}}
-      <button {{action saveComment}}>Save</button>
+      <div class="comment-text">
+        <h4>New Comment:</h4>
+        {{textarea value=newCommentText cols=80 rows=25}}
+        <button {{action saveComment}}>Save</button>
+      </div>
     {{else}}
       Log in to create a comment
     {{/if}}
