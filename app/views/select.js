@@ -21,7 +21,11 @@ var Select = Ember.View.extend({
     var content = this.get('content'),
         prompt = this.get('prompt');
     if (!content) { return; }
-    if (prompt != null && idx === 0) { return; }
+    if (prompt != null && idx === 0) {
+      this.setProperties({selection: null, value: null});
+      return;
+    }
+    if (prompt != null) { idx -= 1; }
 
     var selectedObject = content.objectAt(idx),
         optionValuePath = this.get('optionValuePath'),
@@ -32,10 +36,33 @@ var Select = Ember.View.extend({
     this.set('value', selectedValue);
   },
 
-  init: function() {
-    this._super();
+  // Using on('init') so bindings will be updated for the initial selection
+  _didInit: function() {
     this.contentDidChange();
-    this.selectIndex(0); // TODO: set selected option by value
+  }.on('init'),
+
+  selectInitial: function() {
+    var content = this.get('content'),
+        valueKey = this.get('optionValuePath') || this.get('optionLabelPath'),
+        value = this.get('value'),
+        selection = this.get('selection'),
+        valueIdx = -1, selectionIdx = -1;
+
+    if (selection) {
+      selectionIdx = content.indexOf(selection);
+
+      if (selectionIdx !== -1) {
+        this.set('value', Ember.get(selection, valueKey));
+      }
+    } else if (value) {
+      var objectForValue = content.findProperty(valueKey, value);
+
+      if (objectForValue) {
+        this.set('selection', objectForValue);
+      }
+    } else { // no selection or value specified, so let's select the first value
+      this.selectIndex(0);
+    }
   },
 
   render: function(buffer) {
@@ -78,13 +105,13 @@ var Select = Ember.View.extend({
     var content = this.get('content');
     if (!content) { return; }
     content.addArrayObserver(this);
-    this.selectIndex(0);
+    this.selectInitial();
     if (this.state === 'inDOM') { this.rerender(); }
   }.observes('content'),
 
   arrayWillChange: function() {},
   arrayDidChange: function() {
-    this.selectIndex(0);
+    this.selectInitial();
     this.rerender();
   }
 });
