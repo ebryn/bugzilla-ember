@@ -1,1 +1,7 @@
-{{outlet}}
+<div class="bug">
+  {{outlet}}
+  {{partial 'bug/attachments'}}
+  {{partial 'bug/comments'}}
+</div>
+
+{{outlet 'modal'}}

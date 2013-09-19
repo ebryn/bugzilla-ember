@@ -64,7 +64,7 @@ p {
 .container {
   width: 97%;
   margin-right: auto;
-  margin-left: auto;  
+  margin-left: auto;
 }
 
 /** Bug New
@@ -144,7 +144,8 @@ a {
   display: inline-block;
   vertical-align: top;
 }
-.bug > .detail > * > * > :nth-child(2) {
+.bug > .detail > * > * > :nth-child(2),
+.bug > .detail > * > * > .value {
   display: inline-block;
   width: 79%;
 }
@@ -176,6 +177,12 @@ a {
 .bug button {
   float: right;
   margin-top: -6px;
+}
+
+.flash {
+  border: 2px red;
+  color: red;
+  padding: 10px;
 }
 
 /** textarea
@@ -218,7 +225,7 @@ textarea {
 }
 .bug .comment:last-of-type {
   border-bottom: 5px solid hsl(200, 3, 90);
-  margin-bottom: 0.5rem; 
+  margin-bottom: 0.5rem;
 }
 
 .bug pre {
@@ -302,7 +309,7 @@ textarea {
   width: 100%;
   @media all and (min-width: 75em) {
     width: 45%;
-  } 
+  }
 }
 .attachments {
   font-size: 0.825rem;
@@ -352,7 +359,7 @@ textarea {
   top: 50%;
 
   width: 250px;
-  
+
   -webkit-transform: translate(-50%, -50%);
   -moz-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -365,7 +372,7 @@ textarea {
   border-radius: 4px;
 
   padding: 1rem;
-  
+
   input {
     width: 100%;
   }
@@ -407,29 +414,29 @@ textarea {
 }
 /** Animate
 ========================================================================== */
-@-webkit-keyframes fadeIn { 
-  from { 
-    opacity:0; 
-  } 
-  to { 
-    opacity:1; 
-  } 
+@-webkit-keyframes fadeIn {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
 }
-@-moz-keyframes fadeIn { 
-  from { 
-    opacity:0; 
-  } 
-  to { 
-    opacity:1; 
-  } 
+@-moz-keyframes fadeIn {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
 }
-@keyframes fadeIn { 
-  from { 
-    opacity:0; 
-  } 
-  to { 
-    opacity:1; 
-  } 
+@keyframes fadeIn {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
 }
 
 header,

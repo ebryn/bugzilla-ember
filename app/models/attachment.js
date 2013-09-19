@@ -65,20 +65,17 @@ Attachment.reopenClass({
       return ajax(url, {
         type: "POST",
         dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify({ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.contentType})
+        // contentType: 'application/json',
+        data: {ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.contentType}
       }).then(function(json) {
-        var id = json.ids[0];
-        var url = urlFor("bug/attachment/" + id);
+        var id = Object.keys(json.attachments)[0],
+            attachmentJson = json.attachments[id];
 
-        return getJSON(url).then(function(json) {
-          var attachmentJson = json.attachments[id];
-          // FIXME: workaround data being a special property in EM
-          attachmentJson.encodedData = attachmentJson.data;
-          delete attachmentJson.data;
-          record.didCreateRecord();
-          record.load(id, attachmentJson);
-        });
+        // FIXME: workaround data being a special property in EM
+        attachmentJson.encodedData = attachmentJson.data;
+        delete attachmentJson.data;
+        record.didCreateRecord();
+        record.load(id, attachmentJson);
       });
     }
   })

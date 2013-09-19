@@ -1,1 +1,9 @@
-<span>{{view.value}}</span>
+{{#if view.isEditing}}
+  {{#if view.isTextField}}
+    {{input type="text" value=current_value}}
+  {{else}}
+    {{select name=name content=values value=current_value optionValuePath="name" optionLabelPath="name"}}
+  {{/if}}
+{{else}}
+  <span>{{current_value}}</span>
+{{/if}}

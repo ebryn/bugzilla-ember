@@ -1,48 +1,87 @@
-import Comment from 'bugzilla/models/comment';
-import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
+import ajax from "bugzilla/utils/ajax";
+import urlFor from "bugzilla/utils/url_for";
 
 var BugController = Ember.ObjectController.extend({
-  needs: ['user'],
+  needs: ['user', 'bug'],
   user: Em.computed.alias('controllers.user'),
-
-  actions: {
-    showRemainingComments: function() {
-      this.set('isShowingRemainingComments', true);
-    },
-
-    saveComment: function() {
-      // TODO: figure out how to make comments a legit relationship on bug
-      var newComment = Comment.create({
-        text: this.get('newCommentText'),
-        bug_id: this.get('id')
-      });
-
-      var self = this;
-      newComment.save().then(function() {
-        self.get('comments').pushObject(newComment);
-        self.set('newCommentText', null);
-      }).then(null, unhandledRejection);
-    },
-
-    reply: function(comment) {
-      var newCommentText = this.get('newCommentText') || "",
-          commentIndex = this.get('comments').indexOf(comment);
-
-      newCommentText += "(In reply to %@ from comment #%@)\n".fmt(comment.get('creator'), commentIndex);
-      newCommentText += comment.get("text").replace(/^/m, "> ");
-      newCommentText += "\n\n";
-
-      this.set('newCommentText', newCommentText);
-    }
-  },
+  canEdit: Ember.computed.alias('controllers.bug.canEdit'),
+  isEditing: null,
 
   isShowingRemainingComments: false,
   newCommentText: null,
+  flashMessage: null,
 
   keywords: function() {
     var keywords = this.get('content.keywords');
     return keywords && keywords.join(', ');
   }.property('content.keywords'),
+
+  currentUserInCCList: function() {
+    var email = this.get('user.username'),
+        ccList = this.get('fields.cc.current_value');
+
+    return ccList.contains(email);
+  }.property('user.username', 'fields.cc.current_value.[]'),
+
+  isResolved: function() {
+    return this.get('fields.status.current_value') === 'RESOLVED';
+  }.property('fields.status.current_value'),
+
+  actions: {
+    save: function() {
+      var self = this,
+          bug = this.get('model');
+
+      bug.update().then(function(model) {
+        self.set('flashMessage', null);
+        self.transitionToRoute('bug');
+      }, function(reason) {
+        // FIXME: unify error handling
+
+        var json = reason.responseJSON;
+        if (json && json.message) {
+          self.set('flashMessage', json.message);
+        } else {
+          alert("Error occurred while saving bug");
+          console.log(reason);
+        }
+      });
+    },
+
+    addCurrentUserToCCList: function() {
+      var self = this,
+          currentUserEmail = this.get('user.username');
+
+      ajax(urlFor("bug/" + this.get('id')), {
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({cc: {add: [currentUserEmail]}})
+      }).then(function(json) {
+        self.get("fields.cc.current_value").pushObject(currentUserEmail);
+      }, function(reason) {
+        alert("Error occurred, see console");
+        console.log(reason);
+      });
+    },
+
+    removeCurrentUserFromCCList: function() {
+      var self = this,
+          currentUserEmail = this.get('user.username');
+
+      ajax(urlFor("bug/" + this.get('id')), {
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify({cc: {remove: [currentUserEmail]}})
+      }).then(function(json) {
+        self.get("fields.cc.current_value").removeObject(currentUserEmail);
+      }, function(reason) {
+        alert("Error occurred, see console");
+        console.log(reason);
+      });
+    }
+  },
 
   _pollingInterval: 30 * 1000,
   _pollingTimer: null,
@@ -82,6 +121,7 @@ var BugController = Ember.ObjectController.extend({
 
   _contentDidChange: function() {
     this._startPolling();
+    this.set('flashMessage', null);
   }.observes('content')
 });
 

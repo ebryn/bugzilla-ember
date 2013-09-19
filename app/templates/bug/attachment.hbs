@@ -1,8 +1,7 @@
-
-<div class="modal-overlay"></div>
+<div class="modal-overlay" {{action "hideModal"}}></div>
 <div class="attachment">
   <h4> Upload Attachment </h4>
-  <form {{action "save" on="submit"}}>
+  <form {{action "save" this on="submit"}}>
     <table>
       <tr><th>File:</th><td>{{view 'file-field' nameBinding="file_name" encodedDataBinding="encodedData" contentTypeBinding="contentType"}}</td></tr>
       <tr><th>Description:</th><td>{{input type="text" value=description}}</td></tr>

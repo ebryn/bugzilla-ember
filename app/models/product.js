@@ -6,21 +6,16 @@ var attr = Ember.attr;
 var Product = Ember.Model.extend({
   id: attr(),
   name: attr(),
-  description: attr(),
-  classification: attr(),
-  components: attr(),
-  default_milestone: attr(),
-  has_unconfirmed: attr(),
-  is_active: attr(),
-  milestones: attr(),
-  versions: attr()
+  components: attr()
 });
 
 var ProductAdapter = Ember.Adapter.extend({
   findAll: function(klass, records) {
-    var url = urlFor("product");
+    return this.findQuery(klass, records, {});
+  },
 
-    return getJSON(url, {type: "enterable"}).then(function(json) {
+  findQuery: function(klass, records, params) {
+    return getJSON(urlFor("product"), {type: "enterable", include_fields: params.include_fields || "id, name"}).then(function(json) {
       var sortedProducts = json.products.sort(function(a, b) {
         return Ember.compare(a.name, b.name);
       });

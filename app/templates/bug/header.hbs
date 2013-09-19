@@ -4,8 +4,23 @@
     {{#if isLoading}}
       <img src="/assets/images/loading.gif">
     {{else}}
-      <span> - {{#if alias}}({{alias}}) {{/if}}{{summary}}</span>
-      {{#linkTo "bug.edit" this tagName="button"}}Edit{{/linkTo}}
+      <span> -
+        {{#if isEditing}}
+          <label>Alias: </label>{{field "alias"}}
+          <label>Summary: </label>{{field "summary"}}
+        {{else}}
+          {{#if fields.alias.current_value}}({{fields.alias.current_value}}) {{/if}}
+          {{field "summary"}}
+        {{/if}}
+      </span>
+      {{#if canEdit}}
+        {{#if isEditing}}
+          {{#linkTo "bug" this tagName="button"}}Cancel{{/linkTo}}
+          <button {{action "save"}}>Save</button>
+        {{else}}
+          {{#linkTo "bug.edit" this tagName="button"}}Edit{{/linkTo}}
+        {{/if}}
+      {{/if}}
     {{/if}}
   </span>
 </div>

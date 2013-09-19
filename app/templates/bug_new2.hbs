@@ -1,75 +1,87 @@
 <form {{action "save" on="submit"}} class="container form--long">
 
-  <h1 class="newBug__header">{{#if isNew}}New{{else}}Edit{{/if}} bug</h1>
+  <h1 class="newBug__header">New bug</h1>
+
+  {{#if flashMessage}}
+    <div class="flash">
+      {{flashMessage}}
+    </div>
+  {{/if}}
 
   <div class="form__item">
     <label>Summary:</label>
-    {{input type="text" value=summary}}
+    {{input type="text" value=fields.summary.current_value}}
   </div>
   <div class="form__item">
     <label>Component:</label>
-    {{select content=fields.component.values selection=selectedComponent value=component optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}
+    {{select content=fields.component.values selection=selectedComponent value=fields.component.current_value optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}
   </div>
   <div class="form__item">
     <label>Version:</label>
-    {{select content=fields.version.values value=version optionLabelPath="name" prompt="[Version]"}}
+    {{select content=fields.version.values value=fields.version.current_value optionLabelPath="name" prompt="[Version]"}}
   </div>
   <div class="form__item">
     <label>Severity:</label>
-    {{select content=fields.bug_severity.values value=fields.bug_severity.default_value optionLabelPath="name" optionValuePath="name"}}
+    {{select content=fields.severity.values value=severity optionLabelPath="name" optionValuePath="name"}}
   </div>
   <div class="form__item">
     <label>Hardware:</label>
-    {{select content=fields.rep_platform.values value=platform optionLabelPath="name" prompt="[Hardware]"}}
+    {{select content=fields.platform.values value=fields.platform.current_value optionLabelPath="name" prompt="[Hardware]"}}
   </div>
   <div class="form__item">
     <label>OS:</label>
-    {{select content=fields.op_sys.values value=op_sys optionLabelPath="name" prompt="[OS]"}}
+    {{select content=fields.op_sys.values value=fields.op_sys.current_value optionLabelPath="name" prompt="[OS]"}}
   </div>
   <div class="form__item">
     <label>Priority:</label>
-    {{select content=fields.priority.values value=priority optionLabelPath="name"}}
+    {{select content=fields.priority.values value=fields.priority.current_value optionLabelPath="name"}}
   </div>
-  <div class="form__item">
+  <div class="form__item" style="display: none">
     <label>Flags:</label>
 
-    {{#each selectedComponent.flag_types.bug}}
-      {{name}}: {{select}}
-    {{/each}}
+    <ul>
+      {{#each fields.flags.values}}
+        <li>{{name}}: {{view Ember.Select contentBinding="values" valueBinding=current_value prompt=" " optionLabelPath="content"}}</li>
+      {{/each}}
+    </ul>
 
   </div>
   <div class="form__item">
     <label>Status:</label>
-    {{select content=fields.bug_status.values value=status optionLabelPath="name" disabled=true}}
+    {{select content=fields.status.values value=fields.status.current_value optionLabelPath="name" disabled=true}}
   </div>
   <div class="form__item">
     <label>Assignee:</label>
-    {{input type="text" value=assigned_to disabled=true}}
+    {{input type="text" value=assigned_to disabled=cannotEditAssignee}}
   </div>
   <div class="form__item">
-    <label>CC:</label>
-    {{input type="text" value=cc disabled=true}}
+    <label>Default CC:</label>
+    <span class="field">{{initial_cc}}</span>
   </div>
   <div class="form__item">
     <label>QA Contact:</label>
-    {{input type="text" value=qa_contact disabled=true}}
+    {{input type="text" value=qa_contact disabled=cannotEditQAContact}}
+  </div>
+  <div class="form__item">
+    <label>CC:</label>
+    {{multi-value values=fields.cc.current_value}}
   </div>
   <div class="form__item">
     <label>Alias:</label>
-    {{input type="text" value=alias}}
+    {{input type="text" value=fields.alias.current_value}}
   </div>
   <div class="form__item">
     <label>URL:</label>
-    {{input type="text" value=url}}
+    {{input type="text" value=fields.url.current_value}}
   </div>
   <div class="form__item">
     <label>Description:</label>
-    {{textarea value=description}}
+    {{textarea value=fields.longdesc.current_value}}
   </div>
 
   {{#each customFields itemController="field"}}
     <div class="form__item">
-      <label>{{description}}</label>
+      <label>{{description}}:</label>
       {{#if values}}
         {{select content=values value=defaultValue optionLabelPath="name" optionValuePath="name" prompt=prompt disabled=isDisabled}}
       {{else}}
@@ -77,6 +89,19 @@
       {{/if}}
     </div>
   {{/each}}
+
+  {{#view 'groups' groupsBinding="fields.groups.values" selectedGroupsBinding="groups"}}
+    <div class="form__item">
+      <label>Groups:</label>
+      <ul class="field">
+        {{#each view.groups}}
+          <li>
+            <label>{{view 'groups_checkbox' nameBinding="name"}} {{description}}</label>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/view}}
 
   <button type="submit" class="button--form button--large">Save</button>
 </form>

@@ -1,7 +1,9 @@
 var Controller = Ember.ObjectController.extend({
   hasValue: function() {
     var value = this.get("current_value");
-    if (value !== "--" && value !== "---" && value !== "" && value.length !== 0) { return true; }
+    if (value && value !== "--" && value !== "---" && value !== "" && value.length !== 0) {
+      return true;
+    }
   }.property("current_value"),
 
   isHidden: function() {

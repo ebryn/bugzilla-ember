@@ -5,19 +5,19 @@
       <td>checking for attachments...</td>
     </tr>
   {{else}}
-    {{#each}}
+    {{#each filteredAttachments}}
       <tr>
         <td>
           {{#linkTo "attachment" this}}
             {{description}}
           {{/linkTo}}
           ({{formatBytes size}}{{#if is_patch}}, patch{{/if}})<br>
-          {{last_change_time}}, {{attacher.name}}
+          {{last_change_time}}, {{attacher}}
         </td>
         <td>
           {{#if flags}}
             {{#each flags}}
-              {{setter.name}}: {{name}}{{status}}
+              {{setter.real_name}}: {{name}}{{status}}
             {{/each}}
           {{else}}
             <em>No flags</em>
@@ -31,18 +31,29 @@
       </tr>
     {{else}}
       <tr>
-        <td>No Attachments</td>
+        <td colspan="3">No Attachments</td>
       </tr>
     {{/each}}
   {{/if}}
   </tbody>
   <tfoot>
-    <tr><td colspan="3">
+    <tr>
       {{#if user.isLoggedIn}}
-        {{#linkTo 'bug.attachment' bug}}Upload a new attachment{{/linkTo}}
+        <td colspan="2">
+          <a href="#" {{action "showAttachmentModal" bug}}>Upload a new attachment</a>
+        </td>
+        <td>
+          <a href="#" {{action "toggleObsoleteAttachments"}}>
+            {{#if showingObsoleteAttachments}}
+              Hide obsolete
+            {{else}}
+              Show obsolete
+            {{/if}}
+          </a>
+        </td>
       {{else}}
-        Log in to upload an attachment
+        <td colspan="3">Log in to upload an attachment</td>
       {{/if}}
-    </td></tr>
+    </tr>
   </tfoot>
 </table>

@@ -1,0 +1,14 @@
+<div class="modal-overlay" {{action "hideModal"}}></div>
+<div class="modal" style="width: 400px">
+  <h4> CCs </h4>
+  <form {{action "save" on="submit"}}>
+    <label>Add:</label>
+    {{input type="text" value=newEmails}}
+    <button>Save</button>
+  </form>
+  <ul style="height: 300px; overflow: auto">
+    {{#each cc}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+</div>

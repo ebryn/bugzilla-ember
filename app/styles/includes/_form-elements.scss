@@ -31,7 +31,7 @@ input {
   padding: 0.35rem 0.45rem;
 }
 select {
-  padding: 0.35rem 0.45rem;  
+  padding: 0.35rem 0.45rem;
 }
 
 button {
@@ -59,6 +59,12 @@ textarea {
   margin: 1.75rem 0;
 }
 
+.form__item ul.field {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 /** Layout
 ========================================================================== */
 
@@ -73,20 +79,21 @@ textarea {
   }
 }
 
-.form__item label {
+.form__item > label {
   display: block;
   width: 100%;
   -webkit-order: 1;
   order: 1;
   @media all and (min-width: 35em) {
     width: 25%;
-    padding-right: 10px; 
+    padding-right: 10px;
   }
 }
 
-.form__item input,
+.form__item input[type=text],
 .form__item select,
-.form__item textarea {
+.form__item textarea,
+.form__item .field {
   width: 100%;
   -webkit-order: 2;
   order: 2;

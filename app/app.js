@@ -21,6 +21,10 @@ import config from 'bugzilla/config';
 
 import Select from 'bugzilla/views/select';
 Ember.Handlebars.helper('select', Select);
+
+import MultiValueTextField from 'bugzilla/views/multi_value_text_field';
+Ember.Handlebars.helper('multi-value', MultiValueTextField);
+
 // #view hacks
 
 import routes from 'bugzilla/routes';

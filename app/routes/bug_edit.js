@@ -1,15 +1,16 @@
 var Route = Ember.Route.extend({
-  renderTemplate: function() {
-    this.render('bugNew2', {
-      controller: 'bugEdit'
-    });
+  model: function() {
+    return this.modelFor('bug');
   },
 
-  setupController: function(controller, model) {
-    model = this.modelFor('bug');
-    controller.set('model', model);
-    controller.set('fields', model.fields);
-    controller.set('customFields', model.customFields);
+  controllerName: "bugIndex",
+
+  activate: function() {
+    this.controllerFor('bugIndex').set('isEditing', true);
+  },
+
+  deactivate: function() {
+    this.controllerFor('bugIndex').set('isEditing', false);
   }
 });
 

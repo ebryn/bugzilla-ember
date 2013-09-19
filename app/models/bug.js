@@ -1,57 +1,22 @@
-import Comment from 'bugzilla/models/comment';
+import getJSON from 'bugzilla/utils/get_json';
+import ajax from 'bugzilla/utils/ajax';
+import urlFor from 'bugzilla/utils/url_for';
 import Attachment from 'bugzilla/models/attachment';
-import BugAdapter from 'bugzilla/adapters/bug';
 
-import promiseStorage from 'bugzilla/utils/promise_storage' ;
+var RSVP = Ember.RSVP;
 
-// TODO: remove app dependency
-import App from 'bugzilla/app';
-
-var attr = Ember.attr, hasMany = Ember.hasMany;
-
-var Bug = App.Bug = Ember.Model.extend({
-  id: attr(),
-  alias: attr(),
-  status: attr(),
-  summary: attr(),
-  keywords: attr(),
-  product: attr(),
-  component: attr(),
-  version: attr(),
-  platform: attr(),
-  op_sys: attr(),
-  priority: attr(),
-  severity: attr(),
-  assigned_to: attr(),
-  qa_contact: attr(),
-  url: attr(),
-  // FIXME: can't do self-referential relationships in the body of the model definition
-  depends_on: hasMany("App.Bug", {key: 'depends_on'}),
-  blocks: hasMany("App.Bug", {key: 'blocks'}),
-  creator: attr(), // aka reporter
-  creation_time: attr(Date),
-  last_change_time: attr(Date),
-  cc: attr(),
-  flags: attr(),
-
-  attachments: hasMany(Attachment, {key: 'attachments', embedded: true}),
-  comments: hasMany(Comment, {key: 'comments', embedded: true}),
-
-  aliasOrId: function() {
-    return this.get('alias') || this.get('id');
-  }.property('alias', 'id'),
-
-  isResolved: function() {
-    return this.get('status') === "RESOLVED";
-  }.property('status'),
+var Bug = Ember.Object.extend({
+  id: null,
+  fields: null,
+  customFields: null,
+  trackingFlags: null,
+  projectFlags: null,
+  groups: null,
 
   unobsoleteAttachments: function() {
-    // EM needs a better solution for this.
     var attachments = this.get('attachments');
 
-    if (!attachments) { return []; }
-
-    var result = attachments.filter(isntObsolete).map(toAttachement);
+    var result = attachments.filter(isntObsolete).map(toAttachment);
 
     Ember.set(result, '_source', attachments);
     Ember.defineProperty(result, 'isLoading', Ember.computed.alias('_source.isLoading'));
@@ -62,7 +27,7 @@ var Bug = App.Bug = Ember.Model.extend({
       return !attachment.is_obsolete;
     }
 
-    function toAttachement(data) {
+    function toAttachment(data) {
       return Attachment.create({
         _data: data,
         isLoaded: true
@@ -71,65 +36,138 @@ var Bug = App.Bug = Ember.Model.extend({
   }.property('attachments.@each.is_obsolete'),
 
   firstComment: function() {
-    // if (!this.get('comments.isLoaded')) { return; }
-
     return this.get('comments.firstObject');
   }.property('comments.firstObject'),
 
   remainingComments: function() {
-    // if (!this.get('comments.isLoaded')) { return; }
-
     return this.get('comments').slice(1);
   }.property('comments.[]'),
 
-  init: function() {
-    this._super();
+  toJSON: function() {
+    var fields = this.get('fields'),
+      customFields = this.get('customFields'),
+      values = {},
+      field;
 
-    // add records to search index
-    this.on('didLoad', function() {
-      this.constructor.index.add(this.attributesForIndex());
+    // TODO: Flags
+    for (var key in fields) {
+      field = fields[key];
+      if (field.can_edit === false) { continue; }
+      values[key] = field.current_value;
+    }
+
+    customFields.forEach(function(field) {
+      values[field.name] = field.current_value;
+    });
+
+    return values;
+  },
+
+  create: function() {
+    var model = this, json = this.toJSON();
+    json.product = this.get('product'); // unique to create
+    json.groups = this.get('groups');
+
+    return ajax(urlFor("bug"), {
+      type: 'POST',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(json)
+    }).then(function(json) {
+      return model.constructor.find(json.id);
     });
   },
 
-  load: function(id, hash) {
-    this._super(id, hash);
-    asyncStorage.setItem('bug-' + id, hash);
-  },
+  update: function() {
+    var model = this,
+        json = this.toJSON();
 
-  attributesForIndex: function() {
-    var attrs = this.getProperties('summary');
-    attrs.id = this.get('id').toString(); // lunr doesn't like numbers :/
-    return attrs;
+    // TODO: handle comments in the same request?
+    delete json.comment;
+
+    // CC updates are handled separately
+    delete json.cc;
+
+    json.depends_on = {set: json.depends_on};
+    json.blocks = {set: json.blocks};
+    json.keywords = {set: json.keywords};
+    // TODO: handle these hash values properly
+    delete json.see_also;
+    delete json.groups;
+
+    return ajax(urlFor("bug/" + this.get('id')), {
+      type: 'PUT',
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify(json)
+    }).then(function() { return model; });
   }
 });
 
-Bug.reopenClass({
-  cachedRecordForId: function(id) {
-    var record = this._super(id);
-    promiseStorage.getItem('bug-' + id).then(function(value){
-      if (value !== null) {
-        record.load(id, value);
+function processAttributes(json) {
+  var attrs = {id: json.id, fields: {}, customFields: [], projectFlags: [], trackingFlags: [], canEdit: false};
+
+  json.fields.forEach(function(field) {
+    if (field.can_edit && field.name !== 'longdesc') {
+      attrs.canEdit = true;
+    }
+
+    if (field.is_custom) {
+      if (field.name.match(/^cf_(tracking|status|relnote)_/)) {
+        attrs.trackingFlags.push(field);
+      } else if (field.name.match(/^cf_blocking_(b2g|basecamp|kilimanjaro)$/)) {
+        attrs.projectFlags.push(field);
+      } else {
+        attrs.customFields.push(field);
       }
-    });
-    return record;
+    } else {
+      attrs.fields[field.name] = field;
+    }
+  });
+
+  // Filter out attachment flags
+  attrs.fields.flags.values = attrs.fields.flags.values.filterProperty('type', 'bug');
+
+  attrs.attachments = json.attachments;
+  attrs.comments = json.comments;
+
+  return attrs;
+}
+
+function create(type, newAttributes) {
+  return function(attrs) {
+    if (newAttributes) {
+      Ember.merge(attrs, newAttributes);
+    }
+    return type.create(attrs);
+  };
+}
+
+Bug.reopenClass({
+  newRecord: function(productName, attrs){
+    return getJSON(urlFor('ember/create/' + productName)).
+      then(processAttributes).
+      then(create(this, {product: productName}));
   },
 
-  index: lunr(function() {
-    this.field('summary', {boost: 10});
-    this.field('id');
-    this.ref('id');
-  }),
-
-  search: function(text) {
-    return this.index.search(text).map(function(result) {
-      result.record = Bug.find(result.ref);
-      return result;
-    });
+  find: function(id) {
+    return getJSON(urlFor('ember/show/' + id)).
+      then(processAttributes).
+      then(create(this));
   },
 
-  adapter: BugAdapter.create(),
+  // FIXME
+  findQuery: function(params) {
+    var records = Ember.ArrayProxy.create({content: []});
 
-  toString: function() { return "Bug"; }
+    getJSON(urlFor("bug"), params).then(function(json) {
+      records.pushObjects(json.bugs);
+    }, function(reason) {
+      alert("FAIL");
+    });
+
+    return records;
+  }
 });
 
 export default Bug;

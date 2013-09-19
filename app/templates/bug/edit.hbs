@@ -1,5 +1,11 @@
 {{partial 'bug/header'}}
 
+{{#if flashMessage}}
+  <div class="flash">
+    {{flashMessage}}
+  </div>
+{{/if}}
+
 <div class="detail">
   <div class="left">
     <div class="status">
@@ -12,18 +18,14 @@
         {{field "resolution"}}
       </div>
     {{/if}}
-    {{#if fields.whiteboard.current_value}}
-      <div class="whiteboard">
-        <span>Whiteboard:</span>
-        <span>{{field "whiteboard"}}</span>
-      </div>
-    {{/if}}
-    {{#if fields.keywords.current_value}}
-      <div class="keywords">
-        <span>Keywords:</span>
-        <span>{{field "keywords"}}</span>
-      </div>
-    {{/if}}
+    <div class="whiteboard">
+      <span>Whiteboard:</span>
+      <span>{{field "whiteboard"}}</span>
+    </div>
+    <div class="keywords">
+      <span>Keywords:</span>
+      <span>{{field "keywords"}}</span>
+    </div>
     <div class="product">
       <span>Product:</span>
       <span>{{field "product"}}</span>
@@ -51,42 +53,22 @@
       <span>Assignee:</span>
       <span>{{field "assigned_to"}}</span>
     </div>
-    {{#if fields.qa_contact.current_value}}
-      <div class="qa_contact">
-        <span>QA Contact:</span>
-        <span>{{field "qa_contact"}}</span>
-      </div>
-    {{/if}}
-    {{#if fields.url.current_value}}
-      <div class="url">
-        <span>URL:</span>
-        <span>{{field "url"}}</span>
-      </div>
-    {{/if}}
-    {{#if fields.depends_on.current_value}}
-      <div class="depends_on">
-        <span>Depends on:</span>
-        <ul>
-          {{#each fields.depends_on.current_value}}
-            <li {{bindAttr title="summary"}}>
-              {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
-            </li>
-          {{/each}}
-        </ul>
-      </div>
-    {{/if}}
-    {{#if fields.blocks.current_value}}
+    <div class="qa_contact">
+      <span>QA Contact:</span>
+      <span>{{field "qa_contact"}}</span>
+    </div>
+    <div class="url">
+      <span>URL:</span>
+      <span>{{field "url"}}</span>
+    </div>
+    <div class="depends_on">
+      <span>Depends on:</span>
+      {{multi-value values=fields.depends_on.current_value}}
+    </div>
     <div class="blocks">
       <span>Blocks:</span>
-      <ul>
-        {{#each fields.blocks.current_value}}
-          <li {{bindAttr title="summary"}}>
-            {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
-          </li>
-        {{/each}}
-      </ul>
+      {{multi-value values=fields.blocks.current_value}}
     </div>
-    {{/if}}
   </div>
 
   <div class="padding"></div>
@@ -108,22 +90,20 @@
         {{#unless currentUserInCCList}}
           <button {{action "addCurrentUserToCCList"}}>Add me to CC list</button>
         {{else}}
-          <button {{action "removeCurrentUserFromCCList"}}>Remove me from CC list</button>
+          <button>Remove me from CC list</button>
         {{/unless}}
       </span>
     </div>
-    {{#if fields.flags.current_value}}
-      <div class="flags">
-        <span>Flags:</span>
-        <ul>
-          {{#each flags}}
-          <li>
-          {{setter}}: {{name}} {{view 'flagSelect' selectionBinding="status"}}
-          </li>
-          {{/each}}
-        </ul>
-      </div>
-    {{/if}}
+    <div class="flags">
+      <span>Flags:</span>
+      <ul>
+        {{#each flags}}
+        <li>
+        {{setter}}: {{name}} {{view 'flagSelect' selectionBinding="status"}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
 
     {{#each customFields itemController="fieldShow"}}
       {{#unless isHidden}}

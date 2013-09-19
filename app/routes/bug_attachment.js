@@ -6,6 +6,12 @@ var Route = Ember.Route.extend({
     });
   },
 
+  renderTemplate: function(controller, model) {
+    this.render('bug/attachment', {
+      into: 'modal'
+    });
+  },
+
   actions: {
     save: function() {
       var self = this,
