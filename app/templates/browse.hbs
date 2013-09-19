@@ -7,7 +7,7 @@
       {{view 'browse-column-header' column="id" title="ID"}}
       {{view 'browse-column-header' column="product" title="Product"}}
       {{view 'browse-column-header' column="component" title="Comp"}}
-      {{view 'browse-column-header' column="assigned_to.name" title="Assignee"}}
+      {{view 'browse-column-header' column="assigned_to" title="Assignee"}}
       {{view 'browse-column-header' column="status" title="Status"}}
       {{view 'browse-column-header' column="summary" title="Summary"}}
       {{view 'browse-column-header' column="last_change_time" title="Changed"}}
@@ -31,7 +31,7 @@
           {{component}}
         </td>
         <td class="assignee">
-          {{assigned_to.name}}
+          {{assigned_to}}
         </td>
         <td class="status">
           {{status}}

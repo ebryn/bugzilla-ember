@@ -7,10 +7,19 @@ var BrowseController = Ember.ArrayController.extend({
   isLoaded: Ember.computed.alias('content.isLoaded'),
   components: Em.computed.alias('selectedProduct.components'),
   selectedComponent: null,
+
   content: function() {
-    return Bug.find({
+    var selectedProduct = this.get('selectedProduct'),
+        selectedComponent = this.get('selectedComponent');
+
+    if (!selectedProduct || !selectedComponent) { return []; }
+
+    return Bug.findQuery({
       product: this.get('selectedProduct.name'),
-      component: this.get('selectedComponent.name')
+      component: this.get('selectedComponent.name'),
+      limit: 100, // FIXME: limit and offset don't seem to work
+      offset: 0,
+      include_fields: "id, product, component, assigned_to, status, summary, last_change_time"
     });
   }.property('selectedComponent'),
 
