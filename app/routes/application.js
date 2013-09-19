@@ -13,7 +13,7 @@ var ApplicationRoute = Ember.Route.extend({
     },
 
     logout: function() {
-      this.controllerFor('login').logout();
+      this.controllerFor('login').send('logout');
     },
 
 

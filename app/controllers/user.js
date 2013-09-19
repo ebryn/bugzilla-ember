@@ -1,6 +1,18 @@
 import Bug from 'bugzilla/models/bug';
 
 var UserController = Ember.Controller.extend({
+  username: function(key, value) {
+    if (arguments.length === 2) {
+      if (value === null) {
+        delete sessionStorage.username;
+      } else {
+        sessionStorage.username = value;
+      }
+      return value;
+    }
+    return sessionStorage.username;
+  }.property(),
+
   token: function(key, value) {
     if (arguments.length === 2) {
       if (value === null) {
@@ -26,7 +38,7 @@ var UserController = Ember.Controller.extend({
       return Ember.RSVP.resolve([]);
     }
 
-    return Bug.find({
+    return Bug.findQuery({
       email1: username,
       email1_type: 'equals_any',
       email1_assigned_to: 1
