@@ -149,7 +149,7 @@ Ember.RecordArray = Ember.ArrayProxy.extend(Ember.Evented, {
     var modelClass = this.get('modelClass'),
         self = this,
         promises;
-    
+
     set(this, 'isLoaded', false);
     if (modelClass._findAllRecordArray === this) {
       modelClass.adapter.findAll(modelClass, this);
@@ -486,8 +486,9 @@ Ember.Model = Ember.Object.extend(Ember.Evented, {
       this._reference = reference;
     }
 
-    if (!reference.id) {
+    if (!reference.id && id) {
       reference.id = id;
+      this.constructor._referenceCache[id] = reference;
     }
 
     return reference;
@@ -1225,7 +1226,7 @@ Ember.belongsTo = function(type, options) {
           set(this, '_dirtyAttributes', dirtyAttributes);
         }
       }
-      return value === undefined ? null : value;  
+      return value === undefined ? null : value;
     } else {
       return this.getBelongsTo(relationshipKey, type, meta);
     }
@@ -1463,7 +1464,7 @@ Ember.RESTAdapter = Ember.Adapter.extend({
       return urlRoot + ".json";
     }
   },
-  
+
   ajaxSettings: function(url, method) {
     return {
       url: url,
@@ -1494,7 +1495,7 @@ Ember.RESTAdapter = Ember.Adapter.extend({
         if (jqXHR) {
           jqXHR.then = null;
         }
-        
+
         Ember.run(null, reject, jqXHR);
       };
 
