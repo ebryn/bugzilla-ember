@@ -60,7 +60,7 @@
     {{#if fields.url.current_value}}
       <div class="url">
         <span>URL:</span>
-        <span>{{field "url"}}</span>
+        <span><a {{bindAttr href="fields.url.current_value"}} target="_blank">{{field "url"}}</a></span>
       </div>
     {{/if}}
     {{#if fields.depends_on.current_value}}
