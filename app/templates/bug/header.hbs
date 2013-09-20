@@ -11,6 +11,7 @@
         {{else}}
           {{#if fields.alias.current_value}}({{fields.alias.current_value}}) {{/if}}
           {{field "summary"}}
+          (<a {{bindAttr href="oldUIURL"}} target="_blank">view in old UI</a>)
         {{/if}}
       </span>
       {{#if canEdit}}

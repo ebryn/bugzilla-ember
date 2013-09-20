@@ -11,6 +11,10 @@ var BugController = Ember.ObjectController.extend({
   newCommentText: null,
   flashMessage: null,
 
+  oldUIURL: function() {
+    return this.get('config.host') + '/show_bug.cgi?id=' + this.get('id');
+  }.property('id', 'config.host'),
+
   keywords: function() {
     var keywords = this.get('content.keywords');
     return keywords && keywords.join(', ');
