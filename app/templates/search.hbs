@@ -1,5 +1,5 @@
 <div id="search" class="search">
-  {{input type="text" value=searchText placeholder="Search..."}}
+  {{input type="text" value=searchText placeholder="Search..." action="quicksearch"}}
   {{#if searchResults}}
     <ul class="search-results" {{action clearSearchText}}>
       {{#each searchResults}}
