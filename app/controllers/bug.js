@@ -15,6 +15,7 @@ var BugController = Ember.ObjectController.extend({
   showingObsoleteAttachments: false,
   isShowingRemainingComments: false,
   newCommentText: null,
+  errorMessage: null,
   flashMessage: null,
 
   findBug: function(bugId) {
@@ -24,8 +25,16 @@ var BugController = Ember.ObjectController.extend({
       self.set('model', bug);
       document.title = bug.get('id') + ' - ' + bug.get('fields.summary.current_value');
     }, function(reason) {
-      alert('An error occurred while loading bug #' + bugId);
-      console.log(reason);
+      var json = reason.responseJSON,
+          errorCode = json && json.code,
+          errorMessage = json && json.message;
+
+      if (errorMessage) {
+        self.set('errorMessage', errorMessage);
+      } else {
+        self.set('errorMessage', "An unknown error occurred while loading bug #" + bugId);
+        console.log(reason);
+      }
     });
   },
 
