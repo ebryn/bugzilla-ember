@@ -5,6 +5,7 @@ var Controller = Ember.Controller.extend({
   needs: ['bug'],
   bug: Ember.computed.alias('controllers.bug.model'),
   cc: Ember.computed.alias('bug.fields.cc.current_value'),
+  isSaving: false,
 
   newEmails: null,
 
@@ -12,6 +13,8 @@ var Controller = Ember.Controller.extend({
     save: function() {
       var self = this,
           emails = [this.get('newEmails')];
+
+      this.set('isSaving', true);
 
       // TODO: support multiple email addresses
       // if (emails) { emails = emails.split(/\s|,/); }
@@ -24,9 +27,11 @@ var Controller = Ember.Controller.extend({
       }).then(function(json) {
         self.get('cc').pushObjects(emails);
         self.set('newEmails', null);
+        self.set('isSaving', false);
       }, function(reason) {
         alert("Error occurred, see console");
         console.log(reason);
+        self.set('isSaving', false);
       });
     }
   }

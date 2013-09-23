@@ -3,7 +3,8 @@ import Attachment from "bugzilla/models/attachment";
 var Controller = Ember.ObjectController.extend({
   needs: ['bug'],
   bug: Em.computed.alias('controllers.bug'),
-  bug_id: Emb.computed.alias('bug.id'),
+  bug_id: Em.computed.alias('bug.id'),
+
   _initializeModel: function() {
     this.set('model', Attachment.create());
   }.on('init'),

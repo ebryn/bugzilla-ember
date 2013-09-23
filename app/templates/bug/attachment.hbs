@@ -8,6 +8,11 @@
       <tr><th>Content Type:</th><td>{{contentType}}</td></tr>
       <tr><th>Comment:</th><td>{{view Ember.TextArea valueBinding="comment"}}</td></tr>
     </table>
-    <button type="submit">Save</button>
+
+    {{#if isSaving}}
+      Saving...
+    {{else}}
+      <button type="submit">Save</button>
+    {{/if}}
   </form>
 </div>

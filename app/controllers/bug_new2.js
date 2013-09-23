@@ -4,7 +4,7 @@ import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 var Controller = Ember.ObjectController.extend({
   selectedComponent: null,
   flashMessage: null,
-
+  isSaving: false,
 
   assigned_to: function(key, value) {
     if (arguments.length === 2) {
@@ -56,12 +56,16 @@ var Controller = Ember.ObjectController.extend({
       var self = this,
           model = this.get('content');
 
+      this.set('isSaving', true);
+
       model.create().then(function(model) {
+        self.set('isSaving', false);
         self.set('flashMessage', null);
         self.send('bugWasCreated', model);
       }, function(reason) {
-        // FIXME: unify error handling
+        self.set('isSaving', false);
 
+        // FIXME: unify error handling
         var json = reason.responseJSON;
         if (json && json.message) {
           self.set('flashMessage', json.message);

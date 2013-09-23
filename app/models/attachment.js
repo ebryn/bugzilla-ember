@@ -76,6 +76,9 @@ Attachment.reopenClass({
         delete attachmentJson.data;
         record.didCreateRecord();
         record.load(id, attachmentJson);
+      }, function(reason) {
+        record.set('isSaving', false);
+        throw reason;
       });
     }
   })

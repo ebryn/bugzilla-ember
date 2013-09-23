@@ -103,5 +103,9 @@
     </div>
   {{/view}}
 
-  <button type="submit" class="button--form button--large">Save</button>
+  {{#if isSaving}}
+    Saving...
+  {{else}}
+    <button type="submit" class="button--form button--large">Save</button>
+  {{/if}}
 </form>
