@@ -99,13 +99,13 @@
       <ul>
         {{#each flags}}
         <li>
-        {{setter}}: {{name}} {{view 'flagSelect' selectionBinding="status"}}
+        {{setter}}: {{name}} {{view 'flag-select' selectionBinding="status"}}
         </li>
         {{/each}}
       </ul>
     </div>
 
-    {{#each customFields itemController="fieldShow"}}
+    {{#each customFields itemController="field-show"}}
       {{#unless isHidden}}
         <div {{bind-attr class="name"}}>
           <span>
@@ -124,7 +124,7 @@
       <div class="project-flags">
         <span>Project flags:</span>
       </div>
-      {{#each projectFlags itemController="fieldShow"}}
+      {{#each projectFlags itemController="field-show"}}
         {{#unless isHidden}}
           <div {{bind-attr class="name"}}>
             <span>
@@ -144,7 +144,7 @@
       <div class="tracking-flags">
         <span>Tracking flags:</span>
       </div>
-      {{#each trackingFlags itemController="fieldShow"}}
+      {{#each trackingFlags itemController="field-show"}}
         {{#unless isHidden}}
           <div {{bind-attr class="name"}}>
             <span>

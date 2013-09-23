@@ -1,4 +1,6 @@
-var Routes = function() {
+var Router = Ember.Router.extend();
+
+Router.map(function(){
   this.resource("bug", {path: "bug/:bug_id"}, function() {
     this.route("edit");
   });
@@ -8,6 +10,6 @@ var Routes = function() {
   this.route("dashboard");
   this.route("browse");
   this.route("login");
-};
+});
 
-export default Routes;
+export default Router;

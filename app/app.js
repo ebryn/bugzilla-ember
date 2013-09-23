@@ -4,14 +4,15 @@ import Resolver from 'resolver';
 import FieldHelper from 'bugzilla/helpers/field';
 import FormatBytesHelper from 'bugzilla/helpers/format_bytes';
 import LinkifyHelper from 'bugzilla/helpers/linkify';
-
+import Router from 'bugzilla/router';
 // /preload
 
-var App = Ember.Application.create({
+var App = Ember.Application.extend({
   LOG_ACTIVE_GENERATION: true,
   LOG_VIEW_LOOKUPS: true,
   modulePrefix: 'bugzilla', // TODO: loaded via config
-  Resolver: Resolver
+  Resolver: Resolver,
+  Router: Router
 });
 
 import _ from 'bugzilla/ext/route';
@@ -25,9 +26,8 @@ Ember.Handlebars.helper('select', Select);
 import MultiValueTextField from 'bugzilla/views/multi_value_text_field';
 Ember.Handlebars.helper('multi-value', MultiValueTextField);
 
-// #view hacks
-
-import routes from 'bugzilla/routes';
-App.Router.map(routes);
+Ember.RSVP.configure('onerror', function(error) {
+  Ember.Logger.assert(false, error);
+});
 
 export default App;

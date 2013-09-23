@@ -67,6 +67,41 @@ define("resolver",
   }
 
   var underscore = Ember.String.underscore;
+  var classify = Ember.String.classify;
+  var get = Ember.get;
+
+  function parseName(fullName) {
+    var nameParts = fullName.split(":"),
+        type = nameParts[0], fullNameWithoutType = nameParts[1],
+        name = fullNameWithoutType,
+        namespace = get(this, 'namespace'),
+        root = namespace;
+
+    return {
+      fullName: fullName,
+      type: type,
+      fullNameWithoutType: fullNameWithoutType,
+      name: name,
+      root: root,
+      resolveMethodName: "resolve" + classify(type)
+    };
+  }
+
+  function chooseModuleName(registry, moduleName) {
+    var underscoredModuleName = Ember.String.underscore(moduleName);
+
+    if (moduleName !== underscoredModuleName && registry[moduleName] && registry[underscoredModuleName]) {
+      throw new TypeError("Ambigous module names: `" + moduleName + "` and `" + underscoredModuleName + "`");
+    }
+
+    if (registry[moduleName]) {
+      return moduleName;
+    } else if (registry[underscoredModuleName]) {
+      return underscoredModuleName;
+    } else {
+      return moduleName;
+    }
+  }
 
   function resolveOther(parsedName) {
     var prefix = this.namespace.modulePrefix;
@@ -75,34 +110,49 @@ define("resolver",
     var pluralizedType = parsedName.type + 's';
     var name = parsedName.fullNameWithoutType;
 
-    var moduleName = prefix + '/' +  pluralizedType + '/' + underscore(name);
-    var module;
+    var moduleName = prefix + '/' +  pluralizedType + '/' + name;
 
-    if (define.registry[moduleName]) {
-      module = requireModule(moduleName);
+    // allow treat all dashed and all underscored as the same thing
+    // supports components with dashes and other stuff with underscores.
+    var normalizedModuleName = chooseModuleName(define.registry, moduleName);
 
-      if (typeof module.create !== 'function') {
-        module = classFactory(module);
+    if (define.registry[normalizedModuleName]) {
+      var module = requireModule(normalizedModuleName);
+
+      if (module === undefined) {
+        throw new Error("Module: '" + name + "' was found but returned undefined. Did you forget to `export default`?");
       }
 
-      if (Ember.ENV.LOG_MODULE_RESOLVER){
-        Ember.logger.info('hit', moduleName);
+      if (Ember.ENV.LOG_MODULE_RESOLVER) {
+        Ember.Logger.info('hit', moduleName);
       }
 
       return module;
-    } else  {
-      if (Ember.ENV.LOG_MODULE_RESOLVER){
-        Ember.logger.info('miss', moduleName);
+    } else {
+      if (Ember.ENV.LOG_MODULE_RESOLVER) {
+        Ember.Logger.info('miss', moduleName);
       }
-
       return this._super(parsedName);
     }
+  }
+
+  function resolveTemplate(parsedName) {
+    return Ember.TEMPLATES[parsedName.name] || Ember.TEMPLATES[Ember.String.underscore(parsedName.name)];
   }
 
   // Ember.DefaultResolver docs:
   //   https://github.com/emberjs/ember.js/blob/master/packages/ember-application/lib/system/resolver.js
   var Resolver = Ember.DefaultResolver.extend({
-    resolveOther: resolveOther
+    resolveTemplate: resolveTemplate,
+    resolveOther: resolveOther,
+    parseName: parseName,
+    normalize: function(fullName) {
+      // replace `.` with `/` in order to make nested controllers work in the following cases
+      // 1. `needs: ['posts/post']`
+      // 2. `{{render "posts/post"}}`
+      // 3. `this.render('posts/post')` from Route
+      return Ember.String.dasherize(fullName.replace(/\./g, '/'));
+    }
   });
 
   return Resolver;

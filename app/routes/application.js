@@ -22,6 +22,8 @@ var ApplicationRoute = Ember.Route.extend({
 
       if (json && json.code === 410) {
         this.transitionTo('login');
+      } else {
+        throw reason;
       }
     }
   }

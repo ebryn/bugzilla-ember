@@ -1,8 +1,5 @@
-// FIXME: This is kinda hacky. We have a plan for making this cleaner with the container.
-import App from 'bugzilla/app';
-
 function urlFor(url) {
-  var container = App.__container__,
+  var container = window.Bugzilla.__container__,
       userController = container.lookup("controller:user"),
       isLoggedIn = userController.get('isLoggedIn'),
       authParams = $.param({

@@ -11,24 +11,16 @@ var Route = Ember.Route.extend({
 
   actions: {
     showAttachmentModal: function(bug) {
-      var controller = this.container.lookup('controller:bug_attachment');
-      controller.set('bug', bug);
-      controller.set('bug_id', bug.get('id'));
-
       this.render('bug/attachment', {
         into: 'bug',
-        outlet: 'modal',
-        controller: controller
+        outlet: 'modal'
       });
     },
 
     showCCModal: function(bug) {
-      var controller = this.container.lookup('controller:bug_cc_modal');
-
       this.render('bug/cc_modal', {
         into: 'bug',
-        outlet: 'modal',
-        controller: controller
+        outlet: 'modal'
       });
     },
 
