@@ -1,13 +1,12 @@
-import Bug from "bugzilla/models/bug";
-
 var Route = Ember.Route.extend({
   model: function(params) {
-    return Bug.find(params.bug_id);
+    this.controllerFor('bug').findBug(params.bug_id);
+
+    // to prevent serialize from blowing up
+    return {id: params.bug_id};
   },
 
-  afterModel: function(model) {
-    document.title = model.get('id') + ' - ' + model.get('fields.summary.current_value');
-  },
+  setupController: Ember.K,
 
   actions: {
     showAttachmentModal: function(bug) {

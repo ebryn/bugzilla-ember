@@ -1,9 +1,8 @@
 var BugRoute = Ember.Route.extend({
   controllerName: 'bug',
 
-  model: function(params) {
-    return this.modelFor('bug');
-  },
+  model: function() {},
+  setupController: Ember.K,
 
   activate: function() {
     this.controllerFor('bug.index')._startPolling();

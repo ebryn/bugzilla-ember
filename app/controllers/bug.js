@@ -9,11 +9,25 @@ var BugController = Ember.ObjectController.extend({
   needs: ['user', 'bug'],
   user: Em.computed.alias('controllers.user'),
   canEdit: Ember.computed.and('model.canEdit', 'user.isLoggedIn'),
+  isLoaded: Ember.computed.bool('model'),
+  isLoading: Ember.computed.not('isLoaded'),
   isEditing: null,
   showingObsoleteAttachments: false,
   isShowingRemainingComments: false,
   newCommentText: null,
   flashMessage: null,
+
+  findBug: function(bugId) {
+    var self = this;
+
+    Bug.find(bugId).then(function(bug) {
+      self.set('model', bug);
+      document.title = bug.get('id') + ' - ' + bug.get('fields.summary.current_value');
+    }, function(reason) {
+      alert('An error occurred while loading bug #' + bugId);
+      console.log(reason);
+    });
+  },
 
   oldUIURL: function() {
     return this.get('config.host') + '/show_bug.cgi?id=' + this.get('id');

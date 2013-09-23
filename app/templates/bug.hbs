@@ -1,7 +1,11 @@
-<div class="bug">
-  {{outlet}}
-  {{partial 'bug/attachments'}}
-  {{partial 'bug/comments'}}
-</div>
+{{#if isLoading}}
+  Loading...
+{{else}}
+  <div class="bug">
+    {{outlet}}
+    {{partial 'bug/attachments'}}
+    {{partial 'bug/comments'}}
+  </div>
 
-{{outlet 'modal'}}
+  {{outlet 'modal'}}
+{{/if}}
