@@ -1,4 +1,6 @@
 var BugRoute = Ember.Route.extend({
+  controllerName: 'bug',
+
   model: function(params) {
     return this.modelFor('bug');
   },
