@@ -6,7 +6,11 @@
       <div class="comment-text">
         <h4>New Comment:</h4>
         {{textarea value=newCommentText cols=80 rows=25}}
-        <button {{action saveComment}}>Save</button>
+        {{#if newCommentIsSaving}}
+          Saving...
+        {{else}}
+          <button {{action saveComment}}>Save</button>
+        {{/if}}
       </div>
     {{else}}
       Log in to create a comment
