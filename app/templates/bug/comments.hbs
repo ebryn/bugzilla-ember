@@ -15,11 +15,12 @@
     {{#unless isShowingRemainingComments}}
       {{#if remainingComments}}
         <a href="#" {{action showRemainingComments}}>
-          Show remaining {{remainingComments.length}} comments
+          Show other {{remainingComments.length}} comments
         </a>
       {{/if}}
     {{else}}
       {{each remainingComments itemView="comment"}}
     {{/unless}}
+    {{each lastFewComments itemView="comment"}}
   {{/if}}
 </div>

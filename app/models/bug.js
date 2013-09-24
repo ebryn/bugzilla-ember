@@ -35,14 +35,6 @@ var Bug = Ember.Object.extend({
     }
   }.property('attachments.@each.is_obsolete'),
 
-  firstComment: function() {
-    return this.get('comments.firstObject');
-  }.property('comments.firstObject'),
-
-  remainingComments: function() {
-    return this.get('comments').slice(1);
-  }.property('comments.[]'),
-
   toJSON: function() {
     var fields = this.get('fields'),
       customFields = this.get('customFields'),

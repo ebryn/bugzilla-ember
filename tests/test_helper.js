@@ -3,7 +3,7 @@ document.write('<style>#ember-testing-container { position: absolute; background
 
 Ember.testing = true;
 
-var App = requireModule('bugzilla/app');
+var App = requireModule('bugzilla/app').create();
 
 App.rootElement = '#ember-testing';
 App.setupForTesting();

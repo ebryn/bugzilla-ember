@@ -5,6 +5,8 @@ import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 import ajax from "bugzilla/utils/ajax";
 import urlFor from "bugzilla/utils/url_for";
 
+var COMMENTS_SHOWN_BY_DEFAULT = 3;
+
 var BugController = Ember.ObjectController.extend({
   needs: ['user', 'bug'],
   user: Em.computed.alias('controllers.user'),
@@ -80,6 +82,33 @@ var BugController = Ember.ObjectController.extend({
       });
     }
   }.property('attachments.@each.is_obsolete', 'showingObsoleteAttachments'),
+
+  firstComment: function() {
+    return this.get('comments.firstObject');
+  }.property('comments.firstObject'),
+
+  lastFewComments: function() {
+    var comments = this.get('comments'),
+        commentsLength = comments.get('length');
+
+    if (commentsLength === 1) {
+      return [];
+    } else {
+      var numberToShow = Math.min(commentsLength - 1, COMMENTS_SHOWN_BY_DEFAULT);
+      return comments.slice(commentsLength - numberToShow);
+    }
+  }.property('comments.[]'),
+
+  remainingComments: function() {
+    var comments = this.get('comments'),
+        commentsLength = comments.get('length');
+
+    // if we have enough comments to display
+    if (commentsLength < (COMMENTS_SHOWN_BY_DEFAULT + 1)) { return []; }
+
+    var lastShownIndex = commentsLength - Math.min(commentsLength - 1, COMMENTS_SHOWN_BY_DEFAULT);
+    return comments.slice(1, lastShownIndex);
+  }.property('comments.[]'),
 
   actions: {
     save: function() {
@@ -209,6 +238,7 @@ var BugController = Ember.ObjectController.extend({
   _contentDidChange: function() {
     this._startPolling();
     this.set('flashMessage', null);
+    this.set('isShowingRemainingComments', false);
   }.observes('content')
 });
 
