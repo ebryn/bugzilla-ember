@@ -3,14 +3,14 @@ var Route = Ember.Route.extend({
     return this.modelFor('bug');
   },
 
-  controllerName: "bugIndex",
+  controllerName: "bug",
 
   activate: function() {
-    this.controllerFor('bugIndex').set('isEditing', true);
+    this.controllerFor('bug').set('isEditing', true);
   },
 
   deactivate: function() {
-    this.controllerFor('bugIndex').set('isEditing', false);
+    this.controllerFor('bug').set('isEditing', false);
   }
 });
 
