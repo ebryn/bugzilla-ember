@@ -115,13 +115,20 @@
     {{#if fields.flags.current_value}}
       <div class="flags">
         <span>Flags:</span>
-        <ul>
-          {{#each flags}}
-          <li>
-          {{setter}}: {{name}} {{view 'flagSelect' selectionBinding="status"}}
-          </li>
+        <table>
+          {{#each fields.flags.current_value}}
+          <tr>
+            <td>{{setter.email}}:</td>
+            <td>{{name}}</td>
+            <td>{{status}}</td>
+            <td>
+              {{#if requestee}}
+                {{requestee.email}}
+              {{/if}}
+            </td>
+          </tr>
           {{/each}}
-        </ul>
+        </table>
       </div>
     {{/if}}
 

@@ -116,13 +116,38 @@
     </div>
     <div class="flags">
       <span>Flags:</span>
-      <ul>
-        {{#each flags}}
-        <li>
-        {{setter}}: {{name}} {{view 'flag-select' selectionBinding="status"}}
-        </li>
+      <!-- existing flags -->
+      <table>
+        {{#each fields.flags.current_value}}
+        <tr>
+          <td>{{setter.email}}:</td>
+          <td>{{name}}</td>
+          <td>{{status}}</td>
+          <td>
+            {{#if requestee}}
+              {{requestee.email}}
+            {{/if}}
+          </td>
+        </tr>
         {{/each}}
-      </ul>
+      </table>
+
+      <!-- new flags -->
+      <table>
+        {{#each fields.flags.values itemController="flag"}} <!-- itemController? -->
+          <tr>
+            <td></td>
+            <td>{{name}}</td>
+            <td>{{view Ember.Select contentBinding="values" valueBinding="value" prompt=" " optionLabelPath="content" optionValuePath="content"}}</td>
+            <td>
+              {{#if showRequestee}}
+                {{input type="text" value=requestee}}
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+
     </div>
 
     {{#each customFields itemController="field-show"}}
