@@ -3,13 +3,13 @@
 {{else}}
   {{#if isLoading}}
     Loading...
-  {{else}}
-    <div class="bug">
-      {{outlet}}
-      {{partial 'bug/attachments'}}
-      {{partial 'bug/comments'}}
-    </div>
-
-    {{outlet 'modal'}}
   {{/if}}
+
+  <div {{bindAttr class=":bug isLoading:hide"}}>
+    {{outlet}}
+    {{partial 'bug/attachments'}}
+    {{partial 'bug/comments'}}
+  </div>
+
+  {{outlet 'modal'}}
 {{/if}}

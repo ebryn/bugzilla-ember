@@ -8,5 +8,15 @@ Ember.Handlebars.registerHelper('field', function(key, options) {
   }
 
   context = Ember.Handlebars.get(this, key);
-  return Ember.Handlebars.helpers.view.call(context, FieldView, options);
+  var currentView = options.data.view;
+  var newView = currentView.appendChild(FieldView, {_context: context, templateData: options.data});
+
+  var observer = function() {
+    if (newView.isDestroyed) {
+      this.removeObserver(key, observer);
+    }
+    newView.set('context', this.get(key));
+  };
+
+  this.addObserver(key, observer);
 });
