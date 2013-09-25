@@ -24,6 +24,8 @@ var BugController = Ember.ObjectController.extend({
   findBug: function(bugId) {
     var self = this;
 
+    this.set('model', null);
+
     Bug.find(bugId).then(function(bug) {
       self.set('model', bug);
       document.title = bug.get('id') + ' - ' + bug.get('fields.summary.current_value');
@@ -54,6 +56,8 @@ var BugController = Ember.ObjectController.extend({
     var email = this.get('user.username'),
         ccList = this.get('fields.cc.current_value');
 
+    if (!ccList) { return false; }
+
     return ccList.contains(email);
   }.property('user.username', 'fields.cc.current_value.[]'),
 
@@ -63,6 +67,8 @@ var BugController = Ember.ObjectController.extend({
 
   filteredAttachments: function() {
     var attachments = this.get('attachments');
+
+    if (!attachments) { return []; }
 
     var filter = this.get('showingObsoleteAttachments') ? Ember.K : isntObsolete;
     var result = attachments.filter(filter).map(toAttachment);
@@ -89,8 +95,11 @@ var BugController = Ember.ObjectController.extend({
   }.property('comments.firstObject'),
 
   lastFewComments: function() {
-    var comments = this.get('comments'),
-        commentsLength = comments.get('length');
+    var comments = this.get('comments');
+
+    if (!comments) { return []; }
+
+    var commentsLength = comments.get('length');
 
     if (commentsLength === 1) {
       return [];
@@ -101,8 +110,11 @@ var BugController = Ember.ObjectController.extend({
   }.property('comments.[]'),
 
   remainingComments: function() {
-    var comments = this.get('comments'),
-        commentsLength = comments.get('length');
+    var comments = this.get('comments');
+
+    if (!comments) { return []; }
+
+    var commentsLength = comments.get('length');
 
     // if we have enough comments to display
     if (commentsLength < (COMMENTS_SHOWN_BY_DEFAULT + 1)) { return []; }
