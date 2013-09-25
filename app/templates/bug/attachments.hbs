@@ -43,13 +43,15 @@
           <a href="#" {{action "showAttachmentModal" this}}>Upload a new attachment</a>
         </td>
         <td>
-          <a href="#" {{action "toggleObsoleteAttachments"}}>
-            {{#if showingObsoleteAttachments}}
-              Hide obsolete
-            {{else}}
-              Show obsolete
-            {{/if}}
-          </a>
+          {{#if filteredAttachments}}
+            <a href="#" {{action "toggleObsoleteAttachments"}}>
+              {{#if showingObsoleteAttachments}}
+                Hide obsolete
+              {{else}}
+                Show obsolete
+              {{/if}}
+            </a>
+          {{/if}}
         </td>
       {{else}}
         <td colspan="3">Log in to upload an attachment</td>
