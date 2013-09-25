@@ -118,91 +118,86 @@
       <span>Flags:</span>
       <!-- existing flags -->
       <table>
-        {{#each fields.flags.current_value}}
-        <tr>
-          <td>{{setter.email}}:</td>
-          <td>{{name}}</td>
-          <td>{{status}}</td>
-          <td>
-            {{#if requestee}}
-              {{requestee.email}}
-            {{/if}}
-          </td>
-        </tr>
-        {{/each}}
-      </table>
-
-      <!-- new flags -->
-      <table>
-        {{#each fields.flags.values itemController="flag"}} <!-- itemController? -->
+        {{#each currentFlags itemController="flag"}}
           <tr>
-            <td></td>
+            <td>{{emailToUsername setter.email}}:</td>
             <td>{{name}}</td>
-            <td>{{view Ember.Select contentBinding="values" valueBinding="value" prompt=" " optionLabelPath="content" optionValuePath="content"}}</td>
+            <td>
+              {{view Ember.Select contentBinding="values" valueBinding="status"}}
+            </td>
             <td>
               {{#if showRequestee}}
-                {{input type="text" value=requestee}}
+                {{input type="text" value=requestee.email}}
               {{/if}}
             </td>
           </tr>
         {{/each}}
       </table>
 
+      <!-- new flags -->
+      Add a new flag
+      {{view Ember.Select contentBinding="newFlags" selectionBinding="newFlagDefinition" optionLabelPath="content.name" prompt=" "}}
+      {{view Ember.Select contentBinding="newFlagDefinition.values" valueBinding="newFlagStatus" optionLabelPath="content" prompt=" "}}
+      {{#if shouldShowNewFlagRequestee}}
+        {{input type="text" value=newFlagRequestee}}
+      {{/if}}
+      <button {{action "addNewFlag"}}>Add</button>
+
     </div>
 
     {{#each customFields itemController="field-show"}}
-      {{#unless isHidden}}
-        <div {{bind-attr class="name"}}>
-          <span>
-            {{#if display_name}}
-              {{display_name}}:
-            {{else}}
-              {{name}}:
-            {{/if}}
-          </span>
-          {{field this}}
-        </div>
-      {{/unless}}
+      <div {{bind-attr class="name"}}>
+        <span>
+          {{#if description}}
+            {{description}}:
+          {{else}}
+            {{name}}:
+          {{/if}}
+        </span>
+        {{field this}}
+      </div>
     {{/each}}
 
-    {{#if projectFlags}}
-      <div class="project-flags">
-        <span>Project flags:</span>
-      </div>
-      {{#each projectFlags itemController="field-show"}}
-        {{#unless isHidden}}
-          <div {{bind-attr class="name"}}>
-            <span>
-              {{#if display_name}}
-                {{display_name}}:
-              {{else}}
-                {{name}}:
-              {{/if}}
-            </span>
-            {{field this}}
-          </div>
-        {{/unless}}
-      {{/each}}
-    {{/if}}
+    <div class="project-flags">
+      <span>Project flags:</span>
+      <table {{bind-attr class="name"}}>
+        {{#each projectFlags.currentValue}}
+          <tr>
+            <td>{{description}}:<td>
+            <td>{{view Ember.Select
+                    contentBinding="values"
+                    optionLabelPath="content.name"
+                    optionValuePath="content.name"
+                    valueBinding="currentValue"}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+      Add a new flag
+      {{view Ember.Select contentBinding="projectFlags.values" optionLabelPath="content.description" selectionBinding="newProjectFlag"}}
+      {{view Ember.Select contentBinding="newProjectFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newProjectFlagStatus"}}
+      <button {{action "addNewProjectFlag"}}>Add</button>
+    </div>
 
-    {{#if trackingFlags}}
-      <div class="tracking-flags">
-        <span>Tracking flags:</span>
-      </div>
-      {{#each trackingFlags itemController="field-show"}}
-        {{#unless isHidden}}
-          <div {{bind-attr class="name"}}>
-            <span>
-              {{#if display_name}}
-                {{display_name}}:
-              {{else}}
-                {{name}}:
-              {{/if}}
-            </span>
-            {{field this}}
-          </div>
-        {{/unless}}
-      {{/each}}
-    {{/if}}
+    <div class="tracking-flags">
+      <span>Tracking flags:</span>
+      <table {{bind-attr class="name"}}>
+        {{#each trackingFlags.currentValue}}
+          <tr>
+            <td>{{description}}:<td>
+            <td>{{view Ember.Select
+                    contentBinding="values"
+                    optionLabelPath="content.name"
+                    optionValuePath="content.name"
+                    valueBinding="currentValue"}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+      Add a new flag
+      {{view Ember.Select contentBinding="newTrackingFlags" optionLabelPath="content.description" selectionBinding="newTrackingFlag"}}
+      {{view Ember.Select contentBinding="newTrackingFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newTrackingFlagStatus"}}
+      <button {{action "addNewTrackingFlag"}}>Add</button>
+    </div>
   </div>
 </div>

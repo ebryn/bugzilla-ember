@@ -17,7 +17,7 @@
         <td>
           {{#if flags}}
             {{#each flags}}
-              {{setter.real_name}}: {{name}}{{status}}
+              {{emailToUsername setter.email}}: {{name}}{{status}}
             {{/each}}
           {{else}}
             <em>No flags</em>

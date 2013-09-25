@@ -351,13 +351,16 @@ textarea {
 }
 
 // Attachment as part of bug
+/*
 .attachments {
   width: 100%;
   @media all and (min-width: 75em) {
     width: 45%;
   }
 }
+*/
 .attachments {
+  max-width: 870px;
   font-size: 0.825rem;
   margin: 0.75rem 0 1.25rem;
   line-height: 1.65;

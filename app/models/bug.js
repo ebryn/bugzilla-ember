@@ -2,6 +2,10 @@ import getJSON from 'bugzilla/utils/get_json';
 import ajax from 'bugzilla/utils/ajax';
 import urlFor from 'bugzilla/utils/url_for';
 import Attachment from 'bugzilla/models/attachment';
+import Flag from 'bugzilla/models/flag';
+import FlagDefinition from 'bugzilla/models/flag_definition';
+import camelizeKeys from 'bugzilla/utils/camelize_keys';
+import underscoreKeys from 'bugzilla/utils/underscore_keys';
 
 var RSVP = Ember.RSVP;
 
@@ -38,18 +42,31 @@ var Bug = Ember.Object.extend({
   toJSON: function() {
     var fields = this.get('fields'),
       customFields = this.get('customFields'),
+      trackingFlagValues = this.get('trackingFlags.currentValue'),
+      projectFlagValues = this.get('projectFlags.currentValue'),
       values = {},
       field;
 
-    // TODO: Flags
     for (var key in fields) {
       field = fields[key];
       if (field.can_edit === false) { continue; }
-      values[key] = field.current_value;
+      values[key] = field.current_value || field.currentValue;
     }
 
+    values.flags = values.flags.map(function(flag) {
+      return flag.toJSON();
+    });
+
+    trackingFlagValues.forEach(function(flag) {
+      values[flag.name] = flag.currentValue;
+    });
+
+    projectFlagValues.forEach(function(flag) {
+      values[flag.name] = flag.currentValue;
+    });
+
     customFields.forEach(function(field) {
-      values[field.name] = field.current_value;
+      values[field.name] = field.current_value || field.currentValue;
     });
 
     return values;
@@ -70,9 +87,8 @@ var Bug = Ember.Object.extend({
     });
   },
 
-  update: function() {
-    var model = this,
-        json = this.toJSON();
+  toJSONForUpdate: function() {
+    var json = this.toJSON();
 
     // TODO: handle comments in the same request?
     delete json.comment;
@@ -86,18 +102,42 @@ var Bug = Ember.Object.extend({
     // TODO: handle these hash values properly
     delete json.see_also;
     delete json.groups;
+    return json;
+  },
+
+  update: function() {
+    var model = this,
+        json = this.toJSONForUpdate();
+
 
     return ajax(urlFor("bug/" + this.get('id')), {
       type: 'PUT',
       dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(json)
-    }).then(function() { return model; });
+    }).then(function() { return model.reload(); });
+  },
+
+  reload: function() {
+    var self = this;
+
+    return getJSON(urlFor('ember/show/' + this.get('id'))).
+      then(processAttributes).
+      then(function(attrs) {
+        self.setProperties(attrs);
+      });
   }
 });
 
 function processAttributes(json) {
-  var attrs = {id: json.id, fields: {}, customFields: [], projectFlags: [], trackingFlags: [], canEdit: false};
+  var attrs = {
+    id: json.id,
+    fields: {},
+    customFields: [],
+    projectFlags: {currentValue: [], values: []},
+    trackingFlags: {currentValue: [], values: []},
+    canEdit: false
+  };
 
   json.fields.forEach(function(field) {
     if (field.can_edit && field.name !== 'longdesc') {
@@ -105,10 +145,18 @@ function processAttributes(json) {
     }
 
     if (field.is_custom) {
-      if (field.name.match(/^cf_(tracking|status|relnote)_/)) {
-        attrs.trackingFlags.push(field);
-      } else if (field.name.match(/^cf_blocking_(b2g|basecamp|kilimanjaro)$/)) {
-        attrs.projectFlags.push(field);
+      field = camelizeKeys(field);
+
+      if (field.description.match(/^blocking-(b2g|basecamp|kilimanjaro)$/)) {
+        attrs.projectFlags.values.push(field);
+        if (field.currentValue !== "---") {
+          attrs.projectFlags.currentValue.push(field);
+        }
+      } else if (field.description.match(/^(tracking|status|relnote|blocking)-/)) {
+        attrs.trackingFlags.values.push(field);
+        if (field.currentValue !== "---") {
+          attrs.trackingFlags.currentValue.push(field);
+        }
       } else {
         attrs.customFields.push(field);
       }
@@ -117,13 +165,29 @@ function processAttributes(json) {
     }
   });
 
-  // Filter out attachment flags
-  attrs.fields.flags.values = attrs.fields.flags.values.filterProperty('type', 'bug');
+  attrs.fields.flags = processFlags(attrs.fields.flags);
 
-  attrs.attachments = json.attachments;
-  attrs.comments = json.comments;
+  // attrs.attachments = json.attachments;
+  // attrs.comments = json.comments;
 
   return attrs;
+}
+
+function processFlags(flagsField) {
+  flagsField = camelizeKeys(flagsField, true);
+
+  // Filter out attachment flags
+  var bugFlags = flagsField.values.filterProperty('type', 'bug');
+
+  flagsField.values = bugFlags.map(function(attrs) {
+    return FlagDefinition.fromJSON(attrs);
+  });
+
+  flagsField.currentValue = flagsField.currentValue.map(function(attrs) {
+    return Flag.fromJSON(attrs);
+  });
+
+  return flagsField;
 }
 
 function create(type, newAttributes) {

@@ -1,6 +1,7 @@
 import Bug from "bugzilla/models/bug";
 import Comment from 'bugzilla/models/comment';
 import Attachment from 'bugzilla/models/attachment';
+import Flag from 'bugzilla/models/flag';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 import ajax from "bugzilla/utils/ajax";
 import urlFor from "bugzilla/utils/url_for";
@@ -20,6 +21,13 @@ var BugController = Ember.ObjectController.extend({
   newCommentIsSaving: false,
   errorMessage: null,
   flashMessage: null,
+  newFlagDefinition: null,
+  newFlagStatus: null,
+  newFlagRequestee: null,
+  newTrackingFlag: null,
+  newTrackingFlagStatus: null,
+  newProjectFlag: null,
+  newProjectFlagStatus: null,
 
   findBug: function(bugId) {
     var self = this;
@@ -66,7 +74,7 @@ var BugController = Ember.ObjectController.extend({
 
   currentUserInCCList: function() {
     var email = this.get('user.username'),
-        ccList = this.get('fields.cc.current_value');
+        ccList = this.get('fields.cc.current_value') || [];
 
     if (!ccList) { return false; }
 
@@ -78,7 +86,7 @@ var BugController = Ember.ObjectController.extend({
   }.property('fields.status.current_value'),
 
   filteredAttachments: function() {
-    var attachments = this.get('attachments');
+    var attachments = this.get('attachments') || [];
 
     if (!attachments) { return []; }
 
@@ -113,7 +121,7 @@ var BugController = Ember.ObjectController.extend({
 
     var commentsLength = comments.get('length');
 
-    if (commentsLength === 1) {
+    if (commentsLength <= 1) {
       return [];
     } else {
       var numberToShow = Math.min(commentsLength - 1, COMMENTS_SHOWN_BY_DEFAULT);
@@ -135,10 +143,131 @@ var BugController = Ember.ObjectController.extend({
     return comments.slice(1, lastShownIndex);
   }.property('comments.[]'),
 
+  newFlags: function() {
+    var allFlags = this.get('fields.flags.values'),
+        existingFlags = this.get('fields.flags.currentValue'),
+        settableFlags = [];
+
+    allFlags.forEach(function(flag) {
+      var flagExists = existingFlags.findProperty('name', flag.get('name'));
+      // if flag exists and !is_multiplicable
+      if (flagExists && !flag.get('isMultiplicable')) {
+        // not settable
+      } else {
+        // convert flags into a model?
+        settableFlags.push(flag);
+      }
+    });
+
+    return settableFlags;
+  }.property('fields.flags.values.[]', 'fields.flags.currentValue.[]'),
+
+  allFlags: Em.computed.alias('fields.flags.values'),
+
+  bugFlags: Em.computed.filter('allFlags', function(flag) {
+    return flag.type === 'bug';
+  }),
+
+  currentFlags: function() {
+    var currentFlags = this.get('fields.flags.currentValue'),
+        bugFlags = this.get('bugFlags');
+
+    currentFlags.forEach(function(flag) {
+      flag.values = bugFlags.findProperty('name', flag.name).values;
+      if (!flag.requestee) { flag.requestee = {}; }
+    });
+
+    return currentFlags;
+  }.property('fields.flags.currentValue'),
+
+  shouldShowNewFlagRequestee: function() {
+    return this.get('newFlagDefinition.isRequesteeble') && this.get('newFlagStatus') === "?";
+  }.property('newFlagDefinition.isRequesteeble', 'newFlagStatus'),
+
+  newTrackingFlags: function() {
+    var allFlags = this.get('trackingFlags.values'),
+        existingFlags = this.get('trackingFlags.currentValue'),
+        settableFlags = [];
+
+    allFlags.forEach(function(flag) {
+      var flagExists = existingFlags.findProperty('name', flag.name);
+      // all tracking flags are not multiplicable
+      if (!flagExists) {
+        settableFlags.push(flag);
+      }
+    });
+
+    return settableFlags;
+  }.property('trackingFlags.values.[]', 'trackingFlags.currentValue.[]'),
+
   actions: {
+    addNewFlag: function() {
+      var flagDefinition = this.get('newFlagDefinition'),
+          flagStatus = this.get('newFlagStatus');
+
+      if (!flagDefinition || !flagStatus) { return; }
+
+      var currentFlags = this.get('fields.flags.currentValue'),
+          newFlag = Flag.fromDefinition(flagDefinition, {
+            status: flagStatus,
+            requestee: this.get('newFlagRequestee')
+          });
+
+      currentFlags.pushObject(newFlag);
+
+      this.setProperties({
+        newFlagDefinition: null,
+        newFlagStatus: null,
+        newFlagRequestee: null
+      });
+    },
+
+    addNewTrackingFlag: function() {
+      var flagDefinition = this.get('newTrackingFlag'),
+          flagStatus = this.get('newTrackingFlagStatus');
+
+      if (!flagDefinition || !flagStatus) { return; }
+
+      var currentFlags = this.get('trackingFlags.currentValue'),
+          newFlag = Ember.merge(flagDefinition, {currentValue: flagStatus});
+
+      currentFlags.pushObject(newFlag);
+
+      this.setProperties({
+        newTrackingFlag: null,
+        newTrackingFlagStatus: null
+      });
+    },
+
+    addNewProjectFlag: function() {
+      var flagDefinition = this.get('newProjectFlag'),
+          flagStatus = this.get('newProjectFlagStatus');
+
+      if (!flagDefinition || !flagStatus) { return; }
+
+      var currentFlags = this.get('projectFlags.currentValue'),
+          newFlag = Ember.merge(flagDefinition, {currentValue: flagStatus});
+
+      currentFlags.pushObject(newFlag);
+
+      this.setProperties({
+        newProjectFlag: null,
+        newProjectFlagStatus: null
+      });
+    },
+
+
     save: function() {
       var self = this,
-          bug = this.get('model');
+          bug = this.get('model'),
+          currentFlags = this.get('fields.flags.currentValue'),
+          newFlags = this.get('newFlags');
+
+      newFlags.forEach(function(flag) {
+        if (Ember.get(flag, 'value')) {
+          currentFlags.push({type_id: Ember.get(flag, 'id'), status: Ember.get(flag, 'value')});
+        }
+      });
 
       this.set('isSaving', true);
 

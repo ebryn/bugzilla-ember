@@ -112,21 +112,21 @@
         {{/unless}}
       </span>
     </div>
-    {{#if fields.flags.current_value}}
+    {{#if fields.flags.currentValue}}
       <div class="flags">
         <span>Flags:</span>
         <table>
-          {{#each fields.flags.current_value}}
-          <tr>
-            <td>{{setter.email}}:</td>
-            <td>{{name}}</td>
-            <td>{{status}}</td>
-            <td>
-              {{#if requestee}}
-                {{requestee.email}}
-              {{/if}}
-            </td>
-          </tr>
+          {{#each fields.flags.currentValue}}
+            <tr>
+              <td>{{emailToUsername setter.email}}:</td>
+              <td>{{name}}</td>
+              <td>{{status}}</td>
+              <td>
+                {{#if requestee}}
+                  {{requestee.email}}
+                {{/if}}
+              </td>
+            </tr>
           {{/each}}
         </table>
       </div>
@@ -147,44 +147,32 @@
       {{/unless}}
     {{/each}}
 
-    {{#if projectFlags}}
+    {{#if projectFlags.currentValue}}
       <div class="project-flags">
         <span>Project flags:</span>
+        <table {{bind-attr class="name"}}>
+          {{#each projectFlags.currentValue}}
+            <tr>
+              <td>{{description}}</td>
+              <td>{{currentValue}}</td>
+            </tr>
+          {{/each}}
+        </table>
       </div>
-      {{#each projectFlags itemController="field-show"}}
-        {{#unless isHidden}}
-          <div {{bind-attr class="name"}}>
-            <span>
-              {{#if display_name}}
-                {{display_name}}:
-              {{else}}
-                {{name}}:
-              {{/if}}
-            </span>
-            {{field this}}
-          </div>
-        {{/unless}}
-      {{/each}}
     {{/if}}
 
-    {{#if trackingFlags}}
+    {{#if trackingFlags.currentValue}}
       <div class="tracking-flags">
         <span>Tracking flags:</span>
+        <table {{bind-attr class="name"}}>
+          {{#each trackingFlags.currentValue}}
+            <tr>
+              <td>{{description}}</td>
+              <td>{{currentValue}}</td>
+            </tr>
+          {{/each}}
+        </table>
       </div>
-      {{#each trackingFlags itemController="field-show"}}
-        {{#unless isHidden}}
-          <div {{bind-attr class="name"}}>
-            <span>
-              {{#if display_name}}
-                {{display_name}}:
-              {{else}}
-                {{name}}:
-              {{/if}}
-            </span>
-            {{field this}}
-          </div>
-        {{/unless}}
-      {{/each}}
     {{/if}}
   </div>
 </div>

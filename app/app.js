@@ -1,6 +1,7 @@
 import Resolver from 'resolver';
 
 // #preload stuff not yet loaded via the container
+import EmailToUsernameHelper from 'bugzilla/helpers/email_to_username';
 import FieldHelper from 'bugzilla/helpers/field';
 import FormatBytesHelper from 'bugzilla/helpers/format_bytes';
 import GravatarHelper from 'bugzilla/helpers/gravatar';
