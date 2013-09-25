@@ -16,8 +16,12 @@
       </span>
       {{#if canEdit}}
         {{#if isEditing}}
-          {{#linkTo "bug" this tagName="button"}}Cancel{{/linkTo}}
-          <button {{action "save"}}>Save</button>
+          {{#if isSaving}}
+            Saving...
+          {{else}}
+            {{#linkTo "bug" this tagName="button"}}Cancel{{/linkTo}}
+            <button {{action "save"}}>Save</button>
+          {{/if}}
         {{else}}
           {{#linkTo "bug.edit" this tagName="button"}}Edit{{/linkTo}}
         {{/if}}

@@ -128,12 +128,16 @@ var BugController = Ember.ObjectController.extend({
       var self = this,
           bug = this.get('model');
 
+      this.set('isSaving', true);
+
       bug.update().then(function(model) {
+        self.set('isSaving', false);
         self.set('flashMessage', null);
         self.transitionToRoute('bug');
       }, function(reason) {
-        // FIXME: unify error handling
+        self.set('isSaving', false);
 
+        // FIXME: unify error handling
         var json = reason.responseJSON;
         if (json && json.message) {
           self.set('flashMessage', json.message);
