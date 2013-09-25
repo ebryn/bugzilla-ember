@@ -66,7 +66,7 @@ var Bug = Ember.Object.extend({
       contentType: 'application/json',
       data: JSON.stringify(json)
     }).then(function(json) {
-      return model.constructor.find(json.id);
+      return json.id;
     });
   },
 

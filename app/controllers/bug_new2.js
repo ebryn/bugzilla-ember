@@ -58,10 +58,10 @@ var Controller = Ember.ObjectController.extend({
 
       this.set('isSaving', true);
 
-      model.create().then(function(model) {
+      model.create().then(function(newBugId) {
         self.set('isSaving', false);
         self.set('flashMessage', null);
-        self.send('bugWasCreated', model);
+        self.transitionToRoute("bug", newBugId);
       }, function(reason) {
         self.set('isSaving', false);
 
