@@ -1,10 +1,12 @@
 import ajax from 'bugzilla/utils/ajax';
 import urlFor from 'bugzilla/utils/url_for';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
+import login from 'bugzilla/actions/login';
 
 var LoginController = Ember.Controller.extend({
   needs: ['user'],
 
+  attemptedTransition: null,
   username: null,
   password: null,
   errorMessage: null,
@@ -22,9 +24,6 @@ var LoginController = Ember.Controller.extend({
         return;
       }
 
-      // this.actionFor
-      var login = this.container.lookup('action:login');
-
       login(username, password).then(function(json) {
         self.send('hideLoginModal');
 
@@ -36,6 +35,14 @@ var LoginController = Ember.Controller.extend({
           token: json.token || json.Bugzilla_token,
           isLoggedIn: true
         });
+
+        var attemptedTransition = self.get('attemptedTransition');
+        if (attemptedTransition) {
+          attemptedTransition.retry();
+          self.set('attemptedTransition', null);
+        } else {
+          self.transitionToRoute('index');
+        }
       }, function(jqXHR) {
         self.set('errorMessage', 'Invalid username or password');
       }).then(null, unhandledRejection);
@@ -49,6 +56,8 @@ var LoginController = Ember.Controller.extend({
           token: null,
           isLoggedIn: false
         });
+
+        self.transitionToRoute('login');
       }, function(reason) {
         alert("Error occurred");
         console.log(reason);

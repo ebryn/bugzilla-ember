@@ -1,4 +1,6 @@
-var Route = Ember.Route.extend({
+import AuthenticatedRouteMixin from 'bugzilla/routes/authenticated_route_mixin';
+
+var Route = Ember.Route.extend(AuthenticatedRouteMixin, {
   model: function(params) {
     this.controllerFor('bug').findBug(params.bug_id);
 
