@@ -3,6 +3,8 @@ var Route = Ember.Route.extend({
     return this.modelFor('bug');
   },
 
+  setupController: Ember.K,
+
   controllerName: "bug",
 
   activate: function() {
