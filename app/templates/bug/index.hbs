@@ -76,16 +76,16 @@
       </div>
     {{/if}}
     {{#if fields.blocks.current_value}}
-    <div class="blocks">
-      <span>Blocks:</span>
-      <ul>
-        {{#each fields.blocks.current_value}}
-          <li {{bindAttr title="summary"}}>
-            {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
-          </li>
-        {{/each}}
-      </ul>
-    </div>
+      <div class="blocks">
+        <span>Blocks:</span>
+        <ul>
+          {{#each fields.blocks.current_value}}
+            <li {{bindAttr title="summary"}}>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+            </li>
+          {{/each}}
+        </ul>
+      </div>
     {{/if}}
   </div>
 

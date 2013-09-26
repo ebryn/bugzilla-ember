@@ -63,11 +63,31 @@
     </div>
     <div class="depends_on">
       <span>Depends on:</span>
-      {{multi-value values=fields.depends_on.current_value}}
+      {{#if fields.depends_on.can_edit}}
+        {{multi-value values=fields.depends_on.current_value}}
+      {{else}}
+        <ul>
+          {{#each fields.depends_on.current_value}}
+            <li {{bindAttr title="summary"}}>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
     </div>
     <div class="blocks">
       <span>Blocks:</span>
-      {{multi-value values=fields.blocks.current_value}}
+      {{#if fields.blocks.can_edit}}
+        {{multi-value values=fields.blocks.current_value}}
+      {{else}}
+        <ul>
+          {{#each fields.blocks.current_value}}
+            <li {{bindAttr title="summary"}}>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
     </div>
   </div>
 
