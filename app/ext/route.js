@@ -1,4 +1,9 @@
 Ember.Route.reopen({
+  enter: function() {
+    window.scrollTo(0, 0);
+    return this._super.apply(this, arguments);
+  },
+
   create: function(name, options) {
     var model, fullName;
 
