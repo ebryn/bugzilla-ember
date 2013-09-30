@@ -1,7 +1,9 @@
-<h3>Login to Bugzilla</h3>
-{{errorMessage}}
-<form {{action login on="submit"}}>
-  <p>{{input type="text" value=username placeholder="Username"}}</p>
-  <p>{{input type="password" value=password placeholder="Password"}}</p>
-  <button type="submit">Login</button>
-</form>
+<div class="login-view">
+  <h3>Login to Bugzilla</h3>
+  {{errorMessage}}
+  <form {{action login on="submit"}}>
+    <p>{{input type="text" value=username placeholder="Username"}}</p>
+    <p>{{input type="password" value=password placeholder="Password"}}</p>
+    <button type="submit">Login</button>
+  </form>
+</div>
