@@ -71,6 +71,20 @@ p {
   display: none;
 }
 
+/** Login Screen
+========================================================================== */
+.login-view {
+  margin: 0 auto;
+  height: 200px;
+  width: 200px;
+  margin-top: 50px;
+
+  button {
+    float: right;
+    margin-right: 36px;
+  }
+}
+
 /** Bug New
 ========================================================================== */
 .newBug__header {
@@ -183,6 +197,12 @@ a {
   margin-top: -6px;
 }
 
+.cc {
+ button {
+    margin-top: 0px;
+  }
+}
+
 .flash {
   border: 2px red;
   color: red;
@@ -283,6 +303,28 @@ textarea {
   }
 }
 
+/** Products
+========================================================================== */
+.products {
+  ul{
+    list-style: none;
+    margin-bottom:30px;
+    overflow:hidden;
+    border-top:1px solid #ccc;
+  }
+  li{
+    width:33.333%;
+    line-height:1.5em;
+    border-bottom:1px solid #ccc;
+    float:left;
+    display:inline;
+      a {
+      text-decoration: none;
+    }
+  }
+}
+
+
 /** Attachment
 ========================================================================== */
 
@@ -349,7 +391,9 @@ textarea {
 /** Modal
 ========================================================================== */
 .modal-overlay {
-  position: absolute;
+  position: fixed;
+  height: 100%;
+  width: 100%;
   top: 0;
   left: 0;
   right: 0;
