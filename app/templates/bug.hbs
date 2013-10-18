@@ -1,11 +1,7 @@
 {{#if errorMessage}}
   <div class="flash">{{errorMessage}}</div>
 {{else}}
-  {{#if isLoading}}
-    Loading...
-  {{/if}}
-
-  <div {{bindAttr class=":bug isLoading:hide"}}>
+  <div class="bug">
     {{outlet}}
     {{partial 'bug/attachments'}}
     {{partial 'bug/comments'}}

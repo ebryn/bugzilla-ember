@@ -24,11 +24,9 @@ var BugController = Ember.ObjectController.extend({
   findBug: function(bugId) {
     var self = this;
 
-    this.set('model', null);
-
-    Bug.find(bugId).then(function(bug) {
-      self.set('model', bug);
+    return Bug.find(bugId).then(function(bug) {
       document.title = bug.get('id') + ' - ' + bug.get('fields.summary.current_value');
+      return bug;
     }, function(reason) {
       var json = reason.responseJSON,
           errorCode = json && json.code,

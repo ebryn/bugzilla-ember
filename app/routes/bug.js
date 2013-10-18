@@ -2,13 +2,10 @@ import AuthenticatedRouteMixin from 'bugzilla/routes/authenticated_route_mixin';
 
 var Route = Ember.Route.extend(AuthenticatedRouteMixin, {
   model: function(params) {
-    this.controllerFor('bug').findBug(params.bug_id);
-
-    // to prevent serialize from blowing up
-    return {id: params.bug_id};
+    return this.controllerFor('bug').findBug(params.bug_id);
   },
 
-  setupController: Ember.K,
+  // setupController: Ember.K,
 
   actions: {
     showAttachmentModal: function(bug) {
