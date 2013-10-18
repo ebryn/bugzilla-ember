@@ -14,8 +14,9 @@ Ember.Handlebars.registerHelper('field', function(key, options) {
   var observer = function() {
     if (newView.isDestroyed) {
       this.removeObserver(key, observer);
+    } else {
+      newView.set('context', this.get(key));
     }
-    newView.set('context', this.get(key));
   };
 
   this.addObserver(key, observer);
