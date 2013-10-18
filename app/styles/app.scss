@@ -385,7 +385,9 @@ textarea {
     background-color: hsl(200, 1, 90);
   }
 }
-
+.obsolete td:first-child a {
+  text-decoration: line-through;
+}
 
 
 /** Modal

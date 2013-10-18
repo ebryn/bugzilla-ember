@@ -6,7 +6,7 @@
     </tr>
   {{else}}
     {{#each filteredAttachments}}
-      <tr>
+      <tr {{bindAttr class="is_obsolete:obsolete"}}>
         <td>
           {{#linkTo "attachment" this}}
             {{description}}
@@ -23,7 +23,7 @@
             <em>No flags</em>
           {{/if}}
         </td>
-        <td>
+        <td nowrap>
           {{#linkTo "attachment" this}}Details{{/linkTo}} |
           <a {{bindAttr href="diffURL"}} target="_blank">Diff</a> |
           <a {{bindAttr href="reviewURL"}} target="_blank">Review</a>
