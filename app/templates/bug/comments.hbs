@@ -2,19 +2,6 @@
   {{#if isLoading}}
     Loading comments...
   {{else}}
-    {{#if user.isLoggedIn}}
-      <div class="comment-text">
-        <h4>New Comment:</h4>
-        {{textarea value=newCommentText cols=80 rows=25}}
-        {{#if newCommentIsSaving}}
-          Saving...
-        {{else}}
-          <button {{action saveComment}}>Save</button>
-        {{/if}}
-      </div>
-    {{else}}
-      Log in to create a comment
-    {{/if}}
     {{view 'comment' contextBinding="firstComment"}}
     {{#unless isShowingRemainingComments}}
       {{#if remainingComments}}
@@ -26,5 +13,19 @@
       {{each remainingComments itemView="comment"}}
     {{/unless}}
     {{each lastFewComments itemView="comment"}}
+    {{#if user.isLoggedIn}}
+      <div class="comment-text">
+        <h4>New Comment:</h4>
+        {{textarea value=newCommentText cols=80 rows=25}}
+        <br>
+        {{#if newCommentIsSaving}}
+          Saving...
+        {{else}}
+          <button {{action saveComment}}>Save</button>
+        {{/if}}
+      </div>
+    {{else}}
+      Log in to create a comment
+    {{/if}}
   {{/if}}
 </div>
