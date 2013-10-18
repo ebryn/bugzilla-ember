@@ -1,18 +1,20 @@
 <div class="comments">
-  {{#if isLoading}}
+  {{#if comments.isLoading}}
     Loading comments...
   {{else}}
-    {{view 'comment' contextBinding="firstComment"}}
-    {{#unless isShowingRemainingComments}}
-      {{#if remainingComments}}
-        <a href="#" {{action showRemainingComments}}>
-          Show other {{remainingComments.length}} comments
-        </a>
-      {{/if}}
-    {{else}}
-      {{each remainingComments itemView="comment"}}
-    {{/unless}}
-    {{each lastFewComments itemView="comment"}}
+    {{#if comments}}
+      {{view 'comment' contextBinding="firstComment"}}
+      {{#unless isShowingRemainingComments}}
+        {{#if remainingComments}}
+          <a href="#" {{action showRemainingComments}}>
+            Show other {{remainingComments.length}} comments
+          </a>
+        {{/if}}
+      {{else}}
+        {{each remainingComments itemView="comment"}}
+      {{/unless}}
+      {{each lastFewComments itemView="comment"}}
+    {{/if}}
     {{#if user.isLoggedIn}}
       <div class="comment-text">
         <h4>New Comment:</h4>

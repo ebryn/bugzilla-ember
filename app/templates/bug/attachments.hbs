@@ -1,8 +1,8 @@
 <table class="attachments">
   <tbody>
-  {{#if bug.isLoading}}
+  {{#if attachments.isLoading}}
     <tr>
-      <td>checking for attachments...</td>
+      <td>Loading attachments...</td>
     </tr>
   {{else}}
     {{#each filteredAttachments}}

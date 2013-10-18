@@ -41,6 +41,20 @@ var BugController = Ember.ObjectController.extend({
     });
   },
 
+  attachments: function() {
+    var bugId = this.get('model.id');
+    if (!bugId) { return {isLoading: true, isLoaded: false}; }
+
+    return Attachment.find({bug_id: bugId});
+  }.property('model'),
+
+  comments: function() {
+    var bugId = this.get('model.id');
+    if (!bugId) { return {isLoading: true, isLoaded: false}; }
+
+    return Comment.find({bug_id: bugId});
+  }.property('model'),
+
   oldUIURL: function() {
     return this.get('config.host') + '/show_bug.cgi?id=' + this.get('id');
   }.property('id', 'config.host'),
@@ -69,7 +83,7 @@ var BugController = Ember.ObjectController.extend({
     if (!attachments) { return []; }
 
     var filter = this.get('showingObsoleteAttachments') ? Ember.K : isntObsolete;
-    var result = attachments.filter(filter).map(toAttachment);
+    var result = attachments.filter(filter);
 
     Ember.set(result, '_source', attachments);
     Ember.defineProperty(result, 'isLoading', Ember.computed.alias('_source.isLoading'));
@@ -77,7 +91,7 @@ var BugController = Ember.ObjectController.extend({
     return result;
 
     function isntObsolete(attachment) {
-      return !attachment.is_obsolete;
+      return !attachment.get('is_obsolete');
     }
 
     function toAttachment(data) {

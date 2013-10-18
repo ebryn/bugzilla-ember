@@ -25,30 +25,30 @@ Comment.reopenClass({
       });
     },
 
-    // findQuery: function(klass, records, params) {
-    //   var bugId = params.bug_id,
-    //       cacheKey = "bug-" + bugId + "-comments",
-    //       url = urlFor("bug/" + bugId + "/comment");
+    findQuery: function(klass, records, params) {
+      var bugId = params.bug_id,
+          cacheKey = "bug-" + bugId + "-comments",
+          url = urlFor("bug/" + bugId + "/comment");
 
-    //   return promiseStorage.getItem(cacheKey).then(function(cachedComments){
-    //     if (cachedComments !== null) { // we've got cached comments, just look for new ones
-    //       records.load(klass, cachedComments);
+      // return promiseStorage.getItem(cacheKey).then(function(cachedComments){
+      //   if (cachedComments !== null) { // we've got cached comments, just look for new ones
+      //     records.load(klass, cachedComments);
 
-    //       var lastComment = cachedComments[cachedComments.length-1];
+      //     var lastComment = cachedComments[cachedComments.length-1];
 
-    //       return getJSON(url, {new_since: lastComment.creation_time}).then(function(json) {
-    //         // TODO: Make this easier to do with EM
-    //         var newComments = records.materializeData(klass, json.bugs[bugId].comments);
-    //         records.pushObjects(newComments);
-    //       });
-    //     } else { // not cached locally, fetch all comments
-    //       return getJSON(url).then(function(json) {
-    //         records.load(klass, json.bugs[bugId].comments);
-    //         return promiseStorage.setItem(cacheKey, json.bugs[bugId].comments);
-    //       });
-    //     }
-    //   });
-    // },
+      //     return getJSON(url, {new_since: lastComment.creation_time}).then(function(json) {
+      //       // TODO: Make this easier to do with EM
+      //       var newComments = records.materializeData(klass, json.bugs[bugId].comments);
+      //       records.pushObjects(newComments);
+      //     });
+      //   } else { // not cached locally, fetch all comments
+          return getJSON(url).then(function(json) {
+            records.load(klass, json.bugs[bugId].comments);
+            return promiseStorage.setItem(cacheKey, json.bugs[bugId].comments);
+          });
+      //   }
+      // });
+    },
 
     createRecord: function(record) {
       var bugId = record.get('bug_id'),
