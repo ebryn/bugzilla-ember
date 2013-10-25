@@ -10,6 +10,7 @@ Router.map(function(){
   this.route("dashboard");
   this.route("browse");
   this.route("login");
+  this.route("searchResults", {path: "search", queryParams: ['q']});
 });
 
 export default Router;

@@ -5,7 +5,8 @@ var SearchControler = Ember.Controller.extend({
 
   actions: {
     quicksearch: function() {
-      window.open(this.get('config.host') + "/buglist.cgi?quicksearch=" + this.get('searchText'));
+      var searchText = this.get('searchText');
+      this.transitionToRoute('searchResults', {queryParams: {q: searchText}});
       this.clearSearchText();
     }
   },
