@@ -214,15 +214,11 @@ Bug.reopenClass({
 
   // FIXME
   findQuery: function(params) {
-    var records = Ember.ArrayProxy.create({content: []});
-
-    getJSON(urlFor("bug"), params).then(function(json) {
-      records.pushObjects(json.bugs);
+    return getJSON(urlFor("bug"), params).then(function(json) {
+      return json.bugs;
     }, function(reason) {
       alert("FAIL");
     });
-
-    return records;
   }
 });
 
