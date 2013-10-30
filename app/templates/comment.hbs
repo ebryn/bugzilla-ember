@@ -1,10 +1,14 @@
-<div class="header">
+<header class="comment-header">
   {{gravatar creator}}
   <span>{{creator}}</span>
-  <span>{{creation_time}}</span>
+  <span class="comment-date">
+    <img src="assets/images/clock.png" alt="Date" />
+    {{creation_time}}
+  </span>
   {{! FIXME: this could be better }}
   {{#if controller.user.isLoggedIn}}
-    <span><button {{action reply this}}>reply</button></span>
+    <img src="assets/images/reply.png" alt="Reply" />
   {{/if}}
-</div>
-<pre>{{linkify text}}</pre>
+  <hr>
+</header>
+<pre class="comment-text">{{linkify text}}</pre>

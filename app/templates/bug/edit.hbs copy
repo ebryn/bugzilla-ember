@@ -1,0 +1,253 @@
+{{partial 'bug/header'}}
+
+{{#if flashMessage}}
+  <div class="flash">
+    {{flashMessage}}
+  </div>
+{{/if}}
+
+<div class="detail">
+  <div class="left">
+    <div class="status">
+      <span>Status:</span>
+      {{field "status"}}
+    </div>
+    {{#if isResolved}}
+      <div class="resolution">
+        <span>Resolution:</span>
+        {{field "resolution"}}
+      </div>
+    {{/if}}
+    {{#if isResolvedAsDuplicate}}
+      <div class="dupe_of">
+        <span>Duplicate ID:</span>
+        {{field "dupeOf"}}
+      </div>
+    {{/if}}
+    <div class="whiteboard">
+      <span>Whiteboard:</span>
+      <span>{{field "whiteboard"}}</span>
+    </div>
+    <div class="keywords">
+      <span>Keywords:</span>
+      <span>{{field "keywords"}}</span>
+    </div>
+    <div class="product">
+      <span>Product:</span>
+      <span>{{field "product"}}</span>
+    </div>
+    <div class="component">
+      <span>Component:</span>
+      <span>{{field "component"}}</span>
+    </div>
+    <div class="version">
+      <span>Version:</span>
+      <span>{{field "version"}}</span>
+    </div>
+    <div class="platform">
+      <span>Hardware:</span>
+      <span>{{field "platform"}} {{field "opSys"}}</span>
+    </div>
+    <div class="importance">
+      <span>Importance:</span>
+      <span>
+        <span>{{field "priority"}}</span>
+        <span>{{field "severity"}}</span>
+      </span>
+    </div>
+    <div class="assigned_to">
+      <span>Assignee:</span>
+      <span>{{field "assignedTo"}}</span>
+    </div>
+    <div class="qa_contact">
+      <span>QA Contact:</span>
+      <span>{{field "qaContact"}}</span>
+    </div>
+    <div class="url">
+      <span>URL:</span>
+      <span>{{field "url"}}</span>
+    </div>
+    <div class="depends_on">
+      <span>Depends on:</span>
+      {{#if fields.dependsOn.canEdit}}
+        <span><span>{{multi-value values=fields.dependsOn.currentValue}}</span></span>
+      {{else}}
+        <ul>
+          {{#each fields.dependsOn.currentValue}}
+            <li {{bindAttr title="summary"}}>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
+    <div class="blocks">
+      <span>Blocks:</span>
+      {{#if fields.blocks.canEdit}}
+        {{multi-value values=fields.blocks.currentValue}}
+      {{else}}
+        <ul>
+          {{#each fields.blocks.currentValue}}
+            <li {{bindAttr title="summary"}}>
+              {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="padding"></div>
+
+  <div class="right">
+    <div class="creator">
+      <span>Reported:</span>
+      <span>{{field "creationTime"}} by {{field "creator"}}</span>
+    </div>
+    <div class="last_change_time">
+      <span>Modified:</span>
+      <span>{{field "lastChangeTime"}}</span>
+    </div>
+    <div class="cc">
+      <span>CC List:</span>
+      <span>
+        <a href="#" {{action "showCCModal" this}}>{{fields.cc.currentValue.length}} users</a>
+
+        {{#unless currentUserInCCList}}
+          <button {{action "addCurrentUserToCCList"}}>Add me to CC list</button>
+        {{else}}
+          <button>Remove me from CC list</button>
+        {{/unless}}
+      </span>
+    </div>
+    <div class="flags">
+      <span>Flags:</span>
+      <!-- existing flags -->
+      <table>
+        {{#each currentFlags itemController="flag"}}
+          <tr>
+            <td>{{emailToUsername setter.email}}:</td>
+            <td>{{name}}</td>
+            <td>
+              {{view Ember.Select contentBinding="values" valueBinding="status"}}
+            </td>
+            <td>
+              {{#if showRequestee}}
+                {{input type="text" value=requestee.email}}
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+
+      <!-- new flags -->
+      Add a new flag
+      {{view Ember.Select contentBinding="newFlags" selectionBinding="newFlagDefinition" optionLabelPath="content.name" prompt=" "}}
+      {{view Ember.Select contentBinding="newFlagDefinition.values" valueBinding="newFlagStatus" optionLabelPath="content" prompt=" "}}
+      {{#if shouldShowNewFlagRequestee}}
+        {{input type="text" value=newFlagRequestee}}
+      {{/if}}
+      <button {{action "addNewFlag"}}>Add</button>
+
+    </div>
+
+    {{#each customFields}}
+      <div {{bind-attr class="name"}}>
+        <span>
+          {{#if description}}
+            {{description}}:
+          {{else}}
+            {{name}}:
+          {{/if}}
+        </span>
+        {{field this}}
+      </div>
+    {{/each}}
+
+    <div class="project-flags">
+      <span>Project flags:</span>
+      <table {{bind-attr class="name"}}>
+        {{#each projectFlags.currentValue}}
+          <tr>
+            <td>{{description}}:<td>
+            <td>{{view Ember.Select
+                    contentBinding="values"
+                    optionLabelPath="content.name"
+                    optionValuePath="content.name"
+                    valueBinding="currentValue"}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+
+      {{#if newProjectFlags.values}}
+        Add a new flag
+        {{view Ember.Select contentBinding="newProjectFlags.values" optionLabelPath="content.description" selectionBinding="newProjectFlag"}}
+        {{view Ember.Select contentBinding="newProjectFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newProjectFlagStatus"}}
+        <button {{action "addNewProjectFlag"}}>Add</button>
+      {{/if}}
+    </div>
+
+    <div class="tracking-flags">
+      <span>Tracking flags:</span>
+      <table {{bind-attr class="name"}}>
+        {{#each trackingFlags.currentValue}}
+          <tr>
+            <td>{{description}}:<td>
+            <td>{{view Ember.Select
+                    contentBinding="values"
+                    optionLabelPath="content.name"
+                    optionValuePath="content.name"
+                    valueBinding="currentValue"}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+      Add a new flag
+      {{view Ember.Select contentBinding="newTrackingFlags" optionLabelPath="content.description" selectionBinding="newTrackingFlag"}}
+      {{view Ember.Select contentBinding="newTrackingFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newTrackingFlagStatus"}}
+      <button {{action "addNewTrackingFlag"}}>Add</button>
+    </div>
+
+    <div class="groups">
+      <span>Groups:</span>
+
+      <table {{bind-attr class="name"}}>
+        {{#each fields.groups.currentValue}}
+          <tr>
+            <td>{{description}}<td>
+            <td><button {{action "removeGroup" this}}>x</button></td>
+          </tr>
+        {{/each}}
+      </table>
+
+      <div>
+        Add a new group
+        {{view Ember.Select contentBinding="newGroups" optionLabelPath="content.description" selectionBinding="newGroup" prompt=" "}}
+        <button {{action "addNewGroup"}}>Add</button>
+      </div>
+
+      {{#if isPrivate}}
+        <div>
+          Accessible to:
+          <label>{{input type="checkbox" checked=fields.isCreatorAccessible.currentValue}} Reporter</label>
+          <label>{{input type="checkbox" checked=fields.isCcAccessible.currentValue}} CC</label>
+        </div>
+      {{/if}}
+    </div>
+
+    <div class="see-also">
+      <span>See Also:</span>
+
+      <table>
+        {{#each fields.seeAlso.currentValue}}
+          <tr><td>{{this}}</td><td><button {{action "removeSeeAlsoUrl" this}}>x</button></td></tr>
+        {{/each}}
+      </table>
+
+      Add a new URL
+      {{input type="text" value=newSeeAlsoUrl action="addSeeAlsoUrl"}}
+      <button {{action "addSeeAlsoUrl"}}>Add</button>
+    </div>
+  </div>
+</div>

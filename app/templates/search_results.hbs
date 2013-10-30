@@ -1,47 +1,51 @@
-<div>Search results for: <strong>{{quicksearch}}</strong></div>
+{{#unless quicksearch}}
+  Please type in a search query above
+{{else}}
+  <div>Search results for: <strong>{{quicksearch}}</strong></div>
 
-<table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
-  <thead>
-    <tr>
-      {{view 'browse-column-header' column="id" title="ID"}}
-      {{view 'browse-column-header' column="product" title="Product"}}
-      {{view 'browse-column-header' column="component" title="Component"}}
-      {{view 'browse-column-header' column="assigned_to" title="Assignee"}}
-      {{view 'browse-column-header' column="status" title="Status"}}
-      {{view 'browse-column-header' column="summary" title="Summary"}}
-      {{view 'browse-column-header' column="last_change_time" title="Changed"}}
-    </tr>
-  </thead>
-  <tbody>
-    {{#each}}
-    <tr>
-      <td class="id">
-        {{#linkTo 'bug' id}} {{id}} {{/linkTo}}
-      </td>
-      <td class="product">
-        {{product}}
-      </td>
-      <td class="component">
-        {{component}}
-      </td>
-      <td class="assignee">
-        {{emailToUsername assigned_to}}
-      </td>
-      <td class="status">
-        {{status}}
-      </td>
-      <td class="summary">
-        {{#linkTo 'bug' id}} {{summary}} {{/linkTo}}
-      </td>
-      <td class="changed">
-        {{last_change_time}}
-      </td>
-    </tr>
-    {{/each}}
-  </tbody>
-  <tfoot>
-    <tr>
-      <td>Length: {{length}} </td>
-    </tr>
-  </tfoot>
-</table>
+  <table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
+    <thead>
+      <tr>
+        {{view 'browse-column-header' column="id" title="ID"}}
+        {{view 'browse-column-header' column="product" title="Product"}}
+        {{view 'browse-column-header' column="component" title="Component"}}
+        {{view 'browse-column-header' column="assigned_to" title="Assignee"}}
+        {{view 'browse-column-header' column="status" title="Status"}}
+        {{view 'browse-column-header' column="summary" title="Summary"}}
+        {{view 'browse-column-header' column="last_change_time" title="Changed"}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each}}
+      <tr>
+        <td class="id">
+          {{#linkTo 'bug' id}} {{id}} {{/linkTo}}
+        </td>
+        <td class="product">
+          {{product}}
+        </td>
+        <td class="component">
+          {{component}}
+        </td>
+        <td class="assignee">
+          {{emailToUsername assigned_to}}
+        </td>
+        <td class="status">
+          {{status}}
+        </td>
+        <td class="summary">
+          {{#linkTo 'bug' id}} {{summary}} {{/linkTo}}
+        </td>
+        <td class="changed">
+          {{last_change_time}}
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="7">Count: {{length}}</td>
+      </tr>
+    </tfoot>
+  </table>
+{{/unless}}

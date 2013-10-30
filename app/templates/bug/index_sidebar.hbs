@@ -1,20 +1,6 @@
-{{partial 'bug/header'}}
-
-{{#if flashMessage}}
-  <div class="flash">
-    {{flashMessage}}
-  </div>
-{{/if}}
-
-<div class="main-view">
-  {{!partial 'bug/attachments'}}
-  {{partial 'bug/comments'}}
-</div>
-
 <div class="edit-side-bar">
   <div>
-    {{#link-to "bug" this tagName="button" class="cancel-btn"}}Cancel{{/link-to}}
-    <button class="save-btn" {{action "save"}}>Save</button>
+    {{#link-to "bug.edit" this tagName="button" class="save-btn"}}Edit{{/link-to}}
   </div>
 
   <div class="status-res">
@@ -34,6 +20,7 @@
     </div>
     <hr>
   {{/if}}
+
   {{#if fields.whiteboard.currentValue}}
     <div>
       <label>Whiteboard:</label>
@@ -41,91 +28,92 @@
     </div>
     <hr>
   {{/if}}
+
   {{#if fields.keywords.currentValue}}
     <div>
       <label>Keywords:</label>
-      <label>{{field "keywords"}}</label>
+      {{field "keywords"}}
     </div>
     <hr>
   {{/if}}
+
   <div class="product">
-    <label>PRODUCT: <a href="#">?</a></label>
-    {{field "product"}}
-  </div>
-  <div class="component">
-    <label>COMPONENT: <a href="#">?</a></label>
-    {{field "component"}}
-    <hr>
-  </div>
-  <div class="version">
-    <label>VERSION:</label>
+    <label>Product / Component / Version:</label>
+    {{field "product"}} /
+    {{field "component"}} /
     {{field "version"}}
-    <hr>
   </div>
+  <hr>
+
   <div class="hardware">
     <label>HARDWARE:</label>
     {{field "platform"}}
     {{field "opSys"}}
     <hr>
   </div>
+
   <div class="importance">
-    <label>IMPORTANCE: <a href="#">with 3 votes</a> <a href="#">vote</a></label>
+    <label>IMPORTANCE:</label>
     {{field "priority"}}
     {{field "severity"}}
     <hr>
   </div>
-  <div class="assignee">
-    <label>ASSIGNEE:</label>
-    {{field "assignedTo"}}
-    <button class="inbox-btn">
-      <img src="assets/images/inbox.png" alt="Inbox" />
-    </button>
+
+  <div>
+    <label>Target Milestone:</label>
+    {{field "targetMilestone"}}
     <hr>
   </div>
 
-  <div>
-    <label>QA Contact:</label>
-    {{field "qaContact"}}
+  <div class="assignee">
+    <label>ASSIGNEE:</label>
+    {{field "assignedTo"}}
+    <hr>
   </div>
-  <hr>
 
-  <div class="url">
-    <label>URL:</label>
-    <span><a {{bindAttr href="fields.url.currentValue"}} target="_blank">{{fields.url.currentValue}}</a></span>
-  </div>
-  <hr>
-
-  <div class="depends_on">
-    <label>Depends on:</label>
+  {{#if fields.qaContact.currentValue}}
     <div>
-      {{#if fields.dependsOn.canEdit}}
-        <span><span>{{multi-value values=fields.dependsOn.currentValue}}</span></span>
-      {{else}}
+      <label>QA Contact:</label>
+      {{field "qaContact"}}
+    </div>
+    <hr>
+  {{/if}}
+
+  {{#if fields.url.currentValue}}
+    <div class="url">
+      <label>URL:</label>
+      <span><a {{bindAttr href="fields.url.currentValue"}} target="_blank">{{fields.url.currentValue}}</a></span>
+    </div>
+    <hr>
+  {{/if}}
+
+  {{#if fields.dependsOn.currentValue}}
+    <div class="depends_on">
+      <label>Depends on:</label>
+      <div>
         {{#each fields.dependsOn.currentValue}}
           <span {{bindAttr title="summary"}}>
             {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
           </span>
         {{/each}}
-      {{/if}}
+      </div>
     </div>
-  </div>
-  <hr>
+    <hr>
+  {{/if}}
 
-  <div class="blocks">
-    <label>Blocks:</label>
-    <div>
-      {{#if fields.blocks.canEdit}}
-        <span><span>{{multi-value values=fields.dependsOn.currentValue}}</span></span>
-      {{else}}
+  {{#if fields.blocks.currentValue}}
+    <div class="blocks">
+      <label>Blocks:</label>
+      <div>
         {{#each fields.blocks.currentValue}}
           <span {{bindAttr title="summary"}}>
             {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
           </span>
         {{/each}}
-      {{/if}}
+      </div>
     </div>
-  </div>
-  <hr>
+    <hr>
+  {{/if}}
 
   <div class="cc">
     <label>CC LIST:</label>
@@ -134,9 +122,6 @@
       {{#if currentUserInCCList}}
         (including you)
       {{/if}}
-      <button class="write-btn">
-        <img src="assets/images/whitepencil.png" alt="Edit" />
-      </button>
     </div>
 
     <label class="notifications">
@@ -148,23 +133,12 @@
     </label>
     <hr>
   </div>
-  {{#if fields.groups.currentValue}}
-    <div class="groups">
-      <label>GROUPS:</label>
-      <div>
-        2 groups selected
-        <button class="write-btn">
-          <img src="assets/images/whitepencil.png" alt="Edit" />
-        </button>
-      </div>
-      <hr>
-    </div>
-  {{/if}}
+
   {{#if fields.flags.currentValue}}
     <div class="flags">
-      <label>FLAGS <a href="#">?</a></label>
+      <label>Flags:</label>
 
-      <div class="table-container with-button">
+      <div class="table-container">
         <table class="table">
           {{#each fields.flags.currentValue}}
             <tr>
@@ -172,33 +146,19 @@
               <td class="flag-name">{{name}}</td>
               <td class="flag-status">{{status}}</td>
               <td>{{requestee.email}}</td>
-              <td class="button-cell">
-                <button>
-                  <img src="assets/images/smallgraypencil.png" alt="Edit" />
-                </button>
-              </td>
-              <td class="button-cell">
-                <button>
-                  <img src="assets/images/grayx.png" alt="Remove" />
-                </button>
-              </td>
             </tr>
           {{/each}}
         </table>
       </div>
-      <div class="label-btn with-table">
-        <label>Add a flag
-          <button class="add-btn">+</button>
-        </label>
-      </div>
       <hr>
     </div>
   {{/if}}
+
   {{#if fields.seeAlso.currentValue}}
     <div>
-      <label>SEE ALSO <a href="#">?</a></label>
+      <label>See Also:</label>
 
-      <div class="table-container with-button">
+      <div class="table-container">
         <table class="table">
           {{#each fields.seeAlso.currentValue}}
             <tr>
@@ -207,11 +167,13 @@
           {{/each}}
         </table>
       </div>
+      <!--
       <div class="label-btn with-table">
         <label>Add a URL
           <button class="add-btn">+</button>
         </label>
       </div>
+      -->
     </div>
     <hr>
   {{/if}}
@@ -235,30 +197,15 @@
   {{#if projectFlags.currentValue}}
     <div class="project-flags">
       <label>Project flags:</label>
-      <div class="table-container with-button">
+      <div class="table-container">
         <table class="table">
           {{#each projectFlags.currentValue}}
             <tr>
               <td>{{description}}</td>
               <td>{{currentValue}}</td>
-              <td class="button-cell">
-                <button>
-                  <img src="assets/images/smallgraypencil.png" alt="Edit" />
-                </button>
-              </td>
-              <td class="button-cell">
-                <button>
-                  <img src="assets/images/grayx.png" alt="Remove" />
-                </button>
-              </td>
             </tr>
           {{/each}}
         </table>
-      </div>
-      <div class="label-btn with-table">
-        <label>Add a project flag
-          <button class="add-btn">+</button>
-        </label>
       </div>
     </div>
     <hr>
@@ -267,30 +214,15 @@
   {{#if trackingFlags.currentValue}}
     <div class="tracking-flags">
       <label>Tracking flags:</label>
-      <div class="table-container with-button">
+      <div class="table-container">
         <table class="table">
           {{#each trackingFlags.currentValue}}
             <tr>
               <td>{{description}}</td>
               <td>{{currentValue}}</td>
-              <td class="button-cell">
-                <button>
-                  <img src="assets/images/smallgraypencil.png" alt="Edit" />
-                </button>
-              </td>
-              <td class="button-cell">
-                <button>
-                  <img src="assets/images/grayx.png" alt="Remove" />
-                </button>
-              </td>
             </tr>
           {{/each}}
         </table>
-      </div>
-      <div class="label-btn with-table">
-        <label>Add a tracking flag
-          <button class="add-btn">+</button>
-        </label>
       </div>
     </div>
     <hr>
@@ -298,20 +230,11 @@
 
   {{#if fields.groups.currentValue}}
     <div class="groups">
-      <span>Groups:</span>
-      <table {{bind-attr class="name"}}>
-        {{#each fields.groups.currentValue}}
-          <tr>
-            <td>{{description}}</td>
-          </tr>
-        {{/each}}
-      </table>
+      <label>Groups:</label>
+      <div>
+        {{fields.groups.currentValue.length}} groups selected
+      </div>
+      <hr>
     </div>
   {{/if}}
-
-  <div>
-    {{#link-to "bug" this tagName="button" class="cancel-btn"}}Cancel{{/link-to}}
-    <button class="save-btn" {{action "save"}}>Save</button>
-  </div>
-
 </div>

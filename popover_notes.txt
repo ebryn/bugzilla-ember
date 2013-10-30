@@ -1,0 +1,6 @@
+popover notes
+
+- global event handler for dismissing existing popover
+- programmatically insert the popover vs having it already in the DOM
+- reusable vs individually hard-coded
+- use helpers to define templates for popovers, but don't actually render them?

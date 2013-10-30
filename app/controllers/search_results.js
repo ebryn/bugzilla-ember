@@ -5,12 +5,14 @@ var Controller = Ember.ArrayController.extend({
     this.set('sortAscending', true);
   },
 
-  changeSort: function(property) {
-    if (this.get('sortProperties').contains(property)) {
-      var newSortDirection = this.get('sortAscending') ? false : true;
-      this.set('sortAscending', newSortDirection);
-    } else {
-      this.set('sortProperties', [property]);
+  actions: {
+    changeSort: function(property) {
+      if (this.get('sortProperties').contains(property)) {
+        var newSortDirection = this.get('sortAscending') ? false : true;
+        this.set('sortAscending', newSortDirection);
+      } else {
+        this.set('sortProperties', [property]);
+      }
     }
   }
 });

@@ -28,12 +28,14 @@ var BugController = Ember.ObjectController.extend({
   newTrackingFlagStatus: null,
   newProjectFlag: null,
   newProjectFlagStatus: null,
+  newGroup: null,
+  newSeeAlsoUrl: null,
 
   findBug: function(bugId) {
     var self = this;
 
     return Bug.find(bugId).then(function(bug) {
-      document.title = bug.get('id') + ' - ' + bug.get('fields.summary.current_value');
+      document.title = bug.get('id') + ' - ' + bug.get('fields.summary.currentValue');
       return bug;
     }, function(reason) {
       var json = reason.responseJSON,
@@ -74,16 +76,20 @@ var BugController = Ember.ObjectController.extend({
 
   currentUserInCCList: function() {
     var email = this.get('user.username'),
-        ccList = this.get('fields.cc.current_value') || [];
+        ccList = this.get('fields.cc.currentValue') || [];
 
     if (!ccList) { return false; }
 
     return ccList.contains(email);
-  }.property('user.username', 'fields.cc.current_value.[]'),
+  }.property('user.username', 'fields.cc.currentValue.[]'),
 
   isResolved: function() {
     return this.get('fields.status.current_value') === 'RESOLVED';
   }.property('fields.status.current_value'),
+
+  isResolvedAsDuplicate: function() {
+    return this.get('isResolved') && this.get('fields.resolution.current_value') === 'DUPLICATE';
+  }.property('isResolved', 'fields.resolution.current_value'),
 
   filteredAttachments: function() {
     var attachments = this.get('attachments') || [];
@@ -200,7 +206,66 @@ var BugController = Ember.ObjectController.extend({
     return settableFlags;
   }.property('trackingFlags.values.[]', 'trackingFlags.currentValue.[]'),
 
+  newProjectFlags: function() {
+    var allFlags = this.get('projectFlags.values'),
+        existingFlags = this.get('projectFlags.currentValue'),
+        settableFlags = allFlags.slice();
+
+    existingFlags.forEach(function(group) {
+      settableFlags.removeObject(group);
+    });
+
+    return settableFlags;
+  }.property('projectFlags.values.[]', 'projectFlags.currentValue.[]'),
+
+  newGroups: function() {
+    var allGroups = this.get('fields.groups.values'),
+        existingGroups = this.get('fields.groups.currentValue'),
+        settableGroups = allGroups.slice();
+
+    existingGroups.forEach(function(group) {
+      settableGroups.removeObject(group);
+    });
+
+    return settableGroups;
+  }.property('fields.groups.values.[]', 'fields.groups.currentValue.[]'),
+
+  isPrivate: function() {
+    return !!this.get('fields.groups.currentValue.length');
+  }.property('fields.groups.currentValue.[]'),
+
   actions: {
+    addSeeAlsoUrl: function() {
+      var newUrl = this.get('newSeeAlsoUrl');
+
+      if (!newUrl) { return; }
+
+      this.get('fields.seeAlso.currentValue').pushObject(newUrl);
+
+      this.set('newSeeAlsoUrl', null);
+    },
+
+    removeSeeAlsoUrl: function(url) {
+       // TODO: look into why url is getting passed in as a String object. We have to coerce right now to make this work.
+      this.get('fields.seeAlso.currentValue').removeObject(url + '');
+    },
+
+    addNewGroup: function() {
+      var group = this.get('newGroup');
+
+      if (!group) { return; }
+
+      var currentGroups = this.get('fields.groups.currentValue');
+      currentGroups.pushObject(group);
+
+      this.setProperties({newGroup: null});
+    },
+
+    removeGroup: function(group) {
+      var currentGroups = this.get('fields.groups.currentValue');
+      currentGroups.removeObject(group);
+    },
+
     addNewFlag: function() {
       var flagDefinition = this.get('newFlagDefinition'),
           flagStatus = this.get('newFlagStatus');
@@ -299,7 +364,7 @@ var BugController = Ember.ObjectController.extend({
         contentType: "application/json",
         data: JSON.stringify({cc: {add: [currentUserEmail]}})
       }).then(function(json) {
-        self.get("fields.cc.current_value").pushObject(currentUserEmail);
+        self.get("fields.cc.currentValue").pushObject(currentUserEmail);
       }, function(reason) {
         alert("Error occurred, see console");
         console.log(reason);
@@ -316,7 +381,7 @@ var BugController = Ember.ObjectController.extend({
         contentType: "application/json",
         data: JSON.stringify({cc: {remove: [currentUserEmail]}})
       }).then(function(json) {
-        self.get("fields.cc.current_value").removeObject(currentUserEmail);
+        self.get("fields.cc.currentValue").removeObject(currentUserEmail);
       }, function(reason) {
         alert("Error occurred, see console");
         console.log(reason);

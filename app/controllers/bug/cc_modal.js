@@ -4,7 +4,7 @@ import urlFor from "bugzilla/utils/url_for";
 var Controller = Ember.Controller.extend({
   needs: ['bug'],
   bug: Ember.computed.alias('controllers.bug.model'),
-  cc: Ember.computed.alias('bug.fields.cc.current_value'),
+  cc: Ember.computed.alias('bug.fields.cc.currentValue'),
   isSaving: false,
 
   newEmails: null,

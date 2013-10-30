@@ -1,11 +1,8 @@
 {{#if errorMessage}}
   <div class="flash">{{errorMessage}}</div>
 {{else}}
-  <div class="bug">
-    {{outlet}}
-    {{partial 'bug/attachments'}}
-    {{partial 'bug/comments'}}
-  </div>
-
+  {{outlet "header"}}
+  {{outlet}}
+  {{outlet "sidebar"}}
   {{outlet 'modal'}}
 {{/if}}

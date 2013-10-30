@@ -4,25 +4,25 @@ var UserController = Ember.Controller.extend({
   username: function(key, value) {
     if (arguments.length === 2) {
       if (value === null) {
-        delete sessionStorage.username;
+        delete localStorage.username;
       } else {
-        sessionStorage.username = value;
+        localStorage.username = value;
       }
       return value;
     }
-    return sessionStorage.username;
+    return localStorage.username;
   }.property(),
 
   token: function(key, value) {
     if (arguments.length === 2) {
       if (value === null) {
-        delete sessionStorage.token;
+        delete localStorage.token;
       } else {
-        sessionStorage.token = value;
+        localStorage.token = value;
       }
       return value;
     }
-    return sessionStorage.token;
+    return localStorage.token;
   }.property(),
 
   isLoggedIn: function(key, value) {
@@ -46,7 +46,7 @@ var UserController = Ember.Controller.extend({
   }.property(),
 
   willDestroy: function() {
-    delete sessionStorage.token;
+    delete localStorage.token;
   }
 });
 

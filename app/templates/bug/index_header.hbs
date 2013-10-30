@@ -1,6 +1,6 @@
 <div class="bug-info">
   <div>
-    {{input type="text" class="bug-name" value=fields.summary.currentValue}}
+    <div class="bug-name" style="border: none">{{fields.summary.currentValue}}</div>
     {{#linkTo "bug" this class="bug-no"}}Bug {{id}}{{/linkTo}}
   </div>
   <div class="bug-stats">

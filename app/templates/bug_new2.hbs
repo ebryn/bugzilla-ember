@@ -41,7 +41,7 @@
 
     <ul>
       {{#each fields.flags.values}}
-        <li>{{name}}: {{view Ember.Select contentBinding="values" valueBinding=current_value prompt=" " optionLabelPath="content"}}</li>
+        <li>{{name}}: {{view Ember.Select contentBinding="values" valueBinding="current_value" prompt=" " optionLabelPath="content"}}</li>
       {{/each}}
     </ul>
 

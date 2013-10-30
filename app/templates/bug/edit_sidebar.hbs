@@ -1,0 +1,295 @@
+<div class="edit-side-bar">
+  <div>
+    {{#link-to "bug" this tagName="button" class="cancel-btn"}}Cancel{{/link-to}}
+    <button class="save-btn" {{action "save"}}>Save</button>
+  </div>
+
+  <div class="status-res">
+    <div>
+      <label>STATUS</label>
+      {{field "status"}}
+    </div>
+    <div>
+      <label>RESOLUTION</label>
+      {{field "resolution"}}
+    </div>
+  </div>
+
+  {{#if isResolvedAsDuplicate}}
+    <div class="dupe_of">
+      <span>Duplicate ID:</span>
+      {{#link-to "bug" fields.dupeOf.currentValue}}{{fields.dupeOf.currentValue}}{{/link-to}}
+    </div>
+    <hr>
+  {{/if}}
+
+  <div>
+    <label>Whiteboard:</label>
+    {{field "whiteboard"}}
+  </div>
+  <hr>
+
+  <div>
+    <label>Keywords:</label>
+    {{field "keywords"}}
+  </div>
+  <hr>
+
+  <div class="product">
+    <label>Product / Component / Version:</label>
+    {{field "product"}}
+    {{field "component"}}
+    {{field "version"}}
+  </div>
+  <hr>
+
+  <div class="hardware">
+    <label>HARDWARE:</label>
+    {{field "platform"}}
+    {{field "opSys"}}
+    <hr>
+  </div>
+
+  <div class="importance">
+    <label>IMPORTANCE:</label>
+    {{field "priority"}}
+    {{field "severity"}}
+    <hr>
+  </div>
+
+  <div>
+    <label>Target Milestone:</label>
+    {{field "targetMilestone"}}
+    <hr>
+  </div>
+
+  <div class="assignee">
+    <label>ASSIGNEE:</label>
+    {{field "assignedTo"}}
+    <button class="inbox-btn">
+      <img src="assets/images/inbox.png" alt="Inbox" />
+    </button>
+    <hr>
+  </div>
+
+  <div>
+    <label>QA Contact:</label>
+    {{field "qaContact"}}
+  </div>
+  <hr>
+
+  <div class="url">
+    <label>URL:</label>
+    {{field "url"}}
+  </div>
+  <hr>
+
+  <div class="depends_on">
+    <label>Depends on:</label>
+    <div>
+      {{#if fields.dependsOn.canEdit}}
+        <span><span>{{multi-value values=fields.dependsOn.currentValue}}</span></span>
+      {{else}}
+        {{#each fields.dependsOn.currentValue}}
+          <span {{bindAttr title="summary"}}>
+            {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+          </span>
+        {{/each}}
+      {{/if}}
+    </div>
+  </div>
+  <hr>
+
+  <div class="blocks">
+    <label>Blocks:</label>
+    <div>
+      {{#if fields.blocks.canEdit}}
+        <span><span>{{multi-value values=fields.dependsOn.currentValue}}</span></span>
+      {{else}}
+        {{#each fields.blocks.currentValue}}
+          <span {{bindAttr title="summary"}}>
+            {{#linkTo "bug" this classNameBindings="isResolved"}}{{this}}{{/linkTo}}
+          </span>
+        {{/each}}
+      {{/if}}
+    </div>
+  </div>
+  <hr>
+
+  <div class="cc">
+    <label>CC LIST:</label>
+    <div>
+      <a href="#" {{action "showCCModal" this}}>{{fields.cc.currentValue.length}} users</a>
+      {{#if currentUserInCCList}}
+        (including you)
+      {{/if}}
+      <button class="write-btn">
+        <img src="assets/images/whitepencil.png" alt="Edit" />
+      </button>
+    </div>
+
+    <label class="notifications">
+      {{#unless currentUserInCCList}}
+        <button {{action "addCurrentUserToCCList"}}>Add me to CC list</button>
+      {{else}}
+        <button {{action "removeCurrentUserFromCCList"}}>Remove me from CC list</button>
+      {{/unless}}
+    </label>
+    <hr>
+  </div>
+
+  <div class="flags">
+    <label>FLAGS:</label>
+
+    <div class="table-container with-button">
+      <table class="table">
+        {{#each fields.flags.currentValue}}
+          <tr>
+            <td>{{emailToUsername setter.email}}</td>
+            <td class="flag-name">{{name}}</td>
+            <td class="flag-status">{{status}}</td>
+            <td>{{requestee.email}}</td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/smallgraypencil.png" alt="Edit" />
+              </button>
+            </td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/grayx.png" alt="Remove" />
+              </button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+    <div class="label-btn with-table">
+      <label>Add a flag
+        <button class="add-btn">+</button>
+      </label>
+    </div>
+    <hr>
+  </div>
+
+  <div>
+    <label>SEE ALSO:</label>
+
+    <div class="table-container with-button">
+      <table class="table">
+        {{#each fields.seeAlso.currentValue}}
+          <tr>
+            <td><a {{bindAttr href=this}}>{{this}}</a></td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/grayx.png" alt="Remove" />
+              </button>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="4"><em>No URLs</em></td></tr>
+        {{/each}}
+      </table>
+    </div>
+    <div class="label-btn with-table">
+      <label>Add a URL
+        <button class="add-btn">+</button>
+      </label>
+    </div>
+  </div>
+  <hr>
+
+  {{#each customFields}}
+    <div {{bind-attr class="name"}}>
+      <label>
+        {{#if description}}
+          {{description}}:
+        {{else}}
+          {{name}}:
+        {{/if}}
+      </label>
+      {{field this}}
+    </div>
+    <hr>
+  {{/each}}
+
+  <div class="project-flags">
+    <label>Project flags:</label>
+    <div class="table-container with-button">
+      <table class="table">
+        {{#each projectFlags.currentValue}}
+          <tr>
+            <td>{{description}}</td>
+            <td>{{currentValue}}</td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/smallgraypencil.png" alt="Edit" />
+              </button>
+            </td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/grayx.png" alt="Remove" />
+              </button>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="4"><em>No flags</em></td></tr>
+        {{/each}}
+      </table>
+    </div>
+    <div class="label-btn with-table">
+      <label>Add a project flag
+        <button class="add-btn">+</button>
+      </label>
+    </div>
+  </div>
+  <hr>
+
+  <div class="tracking-flags">
+    <label>Tracking flags:</label>
+    <div class="table-container with-button">
+      <table class="table">
+        {{#each trackingFlags.currentValue}}
+          <tr>
+            <td>{{description}}</td>
+            <td>{{currentValue}}</td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/smallgraypencil.png" alt="Edit" />
+              </button>
+            </td>
+            <td class="button-cell">
+              <button>
+                <img src="assets/images/grayx.png" alt="Remove" />
+              </button>
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="4"><em>No tracking flags</em></td></tr>
+        {{/each}}
+      </table>
+    </div>
+    <div class="label-btn with-table">
+      <label>Add a tracking flag
+        <button class="add-btn">+</button>
+      </label>
+    </div>
+  </div>
+  <hr>
+
+  <div class="groups">
+    <label>GROUPS:</label>
+    <div>
+      {{fields.groups.currentValue.length}} groups selected
+      <button class="write-btn">
+        <img src="assets/images/whitepencil.png" alt="Edit" />
+      </button>
+    </div>
+    <hr>
+  </div>
+
+  <div>
+    {{#link-to "bug" this tagName="button" class="cancel-btn"}}Cancel{{/link-to}}
+    <button class="save-btn" {{action "save"}}>Save</button>
+  </div>
+
+</div>

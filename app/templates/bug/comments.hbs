@@ -6,9 +6,14 @@
       {{view 'comment' contextBinding="firstComment"}}
       {{#unless isShowingRemainingComments}}
         {{#if remainingComments}}
-          <a href="#" {{action showRemainingComments}}>
-            Show other {{remainingComments.length}} comments
-          </a>
+          <div class="comments-show-all" {{action showRemainingComments}}>
+            <hr>
+            <a href="#">
+              <img src="assets/images/comments.png" alt="Show remaining comments">
+              Show other {{remainingComments.length}} comments
+            </a>
+            <hr>
+          </div>
         {{/if}}
       {{else}}
         {{each remainingComments itemView="comment"}}

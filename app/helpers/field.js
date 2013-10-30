@@ -19,5 +19,7 @@ Ember.Handlebars.registerHelper('field', function(key, options) {
     }
   };
 
-  this.addObserver(key, observer);
+  // key will be an empty string when `this` is passed
+  // TODO: think more about this
+  if (key) { this.addObserver(key, observer); }
 });

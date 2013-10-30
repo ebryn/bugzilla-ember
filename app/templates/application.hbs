@@ -1,9 +1,11 @@
 <header class="main-app-header">
-  {{render 'search'}}
-  {{partial 'nav'}}
+  {{!render 'search'}}
+  {{!partial 'nav'}}
 </header>
 
-{{outlet}}
+<div class="wrapper">
+  {{outlet}}
+</div>
 
 {{#if showingLoginModal}}
   <div class="modal-overlay" {{action hideLoginModal}}></div>

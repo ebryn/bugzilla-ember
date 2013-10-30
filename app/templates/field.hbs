@@ -1,9 +1,13 @@
 {{#if view.isEditing}}
   {{#if view.isTextField}}
-    {{input type="text" value=current_value}}
-  {{else}}
-    {{select name=name content=values value=current_value optionValuePath="name" optionLabelPath="name"}}
+    {{input type="text" value=currentValue}}
+  {{/if}}
+  {{#if view.isTextArea}}
+    {{textarea type="text" value=currentValue rows=1 cols=40}}
+  {{/if}}
+  {{#if view.isSelect}}
+    {{select name=name content=values value=currentValue optionValuePath="name" optionLabelPath="name"}}
   {{/if}}
 {{else}}
-  <span>{{current_value}}</span>
+  <span>{{currentValue}}</span>
 {{/if}}

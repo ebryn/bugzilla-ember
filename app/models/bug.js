@@ -49,8 +49,8 @@ var Bug = Ember.Object.extend({
 
     for (var key in fields) {
       field = fields[key];
-      if (field.can_edit === false) { continue; }
-      values[key] = field.current_value || field.currentValue;
+      if (field.canEdit === false) { continue; }
+      values[key] = field.currentValue;
     }
 
     values.flags = values.flags.map(function(flag) {
@@ -66,10 +66,12 @@ var Bug = Ember.Object.extend({
     });
 
     customFields.forEach(function(field) {
-      values[field.name] = field.current_value || field.currentValue;
+      values[field.name] = field.currentValue;
     });
 
-    return values;
+    values.groups = fields.groups.currentValue.mapProperty('name');
+
+    return underscoreKeys(values);
   },
 
   create: function() {
@@ -99,9 +101,9 @@ var Bug = Ember.Object.extend({
     json.depends_on = {set: json.depends_on};
     json.blocks = {set: json.blocks};
     json.keywords = {set: json.keywords};
-    // TODO: handle these hash values properly
-    delete json.see_also;
-    delete json.groups;
+    json.see_also = serializeSeeAlsoForUpdate(this.get('fields.seeAlso'));
+    json.groups = serializeGroupsForUpdate(this.get('fields.groups'));
+
     return json;
   },
 
@@ -140,13 +142,13 @@ function processAttributes(json) {
   };
 
   json.fields.forEach(function(field) {
-    if (field.can_edit && field.name !== 'longdesc') {
+    field = camelizeKeys(field);
+
+    if (field.canEdit && field.name !== 'longdesc') {
       attrs.canEdit = true;
     }
 
-    if (field.is_custom) {
-      field = camelizeKeys(field);
-
+    if (field.isCustom) {
       if (field.description.match(/^blocking-(b2g|basecamp|kilimanjaro)$/)) {
         attrs.projectFlags.values.push(field);
         if (field.currentValue !== "---") {
@@ -161,11 +163,18 @@ function processAttributes(json) {
         attrs.customFields.push(field);
       }
     } else {
-      attrs.fields[field.name] = field;
+      attrs.fields[field.name.camelize()] = field;
     }
   });
 
+  // hack - API doesn't return can_edit for dupe_of field. filed as #932034.
+  attrs.fields.dupeOf.canEdit = true;
+
   attrs.fields.flags = processFlags(attrs.fields.flags);
+  attrs.fields.groups = processGroups(attrs.fields.groups);
+
+  attrs.fields.seeAlso = camelizeKeys(attrs.fields.seeAlso);
+  attrs.fields.seeAlso.originalValue = (attrs.fields.seeAlso.currentValue || []).slice();
 
   // attrs.attachments = json.attachments;
   // attrs.comments = json.comments;
@@ -183,11 +192,25 @@ function processFlags(flagsField) {
     return FlagDefinition.fromJSON(attrs);
   });
 
-  flagsField.currentValue = flagsField.currentValue.map(function(attrs) {
+  flagsField.currentValue = (flagsField.currentValue || []).map(function(attrs) {
     return Flag.fromJSON(attrs);
   });
 
   return flagsField;
+}
+
+function processGroups(groupsField) {
+  groupsField = camelizeKeys(groupsField);
+
+  // convert group names into group objects
+  groupsField.currentValue = (groupsField.currentValue || []).map(function(groupName) {
+    return groupsField.values.findProperty('name', groupName);
+  });
+
+  // dupe values for later comparison when serializing changes
+  groupsField.originalValue = (groupsField.currentValue || []).slice();
+
+  return groupsField;
 }
 
 function create(type, newAttributes) {
@@ -221,5 +244,53 @@ Bug.reopenClass({
     });
   }
 });
+
+function serializeGroupsForUpdate(groupsField) {
+  var groups = {
+    add: [],
+    remove: []
+  };
+
+  var currentGroups = groupsField.currentValue,
+      originalGroups = groupsField.originalValue;
+
+  currentGroups.forEach(function(group) {
+    if (!originalGroups.contains(group)) {
+      groups.add.push(group.name);
+    }
+  });
+
+  originalGroups.forEach(function(group) {
+    if (!currentGroups.contains(group)) {
+      groups.remove.push(group.name);
+    }
+  });
+
+  return groups;
+}
+
+function serializeSeeAlsoForUpdate(seeAlsoField) {
+  var changes = {
+    add: [],
+    remove: []
+  };
+
+  var currentUrls = seeAlsoField.currentValue,
+      originalUrls = seeAlsoField.originalValue;
+
+  currentUrls.forEach(function(url) {
+    if (!originalUrls.contains(url)) {
+      changes.add.push(url);
+    }
+  });
+
+  originalUrls.forEach(function(url) {
+    if (!currentUrls.contains(url)) {
+      changes.remove.push(url);
+    }
+  });
+
+  return changes;
+}
 
 export default Bug;
