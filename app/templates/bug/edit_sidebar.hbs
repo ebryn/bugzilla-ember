@@ -139,25 +139,21 @@
   </div>
 
   <div class="flags">
-    <label>FLAGS:</label>
+    <label>Flags:</label>
 
     <div class="table-container with-button">
       <table class="table">
-        {{#each fields.flags.currentValue}}
+        {{#each currentFlags itemController="flag"}}
           <tr>
-            <td>{{emailToUsername setter.email}}</td>
+            <td class="flag-setter">{{emailToUsername setter.email}}</td>
             <td class="flag-name">{{name}}</td>
-            <td class="flag-status">{{status}}</td>
-            <td>{{requestee.email}}</td>
-            <td class="button-cell">
-              <button>
-                <img src="assets/images/smallgraypencil.png" alt="Edit" />
-              </button>
+            <td class="flag-status">
+              {{view Ember.Select contentBinding="values" valueBinding="status"}}
             </td>
-            <td class="button-cell">
-              <button>
-                <img src="assets/images/grayx.png" alt="Remove" />
-              </button>
+            <td>
+              {{#if showRequestee}}
+                {{input type="text" value=requestee.email}}
+              {{/if}}
             </td>
           </tr>
         {{/each}}
@@ -198,20 +194,6 @@
   </div>
   <hr>
 
-  {{#each customFields}}
-    <div {{bind-attr class="name"}}>
-      <label>
-        {{#if description}}
-          {{description}}:
-        {{else}}
-          {{name}}:
-        {{/if}}
-      </label>
-      {{field this}}
-    </div>
-    <hr>
-  {{/each}}
-
   <div class="project-flags">
     <label>Project flags:</label>
     <div class="table-container with-button">
@@ -219,16 +201,12 @@
         {{#each projectFlags.currentValue}}
           <tr>
             <td>{{description}}</td>
-            <td>{{currentValue}}</td>
-            <td class="button-cell">
-              <button>
-                <img src="assets/images/smallgraypencil.png" alt="Edit" />
-              </button>
-            </td>
-            <td class="button-cell">
-              <button>
-                <img src="assets/images/grayx.png" alt="Remove" />
-              </button>
+            <td>
+              {{view Ember.Select
+                    contentBinding="values"
+                    optionLabelPath="content.name"
+                    optionValuePath="content.name"
+                    valueBinding="currentValue"}}
             </td>
           </tr>
         {{else}}
@@ -251,16 +229,12 @@
         {{#each trackingFlags.currentValue}}
           <tr>
             <td>{{description}}</td>
-            <td>{{currentValue}}</td>
-            <td class="button-cell">
-              <button>
-                <img src="assets/images/smallgraypencil.png" alt="Edit" />
-              </button>
-            </td>
-            <td class="button-cell">
-              <button>
-                <img src="assets/images/grayx.png" alt="Remove" />
-              </button>
+            <td>
+              {{view Ember.Select
+                    contentBinding="values"
+                    optionLabelPath="content.name"
+                    optionValuePath="content.name"
+                    valueBinding="currentValue"}}
             </td>
           </tr>
         {{else}}
@@ -275,6 +249,21 @@
     </div>
   </div>
   <hr>
+
+
+  {{#each customFields}}
+    <div {{bind-attr class="name"}}>
+      <label>
+        {{#if description}}
+          {{description}}:
+        {{else}}
+          {{name}}:
+        {{/if}}
+      </label>
+      {{field this}}
+    </div>
+    <hr>
+  {{/each}}
 
   <div class="groups">
     <label>GROUPS:</label>

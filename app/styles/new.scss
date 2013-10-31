@@ -1,5 +1,5 @@
 body {
-  font-family: Open Sans, Helvetica, sans serif;
+  font-family: 'Open Sans', Helvetica, sans-serif;
   font-size: 13px;
   background-color: #f2f0e9;
   color: #4e4e4e;
@@ -25,6 +25,7 @@ input, select, textarea {
   width: 99%;
   display: inline-block;
   height: 26px;
+  font-family: 'Open Sans', Helvetica, sans-serif;
   font-size: 13px;
   color: #4E4E4E;
   padding: 2px;
@@ -405,7 +406,6 @@ a:hover {
 
 .cc > div, .groups > div {
   color: #0095dd;
-  font-size: 16px
 }
 
 .cc .notifications {
@@ -515,6 +515,23 @@ a:hover {
   margin: 0px;
 }
 
+.table select {
+  background-color: white;
+  border: none;
+  height: auto;
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.table input[type=text] {
+  border: none;
+  padding: 0;
+  margin: 0;
+  height: auto;
+}
+
 .flag-name {
   width: 95px;
 }
@@ -522,6 +539,10 @@ a:hover {
 .flag-status {
   width: 20px;
   text-align: center;
+}
+
+.flag-setter {
+  width: 80px;
 }
 
 .button-cell {
@@ -534,3 +555,4 @@ a:hover {
     background: none;
     padding: 0;
   }
+

@@ -178,22 +178,6 @@
     <hr>
   {{/if}}
 
-  {{#each customFields itemController="field-show"}}
-    {{#unless isHidden}}
-      <div {{bind-attr class="name"}}>
-        <label>
-          {{#if description}}
-            {{description}}:
-          {{else}}
-            {{name}}:
-          {{/if}}
-        </label>
-        {{field this}}
-      </div>
-      <hr>
-    {{/unless}}
-  {{/each}}
-
   {{#if projectFlags.currentValue}}
     <div class="project-flags">
       <label>Project flags:</label>
@@ -227,6 +211,23 @@
     </div>
     <hr>
   {{/if}}
+
+
+  {{#each customFields itemController="field-show"}}
+    {{#unless isHidden}}
+      <div {{bind-attr class="name"}}>
+        <label>
+          {{#if description}}
+            {{description}}:
+          {{else}}
+            {{name}}:
+          {{/if}}
+        </label>
+        {{field this}}
+      </div>
+      <hr>
+    {{/unless}}
+  {{/each}}
 
   {{#if fields.groups.currentValue}}
     <div class="groups">
