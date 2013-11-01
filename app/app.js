@@ -32,4 +32,7 @@ Ember.RSVP.configure('onerror', function(error) {
   Ember.Logger.assert(false, error);
 });
 
+Ember.LinkView.reopen({attributeBindings: ['style']});
+Ember.TextSupport.reopen({attributeBindings: ['style']});
+
 export default App;

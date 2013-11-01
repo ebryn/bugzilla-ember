@@ -1,0 +1,9 @@
+<label>Add a new project flag:</label>
+{{#if newProjectFlags.values}}
+  {{view Ember.Select contentBinding="newProjectFlags.values" optionLabelPath="content.description" selectionBinding="newProjectFlag"}}
+  {{view Ember.Select contentBinding="newProjectFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newProjectFlagStatus"}}
+  <button {{action "add" target=view}}>Add</button>
+{{else}}
+  No additional project flags to add
+{{/if}}
+<span><a href="#" {{action "close" target=view}}>Cancel & Close</a></span>

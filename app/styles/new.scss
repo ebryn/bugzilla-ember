@@ -1,8 +1,11 @@
 body {
   font-family: 'Open Sans', Helvetica, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 400;
   background-color: #f2f0e9;
   color: #4e4e4e;
+  -webkit-font-smoothing: antialiased;
+  margin-bottom: 20px;
 }
 
 hr {
@@ -19,12 +22,15 @@ img {
   vertical-align: middle;
 }
 
+input, select {
+  height: 26px;
+}
+
 input, select, textarea {
   border-radius: 3px;
   border: 1px solid #C4C4C4;
   width: 99%;
   display: inline-block;
-  height: 26px;
   font-family: 'Open Sans', Helvetica, sans-serif;
   font-size: 13px;
   color: #4E4E4E;
@@ -35,10 +41,13 @@ input, select, textarea {
 select {
   color: #4e4e4e;
   height: 26px;
-  width: 110px;
   background-color: #fff;
   border: 1px solid #d7d3c8;
 
+}
+
+input[type=text] {
+  -webkit-font-smoothing: antialiased;
 }
 
 input[type=checkbox] {
@@ -83,14 +92,32 @@ a:hover {
   background-color: #f2f0e9;
 }
 
-.bug-info {
-  height: 104px;
-  background-color: #ffffff;
-  margin-bottom: 35px;
+.nav {
+  list-style: none;
+  padding: 0px;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  font-size: 16px;
 }
 
-.bug-info div {
-  padding-top: 15px;
+.nav li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.search {
+  float: right;
+  width: 450px;
+}
+
+.bug-info {
+  /* height: 104px; */
+  background-color: #ffffff;
+  margin-bottom: 35px;
+  padding: 10px 20px 10px 10px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .bug-name {
@@ -101,7 +128,7 @@ a:hover {
   color: #4f4f4f;
   border: 1px solid #C4C4C4;
   border-radius: 3px;
-  margin-left: 25px;
+  padding-left: 8px;
 }
 
 .bug-no {
@@ -111,7 +138,10 @@ a:hover {
   font-size: 20px;
   color: #1d8cc9;
   margin-top: 14px;
-  margin-right: 25px;
+}
+
+.bug-stats {
+  padding-top: 7px;
 }
 
 .bug-stats span {
@@ -120,7 +150,7 @@ a:hover {
   font-weight: 700;
   font-size: 12px;
   color: #a7a7a7;
-  margin-left: 30px;
+  margin-left: 10px;
 }
 
 /*.bug-stats > span:last-of-type {
@@ -134,11 +164,12 @@ a:hover {
 }
 
 .bug-alias {
-  display: inline;
+  float: right;
+  margin-top: -3px;
 }
 
 .bug-alias input {
-  width: 150px;
+  width: 130px;
 }
 
 .main-view {
@@ -156,19 +187,19 @@ a:hover {
 
 .comment {
   display: inline-block;
-  width: 900px;
+  width: 860px;
   margin-top: 13px;
-  min-height: 200px;
   background-color: #ffffff;
-}
-
-.comment hr {
-  border-top: 1px solid #cecece;
+  padding: 20px;
 }
 
 .comments-show-all {
   font-size: 16px;
 
+}
+
+.comments-show-all a {
+  text-decoration: none;
 }
 
 .comments-show-all img {
@@ -177,17 +208,26 @@ a:hover {
 }
 
 .comment-header {
-  width: 831px;
-  margin-left: 34px;
-  margin-top: 28px;
+  border-bottom: 1px solid #cecece;
+  padding-bottom: 15px;
 }
 
-.comment-header > img:last-of-type {
+
+.comment-reply {
   float: right;
 }
 
 .comment-header hr {
   margin-top: 15px;
+}
+
+.new-comment {
+
+}
+
+.new-comment textarea {
+  font-family: 'Droid Sans Mono', Menlo, Courier, monospace;
+  font-size: 13px;
 }
 
 .avatar {
@@ -204,9 +244,6 @@ a:hover {
 }
 
 .comment-text {
-  width: 831px;
-  margin-left: 34px;
-  margin-bottom: 28px;
   font-family: 'Droid Sans Mono', Menlo, Courier, monospace;
   font-size: 13px;
   white-space: pre-wrap;
@@ -215,9 +252,9 @@ a:hover {
 .edit-side-bar {
   position: absolute;
   right: 0px;
-  top: 132px;
-  background-color: #f2f0e9;
+  top: 194px;
   width: 325px;
+  padding-bottom: 20px;
 }
 
 .edit-side-bar > div {
@@ -253,7 +290,7 @@ a:hover {
   background-color: #ea5439;
   color: white;
   border: 1px solid #b02832;
-  border-radius: 3px;
+  border-radius: 3px 0px 0px 3px;
 
   /* IE10 Consumer Preview */
   background-image: -ms-linear-gradient(bottom, #f05f64 0%, #e4474d 100%);
@@ -277,7 +314,7 @@ a:hover {
   background-color: #57ba45;
   color: white;
   border: 1px solid #409433;
-  border-radius: 3px;
+  border-radius: 0px 3px 3px 0px;
   margin-left: -4px;
 
   /* IE10 Consumer Preview */
@@ -335,6 +372,10 @@ a:hover {
   background-image: linear-gradient(to top, #77c6f5 0%, #5fb0eb 100%);
 }
 
+.write-btn, .inbox-btn {
+  padding: 3px 0px 0px 2px;
+}
+
 .write-btn {
   float: right;
 }
@@ -369,7 +410,12 @@ a:hover {
   border-bottom: 2px solid #e7e5de;
 }
 
+.status-res span {
+  line-height: 35px;
+}
+
 .status-res select {
+  width: 110px;
   margin-top: 5px;
 }
 
@@ -386,16 +432,16 @@ a:hover {
   width: 203px;
 }
 
-.hardware > select, .importance > select {
+.hardware select, .importance select {
   width: 60%;
 }
 
-.hardware select:first-of-type, .importance select:first-of-type {
+.hardware span:first-of-type select:first-of-type, .importance span:first-of-type select:first-of-type {
   width: 37%;
   margin-right: 5px;
 }
 
-.assignee > input {
+.assignee input {
   width: 286px;
 }
 
@@ -430,9 +476,11 @@ a:hover {
   border-radius: 3px;
   background-color:#69bcf3;
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
-.label-btn button {
+.label-btn button,
+.label-btn .button {
   float: right;
   margin: -1px 0; /* for the left border to grow past the label's border */
   background: transparent;
@@ -448,6 +496,7 @@ a:hover {
 
 .table-container td {
   box-sizing: border-box; /* this fixes width issues related to padding */
+  -moz-box-sizing: border-box;
 }
 
 .table-container {
@@ -515,14 +564,27 @@ a:hover {
   margin: 0px;
 }
 
+.table .select-container {
+  position: relative;
+}
+
+.table .select-container img {
+  position: absolute;
+  right: 2px;
+  top: 7px;
+  z-index: 1;
+}
+
 .table select {
-  background-color: white;
+  background-color: transparent;
   border: none;
   height: auto;
   -webkit-appearance: none;
   width: 100%;
   margin: 0;
   padding: 0;
+  position: relative;
+  z-index: 2; /* the select is overlaying the arrow */
 }
 
 .table input[type=text] {
@@ -537,12 +599,24 @@ a:hover {
 }
 
 .flag-status {
-  width: 20px;
+  width: 34px;
   text-align: center;
+}
+
+.flag-status select {
+  width: 54px; /* +20px to chop off the select's arrow */
 }
 
 .flag-setter {
   width: 80px;
+}
+
+.table .status {
+  width: 125px;
+}
+
+.table .status select {
+  width: 145px; /* +20px to chop off the select's arrow */
 }
 
 .button-cell {
@@ -556,3 +630,54 @@ a:hover {
     padding: 0;
   }
 
+
+.popover {
+  background-color: #fff;
+  /* height: 125px; */
+  width: 345px;
+  position: absolute;
+  border-color: #e8e7e0;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: 8px 7px 28px rgba(0, 0, 0, 0.5);
+  right: 345px;
+  top: 213px;
+}
+
+.popover-content {
+  margin: 15px;
+  margin-top: -10px;
+}
+
+.popover label {
+  margin-bottom: 15px;
+}
+
+.popover label > input {
+  margin-top: 3px;
+}
+
+.popover span {
+  vertical-align: baseline;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.popover a {
+  font-size: 14px;
+  vertical-align: sub;
+}
+
+.add-pop-btn {
+  float: right;
+}
+
+.keywords-popover .pointy {
+  position: relative;
+  width: 0;
+  height: 0;
+  right: -325px;
+  top: 48px;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 15px solid #fff;
+}

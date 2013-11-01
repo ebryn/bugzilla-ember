@@ -1,6 +1,6 @@
 <div class="bug-info">
   <div>
-    <span class="bug-name" style="border: 1px solid white; display: inline-block; padding: 5px 0px 1px 4px;">{{fields.summary.currentValue}}</span>
+    {{input type="text" class="bug-name" value=fields.summary.currentValue style="border: 1px solid white;" readonly="readonly"}}
     {{#linkTo "bug" this class="bug-no"}}Bug {{id}}{{/linkTo}}
   </div>
   <div class="bug-stats">

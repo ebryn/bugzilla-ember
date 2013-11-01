@@ -1,0 +1,8 @@
+<label>Add a new flag:</label>
+{{view Ember.Select contentBinding="newFlags" selectionBinding="newFlagDefinition" optionLabelPath="content.name" prompt=" "}}
+{{view Ember.Select contentBinding="newFlagDefinition.values" valueBinding="newFlagStatus" optionLabelPath="content" prompt=" "}}
+{{#if shouldShowNewFlagRequestee}}
+  <label>Requestee: {{input type="text" value=newFlagRequestee}}</label>
+{{/if}}
+<span><a href="#" {{action "close" target=view}}>Cancel & Close</a></span>
+<button type="button" class="add-pop-btn" {{action "add" target=view}}>Add</button>

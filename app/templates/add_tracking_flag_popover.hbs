@@ -1,0 +1,9 @@
+Add a new tracking flag
+{{#if newTrackingFlags}}
+  {{view Ember.Select contentBinding="newTrackingFlags" optionLabelPath="content.description" selectionBinding="newTrackingFlag"}}
+  {{view Ember.Select contentBinding="newTrackingFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newTrackingFlagStatus"}}
+  <button {{action "add" target=view}}>Add</button>
+{{else}}
+  No additional tracking flags to add
+{{/if}}
+<span><a href="#" {{action "close" target=view}}>Cancel & Close</a></span>

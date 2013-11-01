@@ -6,9 +6,9 @@
       {{view 'comment' contextBinding="firstComment"}}
       {{#unless isShowingRemainingComments}}
         {{#if remainingComments}}
-          <div class="comments-show-all" {{action showRemainingComments}}>
+          <div class="comments-show-all">
             <hr>
-            <a href="#">
+            <a href="#" {{action "showRemainingComments"}}>
               <img src="assets/images/comments.png" alt="Show remaining comments">
               Show other {{remainingComments.length}} comments
             </a>
@@ -21,14 +21,14 @@
       {{each lastFewComments itemView="comment"}}
     {{/if}}
     {{#if user.isLoggedIn}}
-      <div class="new-comment-text">
+      <div class="new-comment">
         <h4>New Comment:</h4>
-        {{textarea value=newCommentText cols=80 rows=25}}
+        {{textarea value=newCommentText cols=80 rows=10}}
         <br>
         {{#if newCommentIsSaving}}
           Saving...
         {{else}}
-          <button {{action saveComment}}>Save</button>
+          <button {{action "saveComment"}}>Save</button>
         {{/if}}
       </div>
     {{else}}

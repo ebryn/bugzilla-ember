@@ -2,13 +2,12 @@
   {{gravatar creator}}
   <span>{{creator}}</span>
   <span class="comment-date">
-    <img src="assets/images/clock.png" alt="Date" />
+    <img src="assets/images/clock.png" alt="Date">
     {{creation_time}}
   </span>
   {{! FIXME: this could be better }}
   {{#if controller.user.isLoggedIn}}
-    <img src="assets/images/reply.png" alt="Reply" />
+    <span class="comment-reply"><img src="assets/images/reply.png" alt="Reply" {{action "reply" this}}>
   {{/if}}
-  <hr>
 </header>
 <pre class="comment-text">{{linkify text}}</pre>

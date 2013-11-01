@@ -4,6 +4,12 @@
     <button class="save-btn" {{action "save"}}>Save</button>
   </div>
 
+  {{#if flashMessage}}
+    <div class="flash">
+      {{flashMessage}}
+    </div>
+  {{/if}}
+
   <div class="status-res">
     <div>
       <label>STATUS</label>
@@ -128,13 +134,13 @@
       </button>
     </div>
 
-    <label class="notifications">
+    <div class="notifications">
       {{#unless currentUserInCCList}}
         <button {{action "addCurrentUserToCCList"}}>Add me to CC list</button>
       {{else}}
         <button {{action "removeCurrentUserFromCCList"}}>Remove me from CC list</button>
       {{/unless}}
-    </label>
+    </div>
     <hr>
   </div>
 
@@ -148,7 +154,10 @@
             <td class="flag-setter">{{emailToUsername setter.email}}</td>
             <td class="flag-name">{{name}}</td>
             <td class="flag-status">
-              {{view Ember.Select contentBinding="values" valueBinding="status"}}
+              <div class="select-container">
+                {{view Ember.Select contentBinding="values" valueBinding="status"}}
+                <img src="assets/images/downarrow.png">
+              </div>
             </td>
             <td>
               {{#if showRequestee}}
@@ -159,11 +168,9 @@
         {{/each}}
       </table>
     </div>
-    <div class="label-btn with-table">
-      <label>Add a flag
-        <button class="add-btn">+</button>
-      </label>
-    </div>
+    {{#view "popover_open_button" kind="add_flag_popover"}}
+      Add a flag
+    {{/view}}
     <hr>
   </div>
 
@@ -176,7 +183,7 @@
           <tr>
             <td><a {{bindAttr href=this}}>{{this}}</a></td>
             <td class="button-cell">
-              <button>
+              <button {{action "removeSeeAlsoUrl" this}}>
                 <img src="assets/images/grayx.png" alt="Remove" />
               </button>
             </td>
@@ -186,11 +193,9 @@
         {{/each}}
       </table>
     </div>
-    <div class="label-btn with-table">
-      <label>Add a URL
-        <button class="add-btn">+</button>
-      </label>
-    </div>
+    {{#view "popover_open_button" kind="add_url_popover"}}
+      Add a URL
+    {{/view}}
   </div>
   <hr>
 
@@ -201,12 +206,15 @@
         {{#each projectFlags.currentValue}}
           <tr>
             <td>{{description}}</td>
-            <td>
-              {{view Ember.Select
+            <td class="status">
+              <div class="select-container">
+                {{view Ember.Select
                     contentBinding="values"
                     optionLabelPath="content.name"
                     optionValuePath="content.name"
                     valueBinding="currentValue"}}
+                <img src="assets/images/downarrow.png">
+              </div>
             </td>
           </tr>
         {{else}}
@@ -214,11 +222,9 @@
         {{/each}}
       </table>
     </div>
-    <div class="label-btn with-table">
-      <label>Add a project flag
-        <button class="add-btn">+</button>
-      </label>
-    </div>
+    {{#view "popover_open_button" kind="add_project_flag_popover"}}
+      Add a project flag
+    {{/view}}
   </div>
   <hr>
 
@@ -229,12 +235,15 @@
         {{#each trackingFlags.currentValue}}
           <tr>
             <td>{{description}}</td>
-            <td>
-              {{view Ember.Select
-                    contentBinding="values"
-                    optionLabelPath="content.name"
-                    optionValuePath="content.name"
-                    valueBinding="currentValue"}}
+            <td class="status">
+              <div class="select-container">
+                {{view Ember.Select
+                      contentBinding="values"
+                      optionLabelPath="content.name"
+                      optionValuePath="content.name"
+                      valueBinding="currentValue"}}
+                <img src="assets/images/downarrow.png">
+              </div>
             </td>
           </tr>
         {{else}}
@@ -242,11 +251,9 @@
         {{/each}}
       </table>
     </div>
-    <div class="label-btn with-table">
-      <label>Add a tracking flag
-        <button class="add-btn">+</button>
-      </label>
-    </div>
+    {{#view "popover_open_button" kind="add_tracking_flag_popover"}}
+      Add a tracking flag
+    {{/view}}
   </div>
   <hr>
 
@@ -280,5 +287,12 @@
     {{#link-to "bug" this tagName="button" class="cancel-btn"}}Cancel{{/link-to}}
     <button class="save-btn" {{action "save"}}>Save</button>
   </div>
+
+  {{#if flashMessage}}
+    <div class="flash">
+      {{flashMessage}}
+    </div>
+  {{/if}}
+
 
 </div>

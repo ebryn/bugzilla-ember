@@ -275,7 +275,7 @@ var BugController = Ember.ObjectController.extend({
       var currentFlags = this.get('fields.flags.currentValue'),
           newFlag = Flag.fromDefinition(flagDefinition, {
             status: flagStatus,
-            requestee: this.get('newFlagRequestee')
+            requestee: {email: this.get('newFlagRequestee')}
           });
 
       currentFlags.pushObject(newFlag);
