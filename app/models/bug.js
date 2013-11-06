@@ -136,8 +136,8 @@ function processAttributes(json) {
     id: json.id,
     fields: {},
     customFields: [],
-    projectFlags: {currentValue: [], values: []},
-    trackingFlags: {currentValue: [], values: []},
+    projectFlags: {currentValue: [], values: [], canEdit: false},
+    trackingFlags: {currentValue: [], values: [], canEdit: false},
     canEdit: false
   };
 
@@ -154,11 +154,13 @@ function processAttributes(json) {
         if (field.currentValue !== "---") {
           attrs.projectFlags.currentValue.push(field);
         }
+        if (field.canEdit) { attrs.projectFlags.canEdit = true; }
       } else if (field.description.match(/^(tracking|status|relnote|blocking)-/)) {
         attrs.trackingFlags.values.push(field);
         if (field.currentValue !== "---") {
           attrs.trackingFlags.currentValue.push(field);
         }
+        if (field.canEdit) { attrs.trackingFlags.canEdit = true; }
       } else {
         attrs.customFields.push(field);
       }
@@ -167,8 +169,12 @@ function processAttributes(json) {
     }
   });
 
-  // hack - API doesn't return can_edit for dupe_of field. filed as #932034.
-  attrs.fields.dupeOf.canEdit = true;
+  // hack - API doesn't return can_edit for these fields. filed as #932034.
+  if (attrs.fields.dupeOf) {
+    attrs.fields.dupeOf.canEdit = true;
+  }
+  attrs.fields.blocks.canEdit = true;
+  attrs.fields.dependsOn.canEdit = true;
 
   attrs.fields.flags = processFlags(attrs.fields.flags);
   attrs.fields.groups = processGroups(attrs.fields.groups);

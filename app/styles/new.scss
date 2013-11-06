@@ -131,6 +131,10 @@ a:hover {
   padding-left: 8px;
 }
 
+.bug-name[readonly=readonly] {
+  border: 1px solid white;
+}
+
 .bug-no {
   display: inline-table;
   float: right;
@@ -176,13 +180,28 @@ a:hover {
   width: 900px;
 }
 
-.attachments {
-  display: inline-block;
-  width: 900px;
-  min-height: 200px;
-  background-color: #d7d3c8;
-  margin-bottom: 14px;
+.attachments-container {
+  padding: 20px;
+  background: white;
+}
 
+.attachments {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attachments td {
+  padding: 4px 0px;
+  border-bottom: 1px solid #cecece;
+}
+
+.attachments tfoot td {
+  padding: 8px 0px 0px 0px;
+  border-bottom: none;
+}
+
+.attachments .details {
+  font-size: 11px;
 }
 
 .comment {
@@ -195,7 +214,10 @@ a:hover {
 
 .comments-show-all {
   font-size: 16px;
-
+  border-top: 1px solid #cecece;
+  border-bottom: 1px solid #cecece;
+  padding: 13px 0px;
+  margin-top: 13px;
 }
 
 .comments-show-all a {
@@ -221,8 +243,9 @@ a:hover {
   margin-top: 15px;
 }
 
-.new-comment {
-
+.new-comment button {
+  height: auto;
+  width: auto;
 }
 
 .new-comment textarea {
@@ -264,7 +287,7 @@ a:hover {
   font-size: 13px;
 }
 
-.edit-side-bar label {
+.edit-side-bar label, .popover label {
   font-size: 11px;
   font-weight: 800;
 }
@@ -280,6 +303,31 @@ a:hover {
 .with-button > input {
   width: 130px;
   display: inline-block;
+}
+
+.edit-btn {
+  font-size: 20px;
+  font-weight: 400;
+  background: #5BC6FB;
+  color: white;
+  height: 44px;
+  width: 100%;
+  border: 1px solid #40B3F8;
+  border-radius: 3px;
+
+
+  /* IE10 Consumer Preview */
+  background-image: -ms-linear-gradient(bottom, #40AEF2 0%, #5AD0FF 100%);
+      /* Mozilla Firefox */
+  background-image: -moz-linear-gradient(bottom, #40AEF2 0%, #5AD0FF 100%);
+      /* Opera */
+  background-image: -o-linear-gradient(bottom, #40AEF2 0%, #5AD0FF 100%);
+      /* Webkit (Safari/Chrome 10) */
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #40AEF2), color-stop(1, #5AD0FF));
+      /* Webkit (Chrome 11+) */
+  background-image: -webkit-linear-gradient(bottom, #40AEF2 0%, #5AD0FF 100%);
+      /* W3C Markup, IE10 Release Preview */
+  background-image: linear-gradient(to top, #40AEF2 0%, #5AD0FF 100%);
 }
 
 .cancel-btn {
@@ -349,7 +397,7 @@ a:hover {
   vertical-align: middle;
 }
 
-.add-btn, .write-btn, .inbox-btn {
+.add-btn, .write-btn, .inbox-btn, .add-pop-btn, .save-comment-btn, .remove-cc-btn {
   color: white;
   width: 22px;
   height: 22px;
@@ -396,12 +444,23 @@ a:hover {
   margin-right: 15px;
 }
 
+.alert.error {
+  background-color: red;
+  color: white;
+  height: auto;
+  border: 1px solid red;
+}
+
 .status-res > div{
   height: 70px;
   background-color: #FFF;
   display: inline-block;
   width: 49%;
   text-align: center;
+}
+
+.status-res .full {
+  width: 100%;
 }
 
 .status-res label {
@@ -646,11 +705,10 @@ a:hover {
 
 .popover-content {
   margin: 15px;
-  margin-top: -10px;
 }
 
 .popover label {
-  margin-bottom: 15px;
+  margin-bottom: 3px;
 }
 
 .popover label > input {
@@ -662,22 +720,155 @@ a:hover {
   vertical-align: -webkit-baseline-middle;
 }
 
+.popover button {
+  font-size: 14px;
+  font-weight: 600;
+  height: 28px;
+  height: auto;
+  width: auto;
+}
+
 .popover a {
   font-size: 14px;
   vertical-align: sub;
+}
+
+.cc-popover {
+
+}
+
+.cc-popover ul {
+  height: 190px;
+  overflow: auto;
+  width: 97%;
+  list-style: none;
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.cc-popover input {
+  width: 235px;
+  height: 23px;
+  margin-bottom: 5px;
 }
 
 .add-pop-btn {
   float: right;
 }
 
-.keywords-popover .pointy {
-  position: relative;
+.remove-cc-btn {
+  margin-top: 10px;
+  margin-left: 0px;
+}
+
+.popover-content div > div {
+  display: inline-block;
+  width: auto;
+}
+
+.flag-name-pop select {
+  width: 200px;
+  margin-left: -3px;
+}
+
+.flag-name-pop {
+  margin-right: 8px;
+  margin-bottom: 5px;
+}
+
+
+.status-pop select {
+  width: 80px;
+}
+
+.requestee-pop {
+  margin-top: 3px;
+}
+
+.requestee-pop input {
+  width: 200px;
+  height: 23px;
+}
+
+
+.popover .pointy {
+  position: absolute;
   width: 0;
   height: 0;
-  right: -325px;
-  top: 48px;
+  right: -11px;
+  top: 50%;
+  margin-top: -15px; /* half the height of the arrow */
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
   border-left: 15px solid #fff;
+}
+
+/** Modal
+========================================================================== */
+.modal-overlay {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.8);
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 250px;
+
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+// Modal style
+.modal {
+  background: white;
+  border: 1px solid black;
+  border-radius: 4px;
+
+  padding: 1rem;
+
+  input {
+    width: 100%;
+  }
+}
+/** Attachment Modal
+========================================================================== */
+.attachment {
+  @extend .modal;
+  width: 400px;
+  text-align: left;
+
+  th {
+    padding-right: 3px;
+  }
+
+  input {
+    margin-bottom: 6px;
+    border-radius: 2px;
+    width: 100%;
+  }
+
+  input[type="file"] {
+    border-style: none;
+  }
+
+  textarea {
+    width: 100%;
+    margin-bottom: 3px;
+  }
+
+  button {
+    float: right;
+  }
+
 }

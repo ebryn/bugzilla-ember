@@ -16,14 +16,26 @@ var Attachment = Ember.Model.extend({
   attacher: attr(),
   flags: attr(),
   last_change_time: attr(),
-  contentType: attr(),
+  content_type: attr(),
   encodedData: attr(),
 
   decodedData: function() {
     var encodedData = this.get('encodedData');
     if (encodedData) { return atob(encodedData); }
- }.property('encodedData')
+  }.property('encodedData'),
 
+  isDeleted: function() {
+    return this.get('size') === 0;
+  }.property('size'),
+
+  isText: function() {
+    var content_type = this.get('content_type');
+    return this.get('is_patch') || (content_type && !content_type.match('image'));
+  }.property('is_patch', 'content_type'),
+
+  dataUri: function() {
+    return 'data:%@;base64,%@'.fmt(this.get('content_type'), this.get('encodedData'));
+  }.property('content_type', 'encodedData')
 });
 
 Attachment.reopenClass({
@@ -31,7 +43,7 @@ Attachment.reopenClass({
     find: function(record, id) {
       var url = urlFor("bug/attachment/" + id);
 
-      getJSON(url).then(function(json) {
+      return getJSON(url).then(function(json) {
         var attachmentJson = json.attachments[id];
         // FIXME: workaround data being a special property in EM
         attachmentJson.encodedData = attachmentJson.data;
@@ -66,7 +78,7 @@ Attachment.reopenClass({
         type: "POST",
         dataType: 'json',
         // contentType: 'application/json',
-        data: {ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.contentType}
+        data: {ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.content_type}
       }).then(function(json) {
         var id = Object.keys(json.attachments)[0],
             attachmentJson = json.attachments[id];

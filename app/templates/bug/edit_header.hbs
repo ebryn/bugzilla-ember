@@ -1,19 +1,29 @@
 <div class="bug-info">
   <div>
-    {{input type="text" class="bug-name" value=fields.summary.currentValue}}
+    {{#if fields.summary.canEdit}}
+      {{input type="text" class="bug-name" value=fields.summary.currentValue}}
+    {{else}}
+      {{input type="text" class="bug-name" value=fields.summary.currentValue readonly="readonly"}}
+    {{/if}}
     {{#linkTo "bug" this class="bug-no"}}Bug {{id}}{{/linkTo}}
   </div>
   <div class="bug-stats">
     <span>Reported at:</span>
-    <p>{{fields.creationTime.currentValue}}</p>
+    <p {{bindAttr title="fields.creationTime.currentValue"}}>{{formatDate fields.creationTime.currentValue}}</p>
     <span>By:</span>
     <p>{{fields.creator.currentValue}}</p>
     <span>last updated:</span>
-    <p>{{fields.lastChangeTime.currentValue}}</p>
+    <p {{bindAttr title="fields.lastChangeTime.currentValue"}}>{{formatDate fields.lastChangeTime.currentValue}}</p>
     {{#if fields.alias.currentValue}}
       <div class="bug-alias">
         <span>alias:</span>
-        <p>{{input type="text" value=fields.alias.currentValue}}</p>
+        <p>
+          {{#if fields.alias.canEdit}}
+            {{input type="text" value=fields.alias.currentValue}}
+          {{else}}
+            {{fields.alias.currentValue}}
+          {{/if}}
+        </p>
       </div>
     {{/if}}
   </div>

@@ -84,12 +84,12 @@ var BugController = Ember.ObjectController.extend({
   }.property('user.username', 'fields.cc.currentValue.[]'),
 
   isResolved: function() {
-    return this.get('fields.status.current_value') === 'RESOLVED';
-  }.property('fields.status.current_value'),
+    return this.get('fields.status.currentValue') === 'RESOLVED';
+  }.property('fields.status.currentValue'),
 
   isResolvedAsDuplicate: function() {
-    return this.get('isResolved') && this.get('fields.resolution.current_value') === 'DUPLICATE';
-  }.property('isResolved', 'fields.resolution.current_value'),
+    return this.get('isResolved') && this.get('fields.resolution.currentValue') === 'DUPLICATE';
+  }.property('isResolved', 'fields.resolution.currentValue'),
 
   filteredAttachments: function() {
     var attachments = this.get('attachments') || [];

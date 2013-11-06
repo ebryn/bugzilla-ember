@@ -1,18 +1,20 @@
-<div class="modal-overlay" {{action "hideModal"}}></div>
-<div class="modal" style="width: 400px">
-  <h4> CCs </h4>
+<div>
   <form {{action "save" on="submit"}}>
-    <label>Add:</label>
+    <label>add new email: </label>
     {{input type="text" value=newEmails}}
-    {{#if isSaving}}
-      Saving...
-    {{else}}
-      <button>Save</button>
-    {{/if}}
+    <button class="add-pop-btn" {{bindAttr disabled=isSaving}}>Add</button>
   </form>
-  <ul style="height: 300px; overflow: auto">
+</div>
+<div class="cc-list-pop">
+  <label>cc list: </label>
+  <ul>
     {{#each cc}}
       <li>{{this}}</li>
     {{/each}}
   </ul>
 </div>
+
+<div>
+  <button type="button" class="remove-cc-btn">Remove Selected CCs</button>
+</div>
+<span><a href="#" {{action "close" target=view}}>Cancel & Close</a></span>

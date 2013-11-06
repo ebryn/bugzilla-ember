@@ -1,7 +1,7 @@
 function underscoreKeys(obj) {
   var ret, value;
 
-  if (typeof obj !== 'object') {
+  if (obj === null || typeof obj !== 'object') {
     return obj;
   } else if (Ember.typeOf(obj) === 'array') {
     ret = [];

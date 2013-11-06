@@ -7,12 +7,10 @@
       {{#unless isShowingRemainingComments}}
         {{#if remainingComments}}
           <div class="comments-show-all">
-            <hr>
             <a href="#" {{action "showRemainingComments"}}>
               <img src="assets/images/comments.png" alt="Show remaining comments">
               Show other {{remainingComments.length}} comments
             </a>
-            <hr>
           </div>
         {{/if}}
       {{else}}
@@ -28,7 +26,7 @@
         {{#if newCommentIsSaving}}
           Saving...
         {{else}}
-          <button {{action "saveComment"}}>Save</button>
+          <button class="save-comment-btn" {{action "saveComment"}}>Save</button>
         {{/if}}
       </div>
     {{else}}

@@ -15,7 +15,9 @@ var Route = Ember.Route.extend(AuthenticatedRouteMixin, {
       });
     },
 
-    showCCModal: function(bug) {
+    showCCModal: function(bug, a, b, c, d) {
+      debugger;
+
       this.render('bug/cc_modal', {
         into: 'bug',
         outlet: 'modal'

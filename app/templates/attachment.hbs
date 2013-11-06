@@ -1,9 +1,13 @@
 <article class="attachment-main">
   <h1>{{description}}</h1>
 
-  {{#unless decodedData}}
-    Loading attachment data...
+  {{#if isDeleted}}
+    Attachment was deleted
   {{else}}
-    <pre><code>{{decodedData}}</code></pre>
-  {{/unless}}
+    {{#if isText}}
+      <pre><code>{{decodedData}}</code></pre>
+    {{else}}
+      <img {{bindAttr src="dataUri"}}>
+    {{/if}}
+  {{/if}}
 </article>

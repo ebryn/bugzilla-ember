@@ -3,22 +3,22 @@
   <h1 class="newBug__header">New bug</h1>
 
   {{#if flashMessage}}
-    <div class="flash">
+    <div class="alert error">
       {{flashMessage}}
     </div>
   {{/if}}
 
   <div class="form__item">
     <label>Summary:</label>
-    {{input type="text" value=fields.summary.current_value}}
+    {{input type="text" value=fields.summary.currentValue}}
   </div>
   <div class="form__item">
     <label>Component:</label>
-    {{select content=fields.component.values selection=selectedComponent value=fields.component.current_value optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}
+    {{select content=fields.component.values selection=selectedComponent value=fields.component.currentValue optionLabelPath="name" optionValuePath="name" prompt="[Component]"}}
   </div>
   <div class="form__item">
     <label>Version:</label>
-    {{select content=fields.version.values value=fields.version.current_value optionLabelPath="name" prompt="[Version]"}}
+    {{select content=fields.version.values value=fields.version.currentValue optionLabelPath="name" prompt="[Version]"}}
   </div>
   <div class="form__item">
     <label>Severity:</label>
@@ -26,57 +26,57 @@
   </div>
   <div class="form__item">
     <label>Hardware:</label>
-    {{select content=fields.platform.values value=fields.platform.current_value optionLabelPath="name" prompt="[Hardware]"}}
+    {{select content=fields.platform.values value=fields.platform.currentValue optionLabelPath="name" prompt="[Hardware]"}}
   </div>
   <div class="form__item">
     <label>OS:</label>
-    {{select content=fields.op_sys.values value=fields.op_sys.current_value optionLabelPath="name" prompt="[OS]"}}
+    {{select content=fields.opSys.values value=fields.opSys.currentValue optionLabelPath="name" prompt="[OS]"}}
   </div>
   <div class="form__item">
     <label>Priority:</label>
-    {{select content=fields.priority.values value=fields.priority.current_value optionLabelPath="name"}}
+    {{select content=fields.priority.values value=fields.priority.currentValue optionLabelPath="name"}}
   </div>
   <div class="form__item" style="display: none">
     <label>Flags:</label>
 
     <ul>
       {{#each fields.flags.values}}
-        <li>{{name}}: {{view Ember.Select contentBinding="values" valueBinding="current_value" prompt=" " optionLabelPath="content"}}</li>
+        <li>{{name}}: {{view Ember.Select contentBinding="values" valueBinding="currentValue" prompt=" " optionLabelPath="content"}}</li>
       {{/each}}
     </ul>
 
   </div>
   <div class="form__item">
     <label>Status:</label>
-    {{select content=fields.status.values value=fields.status.current_value optionLabelPath="name" disabled=true}}
+    {{select content=fields.status.values value=fields.status.currentValue optionLabelPath="name" disabled=true}}
   </div>
   <div class="form__item">
     <label>Assignee:</label>
-    {{input type="text" value=assigned_to disabled=cannotEditAssignee}}
+    {{input type="text" value=assignedTo disabled=cannotEditAssignee}}
   </div>
   <div class="form__item">
     <label>Default CC:</label>
-    <span class="field">{{initial_cc}}</span>
+    <span class="field">{{initialCc}}</span>
   </div>
   <div class="form__item">
     <label>QA Contact:</label>
-    {{input type="text" value=qa_contact disabled=cannotEditQAContact}}
+    {{input type="text" value=qaContact disabled=cannotEditQAContact}}
   </div>
   <div class="form__item">
     <label>CC:</label>
-    {{multi-value values=fields.cc.current_value}}
+    {{multi-value values=fields.cc.currentValue}}
   </div>
   <div class="form__item">
     <label>Alias:</label>
-    {{input type="text" value=fields.alias.current_value}}
+    {{input type="text" value=fields.alias.currentValue}}
   </div>
   <div class="form__item">
     <label>URL:</label>
-    {{input type="text" value=fields.url.current_value}}
+    {{input type="text" value=fields.url.currentValue}}
   </div>
   <div class="form__item">
     <label>Description:</label>
-    {{textarea value=fields.description.current_value}}
+    {{textarea value=fields.description.currentValue}}
   </div>
 
   {{#each customFields itemController="field"}}
@@ -85,7 +85,7 @@
       {{#if values}}
         {{select content=values value=defaultValue optionLabelPath="name" optionValuePath="name" prompt=prompt disabled=isDisabled}}
       {{else}}
-        {{input type="text" name=api_name}}
+        {{input type="text" name=name}}
       {{/if}}
     </div>
   {{/each}}

@@ -5,15 +5,15 @@
   </div>
   <div class="bug-stats">
     <span>Reported at:</span>
-    <p>{{fields.creationTime.currentValue}}</p>
+    <p {{bindAttr title="fields.creationTime.currentValue"}}>{{formatDate fields.creationTime.currentValue}}</p>
     <span>By:</span>
-    <p>{{fields.creator.currentValue}}</p>
+    <p >{{fields.creator.currentValue}}</p>
     <span>last updated:</span>
-    <p>{{fields.lastChangeTime.currentValue}}</p>
+    <p {{bindAttr title="fields.lastChangeTime.currentValue"}}>{{formatDate fields.lastChangeTime.currentValue}}</p>
     {{#if fields.alias.currentValue}}
       <div class="bug-alias">
         <span>alias:</span>
-        <p>({{fields.alias.currentValue}})</p>
+        <p>{{fields.alias.currentValue}}</p>
       </div>
     {{/if}}
   </div>

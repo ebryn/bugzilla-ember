@@ -1,3 +1,4 @@
+<div class="attachments-container">
 <table class="attachments">
   <tbody>
   {{#if attachments.isLoading}}
@@ -5,28 +6,33 @@
       <td>Loading attachments...</td>
     </tr>
   {{else}}
-    {{#each filteredAttachments}}
+    {{#each filteredAttachments itemController="attachment"}}
       <tr {{bindAttr class="is_obsolete:obsolete"}}>
         <td>
-          {{#linkTo "attachment" this}}
-            {{description}}
-          {{/linkTo}}
-          ({{formatBytes size}}{{#if is_patch}}, patch{{/if}})<br>
-          {{last_change_time}}, {{attacher}}
+          <div>
+            {{#unless isDeleted}}
+              {{#linkTo "attachment" this}}{{description}}{{/linkTo}}
+              ({{formatBytes size}}{{#if is_patch}}, patch{{else}}, {{content_type}}{{/if}})<br>
+            {{else}}
+              {{description}} (<em>deleted</em>)
+            {{/unless}}
+          </div>
+          <div class="details"><span {{bindAttr title=last_change_time}}>{{formatDate last_change_time}}</span>, {{attacher}}</div>
         </td>
         <td>
           {{#if flags}}
             {{#each flags}}
-              {{emailToUsername setter.email}}: {{name}}{{status}}
+              {{emailToUsername setter}}: {{name}}{{status}}
             {{/each}}
           {{else}}
-            <em>No flags</em>
+            <em>no flags</em>
           {{/if}}
         </td>
         <td nowrap>
-          {{#linkTo "attachment" this}}Details{{/linkTo}} |
-          <a {{bindAttr href="diffURL"}} target="_blank">Diff</a> |
-          <a {{bindAttr href="reviewURL"}} target="_blank">Review</a>
+          {{#linkTo "attachment" this}}Details{{/linkTo}}
+          {{#if is_patch}}
+            | <a {{bindAttr href="diffURL"}} target="_blank">Diff</a> | <a {{bindAttr href="reviewURL"}} target="_blank">Review</a>
+          {{/if}}
         </td>
       </tr>
     {{else}}
@@ -36,6 +42,7 @@
     {{/each}}
   {{/if}}
   </tbody>
+  {{#unless attachments.isLoading}}
   <tfoot>
     <tr>
       {{#if user.isLoggedIn}}
@@ -58,4 +65,6 @@
       {{/if}}
     </tr>
   </tfoot>
+  {{/unless}}
 </table>
+</div>

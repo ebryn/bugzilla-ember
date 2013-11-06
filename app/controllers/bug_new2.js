@@ -6,50 +6,50 @@ var Controller = Ember.ObjectController.extend({
   flashMessage: null,
   isSaving: false,
 
-  assigned_to: function(key, value) {
+  assignedTo: function(key, value) {
     if (arguments.length === 2) {
-      this.set('fields.assigned_to.current_value', value);
+      this.set('fields.assignedTo.currentValue', value);
       return value;
     }
-    return this.get('fields.assigned_to.current_value') || this.get('selectedComponent.default_assignee.email');
-  }.property('selectedComponent.default_assignee.email', 'fields.assigned_to.current_value'),
+    return this.get('fields.assignedTo.currentValue') || this.get('selectedComponent.defaultAssignee.email');
+  }.property('selectedComponent.defaultAssignee.email', 'fields.assignedTo.currentValue'),
 
-  qa_contact: function(key, value) {
+  qaContact: function(key, value) {
     if (arguments.length === 2) {
-      this.set('fields.qa_contact.current_value', value);
+      this.set('fields.qaContact.currentValue', value);
       return value;
     }
-    return this.get('fields.qa_contact.current_value') || this.get('selectedComponent.default_qa_contact.email');
-  }.property('selectedComponent.default_qa_contact.email', 'fields.qa_contact.current_value'),
+    return this.get('fields.qaContact.currentValue') || this.get('selectedComponent.defaultQaContact.email');
+  }.property('selectedComponent.defaultQaContact.email', 'fields.qaContact.currentValue'),
 
-  initial_cc: function() {
-    var initial_cc = this.get('selectedComponent.initial_cc');
-    return (initial_cc || []).mapProperty('email').join(', ');
-  }.property('selectedComponent.initial_cc'),
+  initialCc: function() {
+    var initialCc = this.get('selectedComponent.initialCc');
+    return (initialCc || []).mapProperty('email').join(', ');
+  }.property('selectedComponent.initialCc'),
 
   cannotEditAssignee: function() {
-    return !this.get('fields.assigned_to');
+    return !this.get('fields.assignedTo');
   }.property('fields.assignee'),
 
   cannotEditQAContact: function() {
-    return !this.get('fields.qa_contact');
-  }.property('fields.qa_contact'),
+    return !this.get('fields.qaContact');
+  }.property('fields.qaContact'),
 
   _setDefaults: function() {
     this.set('flashMessage', null);
     // TODO: actually detect these
-    this.set('fields.platform.current_value', 'x86');
-    this.set('fields.op_sys.current_value', 'Mac OS X');
+    this.set('fields.platform.currentValue', 'x86');
+    this.set('fields.opSys.currentValue', 'Mac OS X');
   }.observes('model'),
 
   severity: function(key, value) {
     if (arguments.length === 2) {
-      this.set('model.fields.severity.current_value', value);
+      this.set('model.fields.severity.currentValue', value);
       return value;
     }
 
-    return this.get('fields.severity.default_value');
-  }.property('fields.severity.default_value'),
+    return this.get('fields.severity.defaultValue');
+  }.property('fields.severity.defaultValue'),
 
   actions: {
     save: function() {

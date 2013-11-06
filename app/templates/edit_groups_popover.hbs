@@ -1,0 +1,16 @@
+<label>Groups:</label>
+
+<table {{bind-attr class="name"}}>
+  {{#each fields.groups.currentValue}}
+    <tr>
+      <td>{{description}}<td>
+      <td><button {{action "removeGroup" this}}>x</button></td>
+    </tr>
+  {{/each}}
+</table>
+
+<div>
+  Add a new group
+  {{view Ember.Select contentBinding="newGroups" optionLabelPath="content.description" selectionBinding="newGroup" prompt=" "}}
+  <button {{action "addNewGroup"}}>Add</button>
+</div>

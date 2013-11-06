@@ -1,21 +1,23 @@
 <div class="edit-side-bar">
   <div>
-    {{#link-to "bug.edit" this tagName="button" class="save-btn" style="width: 100%"}}Edit{{/link-to}}
+    {{#link-to "bug.edit" this tagName="button" class="edit-btn"}}Edit{{/link-to}}
   </div>
 
   <div class="status-res">
-    <div>
+    <div {{bindAttr class="isResolved::full"}}>
       <label>STATUS</label>
       {{field "status"}}
     </div>
-    <div>
-      <label>RESOLUTION</label>
-      {{field "resolution"}}
-    </div>
+    {{#if isResolved}}
+      <div>
+        <label>RESOLUTION</label>
+        {{field "resolution"}}
+      </div>
+    {{/if}}
   </div>
   {{#if isResolvedAsDuplicate}}
     <div class="dupe_of">
-      <span>Duplicate ID:</span>
+      <label>Duplicate ID:</label>
       {{#link-to "bug" fields.dupeOf.currentValue}}{{fields.dupeOf.currentValue}}{{/link-to}}
     </div>
     <hr>
@@ -59,11 +61,13 @@
     <hr>
   </div>
 
-  <div>
-    <label>Target Milestone:</label>
-    {{field "targetMilestone"}}
-    <hr>
-  </div>
+  {{#if fields.targetMilestone.currentValue}}
+    <div>
+      <label>Target Milestone:</label>
+      {{field "targetMilestone"}}
+      <hr>
+    </div>
+  {{/if}}
 
   <div class="assignee">
     <label>ASSIGNEE:</label>
@@ -167,13 +171,6 @@
           {{/each}}
         </table>
       </div>
-      <!--
-      <div class="label-btn with-table">
-        <label>Add a URL
-          <button class="add-btn">+</button>
-        </label>
-      </div>
-      -->
     </div>
     <hr>
   {{/if}}

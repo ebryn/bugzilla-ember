@@ -11,7 +11,7 @@ var Comment = Ember.Model.extend({
   bug_id: attr(),
   text: attr(),
   creator: attr(),
-  creation_time: attr(Date),
+  creation_time: attr(),
   is_private: attr()
 });
 

@@ -1,9 +1,9 @@
 <header class="comment-header">
   {{gravatar creator}}
   <span>{{creator}}</span>
-  <span class="comment-date">
+  <span class="comment-date" {{bindAttr title="creation_time"}}>
     <img src="assets/images/clock.png" alt="Date">
-    {{creation_time}}
+    {{formatDate creation_time}}
   </span>
   {{! FIXME: this could be better }}
   {{#if controller.user.isLoggedIn}}

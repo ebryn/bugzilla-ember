@@ -5,26 +5,28 @@
   </div>
 
   {{#if flashMessage}}
-    <div class="flash">
+    <div class="alert error">
       {{flashMessage}}
     </div>
   {{/if}}
 
   <div class="status-res">
-    <div>
+    <div {{bindAttr class="isResolved::full"}}>
       <label>STATUS</label>
       {{field "status"}}
     </div>
-    <div>
-      <label>RESOLUTION</label>
-      {{field "resolution"}}
-    </div>
+    {{#if isResolved}}
+      <div>
+        <label>RESOLUTION</label>
+        {{field "resolution"}}
+      </div>
+    {{/if}}
   </div>
 
   {{#if isResolvedAsDuplicate}}
     <div class="dupe_of">
-      <span>Duplicate ID:</span>
-      {{#link-to "bug" fields.dupeOf.currentValue}}{{fields.dupeOf.currentValue}}{{/link-to}}
+      <label>Duplicate ID:</label>
+      {{field "dupeOf"}}
     </div>
     <hr>
   {{/if}}
@@ -69,12 +71,9 @@
     <hr>
   </div>
 
-  <div class="assignee">
+  <div>
     <label>ASSIGNEE:</label>
     {{field "assignedTo"}}
-    <button class="inbox-btn">
-      <img src="assets/images/inbox.png" alt="Inbox" />
-    </button>
     <hr>
   </div>
 
@@ -110,7 +109,7 @@
     <label>Blocks:</label>
     <div>
       {{#if fields.blocks.canEdit}}
-        <span><span>{{multi-value values=fields.dependsOn.currentValue}}</span></span>
+        <span><span>{{multi-value values=fields.blocks.currentValue}}</span></span>
       {{else}}
         {{#each fields.blocks.currentValue}}
           <span {{bindAttr title="summary"}}>
@@ -125,13 +124,20 @@
   <div class="cc">
     <label>CC LIST:</label>
     <div>
-      <a href="#" {{action "showCCModal" this}}>{{fields.cc.currentValue.length}} users</a>
-      {{#if currentUserInCCList}}
-        (including you)
-      {{/if}}
+      {{#view "popover_open_button" kind="bug/cc_modal" layoutName=null}}
+        <a href="#">
+          {{fields.cc.currentValue.length}} users
+
+          {{#if currentUserInCCList}}
+            (including you)
+          {{/if}}
+        </a>
+      {{/view}}
+      <!--
       <button class="write-btn">
         <img src="assets/images/whitepencil.png" alt="Edit" />
       </button>
+      -->
     </div>
 
     <div class="notifications">
@@ -165,10 +171,12 @@
               {{/if}}
             </td>
           </tr>
+        {{else}}
+          <tr><td colspan="4"><em>No flags</em></td></tr>
         {{/each}}
       </table>
     </div>
-    {{#view "popover_open_button" kind="add_flag_popover"}}
+    {{#view "popover_open_button" kind="add_flag_popover" class="label-btn with-table"}}
       Add a flag
     {{/view}}
     <hr>
@@ -177,73 +185,87 @@
   <div>
     <label>SEE ALSO:</label>
 
-    <div class="table-container with-button">
+    <div {{bindAttr class=":table-container fields.seeAlso.canEdit:with-button"}}>
       <table class="table">
         {{#each fields.seeAlso.currentValue}}
           <tr>
             <td><a {{bindAttr href=this}}>{{this}}</a></td>
-            <td class="button-cell">
-              <button {{action "removeSeeAlsoUrl" this}}>
-                <img src="assets/images/grayx.png" alt="Remove" />
-              </button>
-            </td>
+            {{#if ../fields.seeAlso.canEdit}}
+              <td class="button-cell">
+                <button {{action "removeSeeAlsoUrl" this}}>
+                  <img src="assets/images/grayx.png" alt="Remove" />
+                </button>
+              </td>
+            {{/if}}
           </tr>
         {{else}}
           <tr><td colspan="4"><em>No URLs</em></td></tr>
         {{/each}}
       </table>
     </div>
-    {{#view "popover_open_button" kind="add_url_popover"}}
-      Add a URL
-    {{/view}}
+    {{#if fields.seeAlso.canEdit}}
+      {{#view "popover_open_button" kind="add_url_popover" class="label-btn with-table"}}
+        Add a URL
+      {{/view}}
+    {{/if}}
   </div>
   <hr>
 
   <div class="project-flags">
     <label>Project flags:</label>
-    <div class="table-container with-button">
+    <div {{bindAttr class=":table-container projectFlags.canEdit:with-button"}}>
       <table class="table">
         {{#each projectFlags.currentValue}}
           <tr>
             <td>{{description}}</td>
             <td class="status">
-              <div class="select-container">
-                {{view Ember.Select
-                    contentBinding="values"
-                    optionLabelPath="content.name"
-                    optionValuePath="content.name"
-                    valueBinding="currentValue"}}
-                <img src="assets/images/downarrow.png">
-              </div>
+              {{#if canEdit}}
+                <div class="select-container">
+                  {{view Ember.Select
+                      contentBinding="values"
+                      optionLabelPath="content.name"
+                      optionValuePath="content.name"
+                      valueBinding="currentValue"}}
+                  <img src="assets/images/downarrow.png">
+                </div>
+              {{else}}
+                {{currentValue}}
+              {{/if}}
             </td>
           </tr>
         {{else}}
-          <tr><td colspan="4"><em>No flags</em></td></tr>
+          <tr><td colspan="4"><em>No project flags</em></td></tr>
         {{/each}}
       </table>
     </div>
-    {{#view "popover_open_button" kind="add_project_flag_popover"}}
-      Add a project flag
-    {{/view}}
+    {{#if projectFlags.canEdit}}
+      {{#view "popover_open_button" kind="add_project_flag_popover" class="label-btn with-table"}}
+        Add a project flag
+      {{/view}}
+    {{/if}}
   </div>
   <hr>
 
   <div class="tracking-flags">
     <label>Tracking flags:</label>
-    <div class="table-container with-button">
+    <div {{bindAttr class=":table-container trackingFlags.canEdit:with-button"}}>
       <table class="table">
         {{#each trackingFlags.currentValue}}
           <tr>
             <td>{{description}}</td>
             <td class="status">
-              <div class="select-container">
-                {{view Ember.Select
-                      contentBinding="values"
-                      optionLabelPath="content.name"
-                      optionValuePath="content.name"
-                      valueBinding="currentValue"}}
-                <img src="assets/images/downarrow.png">
-              </div>
+              {{#if canEdit}}
+                <div class="select-container">
+                  {{view Ember.Select
+                        contentBinding="values"
+                        optionLabelPath="content.name"
+                        optionValuePath="content.name"
+                        valueBinding="currentValue"}}
+                  <img src="assets/images/downarrow.png">
+                </div>
+              {{else}}
+                {{currentValue}}
+              {{/if}}
             </td>
           </tr>
         {{else}}
@@ -251,9 +273,11 @@
         {{/each}}
       </table>
     </div>
-    {{#view "popover_open_button" kind="add_tracking_flag_popover"}}
-      Add a tracking flag
-    {{/view}}
+    {{#if trackingFlags.canEdit}}
+      {{#view "popover_open_button" kind="add_tracking_flag_popover" class="label-btn with-table"}}
+        Add a tracking flag
+      {{/view}}
+    {{/if}}
   </div>
   <hr>
 
@@ -275,10 +299,9 @@
   <div class="groups">
     <label>GROUPS:</label>
     <div>
-      {{fields.groups.currentValue.length}} groups selected
-      <button class="write-btn">
-        <img src="assets/images/whitepencil.png" alt="Edit" />
-      </button>
+      {{#view 'popover_open_button' kind="edit_groups_popover" layoutName=null}}
+        {{fields.groups.currentValue.length}} groups selected
+      {{/view}}
     </div>
     <hr>
   </div>
@@ -289,7 +312,7 @@
   </div>
 
   {{#if flashMessage}}
-    <div class="flash">
+    <div class="alert error">
       {{flashMessage}}
     </div>
   {{/if}}

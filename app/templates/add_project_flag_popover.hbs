@@ -4,6 +4,6 @@
   {{view Ember.Select contentBinding="newProjectFlag.values" optionLabelPath="content.name" optionValuePath="content.name" valueBinding="newProjectFlagStatus"}}
   <button {{action "add" target=view}}>Add</button>
 {{else}}
-  No additional project flags to add
+  <div>No project flags to add</div>
 {{/if}}
 <span><a href="#" {{action "close" target=view}}>Cancel & Close</a></span>
