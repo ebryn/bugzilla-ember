@@ -19,6 +19,7 @@ var BugController = Ember.ObjectController.extend({
   showingObsoleteAttachments: false,
   isShowingRemainingComments: false,
   newCommentText: null,
+  newCommentIsPrivate: false,
   newCommentIsSaving: false,
   errorMessage: null,
   flashMessage: null,
@@ -400,6 +401,7 @@ var BugController = Ember.ObjectController.extend({
     saveComment: function() {
       var newComment = Comment.create({
         text: this.get('newCommentText'),
+        is_private: this.get('newCommentIsPrivate'),
         bug_id: this.get('id')
       });
 
@@ -409,6 +411,7 @@ var BugController = Ember.ObjectController.extend({
         // FIXME: Comments is an array of POJOs initially. We push a Comment object when created on the client.
         self.get('comments').pushObject(newComment);
         self.set('newCommentText', null);
+        self.set('newCommentIsPrivate', false);
         self.set('newCommentIsSaving', false);
       }, function(reason) {
         alert("Unexpected error occurred while saving comment");

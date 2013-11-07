@@ -10,6 +10,9 @@
     <p >{{fields.creator.currentValue}}</p>
     <span>last updated:</span>
     <p {{bindAttr title="fields.lastChangeTime.currentValue"}}>{{formatDate fields.lastChangeTime.currentValue}}</p>
+    {{#if fields.groups.currentValue}}
+      <span>(Private)</span>
+    {{/if}}
     <span>
       {{#if isReloading}}
         Reloading...

@@ -55,7 +55,8 @@ Comment.reopenClass({
           url = urlFor('bug/' + bugId + '/comment'),
           data = {
             id: bugId,
-            comment: record.get('text')
+            comment: record.get('text'),
+            is_private: record.get('is_private')
           };
 
       return ajax(url, {

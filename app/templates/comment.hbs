@@ -5,6 +5,9 @@
     <img src="assets/images/clock.png" alt="Date">
     {{formatDate creation_time}}
   </span>
+  {{#if is_private}}
+    <span>(private)</span>
+  {{/if}}
   {{! FIXME: this could be better }}
   {{#if controller.user.isLoggedIn}}
     <span class="comment-reply"><img src="assets/images/reply.png" alt="Reply" {{action "reply" this}}>

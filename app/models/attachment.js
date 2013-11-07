@@ -79,7 +79,7 @@ Attachment.reopenClass({
         type: "POST",
         dataType: 'json',
         // contentType: 'application/json',
-        data: {ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.content_type}
+        data: {ids: [data.bug_id], data: data.encodedData, file_name: data.file_name, summary: data.description, content_type: data.content_type, is_patch: data.is_patch}
       }).then(function(json) {
         var id = Object.keys(json.attachments)[0],
             attachmentJson = json.attachments[id];

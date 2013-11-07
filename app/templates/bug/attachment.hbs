@@ -5,6 +5,7 @@
     <table>
       <tr><th>File:</th><td>{{view 'file-field' nameBinding="file_name" encodedDataBinding="encodedData" contentTypeBinding="content_type"}}</td></tr>
       <tr><th>Description:</th><td>{{input type="text" value=description}}</td></tr>
+      <tr><th>Patch?</th><td>{{input type="checkbox" checked=is_patch}}</td></tr>
       <tr><th>Content Type:</th><td>{{content_type}}</td></tr>
       <tr><th>Comment:</th><td>{{view Ember.TextArea valueBinding="comment"}}</td></tr>
     </table>

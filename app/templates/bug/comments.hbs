@@ -28,6 +28,7 @@
         {{else}}
           <button class="save-comment-btn" {{action "saveComment"}}>Save</button>
         {{/if}}
+        <label>{{input type="checkbox" checked=newCommentIsPrivate}} Private</label>
       </div>
     {{else}}
       Log in to create a comment

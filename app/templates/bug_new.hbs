@@ -52,21 +52,25 @@
     </div>
     -->
 
+    <!--
     <div class="row">
       <label>Security: {{input type="checkbox"}} Restrict access to this bug to members of the "Security-Sensitive Core Bug" group.</label>
     </div>
+    -->
 
     <button class="save-btn" {{action "save"}}>Create</button>
   </div>
 
   <div class="edit-side-bar section" style="top: 226px;">
-    <div {{action "toggleAdvanced"}}>
-      {{#if showingAdvanced}}
-        Hide
-      {{else}}
-        Show
-      {{/if}}
-      advanced fields
+    <div>
+      <a href="#" {{action "toggleAdvanced"}}>
+        {{#if showingAdvanced}}
+          Hide
+        {{else}}
+          Show
+        {{/if}}
+        advanced fields
+      </a>
     </div>
 
     {{#if showingAdvanced}}
