@@ -1,6 +1,14 @@
 <ul class="nav">
   <li>{{#linkTo 'bugNew'}}New{{/linkTo}}</li>
   <li>{{#linkTo 'browse'}}Browse{{/linkTo}}</li>
+  <li>
+    Recent
+    <div class="dropdown">
+      {{#each recentBugs}}
+        <div>{{#linkTo "bug" id}}{{summary}}{{/linkTo}}</div>
+      {{/each}}
+    </div>
+  </li>
 
   <li>{{render 'user'}}</li>
 </ul>

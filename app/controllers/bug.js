@@ -9,7 +9,8 @@ import urlFor from "bugzilla/utils/url_for";
 var COMMENTS_SHOWN_BY_DEFAULT = 3;
 
 var BugController = Ember.ObjectController.extend({
-  needs: ['user', 'bug'],
+  needs: ['user', 'bug', 'application'],
+  recentBugs: Em.computed.alias('controllers.application.recentBugs'),
   user: Em.computed.alias('controllers.user'),
   canEdit: Ember.computed.and('model.canEdit', 'user.isLoggedIn'),
   isLoaded: Ember.computed.bool('model'),
@@ -486,6 +487,18 @@ var BugController = Ember.ObjectController.extend({
     this._startPolling();
     this.set('flashMessage', null);
     this.set('isShowingRemainingComments', false);
+
+    var bug = this.get('content');
+
+    if (!bug) { return; }
+
+    var recentBugs = this.get('recentBugs');
+    if (!recentBugs.findProperty('id', bug.get('id'))) {
+      recentBugs.unshiftObject({
+        id: bug.get('id'),
+        summary: bug.get('fields.summary.currentValue')
+      });
+    }
   }.observes('content')
 });
 

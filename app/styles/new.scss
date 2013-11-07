@@ -123,6 +123,33 @@ a:hover {
 .nav li {
   display: inline-block;
   margin-right: 20px;
+  position: relative;
+}
+
+.nav li .dropdown {
+  display: none;
+  background: white;
+  position: absolute;
+  top: 28px;
+  left: 0;
+  font-size: 11px;
+  border: 1px solid #cecece;
+  padding: 3px;
+}
+
+.nav li .dropdown > div {
+  width: 300px;
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav li:hover {
+  /*background: white;*/
+}
+
+.nav li:hover .dropdown {
+  display: block;
 }
 
 .search {
