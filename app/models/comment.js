@@ -56,8 +56,10 @@ Comment.reopenClass({
           data = {
             id: bugId,
             comment: record.get('text'),
-            is_private: record.get('is_private')
           };
+
+      // FIXME: sending false to the API sets is_private to true
+      if (record.get('is_private')) { data.is_private = true; }
 
       return ajax(url, {
         type: 'POST',
