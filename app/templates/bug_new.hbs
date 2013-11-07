@@ -21,24 +21,24 @@
     <div class="row">
       <label class="col">
         Component:
-        {{select content=fields.component.values selection=selectedComponent value=fields.component.currentValue optionLabelPath="name" optionValuePath="name" prompt=" "}}
+        {{view Ember.Select contentBinding="fields.component.values" selectionBinding="selectedComponent" valueBinding="fields.component.currentValue" optionLabelPath="content.name" optionValuePath="content.name" prompt=" "}}
       </label>
       <label class="col">
         Version:
-        {{select content=fields.version.values value=fields.version.currentValue optionLabelPath="name" prompt=" "}}
+        {{view Ember.Select contentBinding="fields.version.values" valueBinding="fields.version.currentValue" optionValuePath="content.name" optionLabelPath="content.name" prompt=" "}}
       </label>
     </div>
 
     <div class="row">
       <label class="col">
         Importance:
-        {{select content=fields.priority.values value=priority optionLabelPath="name" optionValuePath="name"}}
-        {{select content=fields.severity.values value=severity optionLabelPath="name" optionValuePath="name"}}
+        {{view Ember.Select contentBinding="fields.priority.values" valueBinding="fields.priority.currentValue" optionLabelPath="content.name" optionValuePath="content.name"}}
+        {{view Ember.Select contentBinding="fields.severity.values" valueBinding="severity" optionLabelPath="content.name" optionValuePath="content.name"}}
       </label>
       <label class="col">
         Hardware:
-        {{select content=fields.platform.values value=fields.platform.currentValue optionLabelPath="name" prompt=" "}}
-        {{select content=fields.opSys.values value=fields.opSys.currentValue optionLabelPath="name" prompt=" "}}
+        {{view Ember.Select contentBinding="fields.platform.values" valueBinding="fields.platform.currentValue" optionValuePath="content.name" optionLabelPath="content.name" prompt=" "}}
+        {{view Ember.Select contentBinding="fields.opSys.values" valueBinding="fields.opSys.currentValue" optionValuePath="content.name" optionLabelPath="content.name" prompt=" "}}
       </label>
     </div>
 
@@ -54,7 +54,7 @@
 
     <!--
     <div class="row">
-      <label>Security: {{input type="checkbox"}} Restrict access to this bug to members of the "Security-Sensitive Core Bug" group.</label>
+      <label>Security: <input type="checkbox"> Restrict access to this bug to members of the "Security-Sensitive Core Bug" group.</label>
     </div>
     -->
 
@@ -75,40 +75,45 @@
 
     {{#if showingAdvanced}}
       <hr>
+      <div>
+        <label>Alias:</label>
+        {{input type="text" value=fields.alias.currentValue}}
+      </div>
+      <hr>
 
       <div>
         <label>Whiteboard:</label>
-        {{input type="text"}}
+        {{input type="text" value=fields.whiteboard.currentValue}}
       </div>
       <hr>
 
       <div>
         <label>Keywords:</label>
-        {{input type="text"}}
+        {{input type="text" value=fields.keywords.currentValue}}
       </div>
       <hr>
 
       <div>
         <label>Target Milestone:</label>
-        {{view Ember.Select contentBinding="fields.targetMilestone.values" optionLabelPath="content.name"}}
+        {{view Ember.Select contentBinding="fields.targetMilestone.values" valueBinding="fields.targetMilestone.currentValue" optionLabelPath="content.name" optionValuePath="content.name"}}
       </div>
       <hr>
 
       <div>
         <label>ASSIGNEE:</label>
-        {{input type="text"}}
+        {{input type="text" value=fields.assignedTo.currentValue}}
       </div>
       <hr>
 
       <div>
         <label>QA Contact:</label>
-        {{input type="text"}}
+        {{input type="text" value=fields.qaContact.currentValue}}
       </div>
       <hr>
 
       <div class="url">
         <label>URL:</label>
-        {{input type="text"}}
+        {{input type="text" value=fields.url.currentValue}}
       </div>
       <hr>
 
@@ -131,7 +136,7 @@
       <div class="cc">
         <label>CC LIST:</label>
         <div>
-          {{multi-value values=fields.blocks.currentValue}}
+          {{multi-value values=fields.cc.currentValue}}
         </div>
       </div>
       <hr>
@@ -141,7 +146,7 @@
 
         <div class="table-container with-button">
           <table class="table">
-            {{#each currentFlags itemController="flag"}}
+            {{#each fields.flags.currentValue itemController="flag"}}
               <tr>
                 <td class="flag-setter">{{emailToUsername setter.email}}</td>
                 <td class="flag-name">{{name}}</td>
