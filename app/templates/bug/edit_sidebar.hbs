@@ -155,7 +155,7 @@
 
     <div class="table-container with-button">
       <table class="table">
-        {{#each currentFlags itemController="flag"}}
+        {{#each fields.flags.currentValue itemController="flag"}}
           <tr>
             <td class="flag-setter">{{emailToUsername setter.email}}</td>
             <td class="flag-name">{{name}}</td>

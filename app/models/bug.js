@@ -59,11 +59,15 @@ var Bug = Ember.Object.extend({
     });
 
     trackingFlagValues.forEach(function(flag) {
-      values[flag.name] = flag.currentValue;
+      if (flag.currentValue && flag.currentValue !== "---") {
+        values[flag.name] = flag.currentValue;
+      }
     });
 
     projectFlagValues.forEach(function(flag) {
-      values[flag.name] = flag.currentValue;
+      if (flag.currentValue && flag.currentValue !== "---") {
+        values[flag.name] = flag.currentValue;
+      }
     });
 
     customFields.forEach(function(field) {
@@ -152,13 +156,13 @@ function processAttributes(json) {
     if (field.isCustom) {
       if (field.description.match(/^blocking-(b2g|basecamp|kilimanjaro)$/)) {
         attrs.projectFlags.values.push(field);
-        if (field.currentValue !== "---") {
+        if (field.currentValue && field.currentValue !== "---") {
           attrs.projectFlags.currentValue.push(field);
         }
         if (field.canEdit) { attrs.projectFlags.canEdit = true; }
       } else if (field.description.match(/^(tracking|status|relnote|blocking)-/)) {
         attrs.trackingFlags.values.push(field);
-        if (field.currentValue !== "---") {
+        if (field.currentValue && field.currentValue !== "---") {
           attrs.trackingFlags.currentValue.push(field);
         }
         if (field.canEdit) { attrs.trackingFlags.canEdit = true; }
@@ -197,7 +201,9 @@ function processFlags(flagsField) {
   });
 
   flagsField.currentValue = (flagsField.currentValue || []).map(function(attrs) {
-    return Flag.fromJSON(attrs);
+    var flag = Flag.fromJSON(attrs);
+    flag.definition = flagsField.values.findProperty('name', flag.get('name'));
+    return flag;
   });
 
   return flagsField;

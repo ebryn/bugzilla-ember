@@ -11,6 +11,9 @@ var Flag = Ember.Object.extend({
   setter: null,
   creationDate: null,
   modificationDate: null,
+  definition: null,
+
+  values: Em.computed.alias('definition.values'),
 
   toJSON: function() {
     var json = this.getProperties('status'),
@@ -33,12 +36,13 @@ Flag.reopenClass({
     // TODO?
     // attrs.requestee = attrs.requestee.email;
     // attrs.setter = attrs.setter.email;
+    if (!attrs.requestee) { attrs.requestee = {}; }
 
     return this.create(camelizeKeys(attrs));
   },
 
   fromDefinition: function(definition, attrs) {
-    return this.create(Ember.merge(attrs, {typeId: definition.get('id'), name: definition.get('name'), values: definition.get('values')}));
+    return this.create(Ember.merge(attrs, {typeId: definition.get('id'), name: definition.get('name'), definition: definition}));
   }
 });
 

@@ -170,24 +170,6 @@ var BugController = Ember.ObjectController.extend({
     return settableFlags;
   }.property('fields.flags.values.[]', 'fields.flags.currentValue.[]'),
 
-  allFlags: Em.computed.alias('fields.flags.values'),
-
-  bugFlags: Em.computed.filter('allFlags', function(flag) {
-    return flag.type === 'bug';
-  }),
-
-  currentFlags: function() {
-    var currentFlags = this.get('fields.flags.currentValue'),
-        bugFlags = this.get('bugFlags');
-
-    currentFlags.forEach(function(flag) {
-      flag.values = bugFlags.findProperty('name', flag.name).values;
-      if (!flag.requestee) { flag.requestee = {}; }
-    });
-
-    return currentFlags;
-  }.property('fields.flags.currentValue'),
-
   shouldShowNewFlagRequestee: function() {
     return this.get('newFlagDefinition.isRequesteeble') && this.get('newFlagStatus') === "?";
   }.property('newFlagDefinition.isRequesteeble', 'newFlagStatus'),
