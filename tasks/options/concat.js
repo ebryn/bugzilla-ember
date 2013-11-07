@@ -10,7 +10,7 @@ module.exports = {
   },
 
   vendorJs: {
-    src: ['vendor/loader.js', 'vendor/jquery-*.js', 'vendor/handlebars.js', 'vendor/**/*.js'],
+    src: ['vendor/loader.js', 'vendor/jquery-*.js', 'vendor/handlebars.js', 'vendor/ember-latest.js', 'vendor/**/*.js'],
     dest: 'tmp/public/assets/vendor.js'
   },
 
