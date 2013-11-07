@@ -421,10 +421,15 @@ var BugController = Ember.ObjectController.extend({
           commentIndex = this.get('comments').indexOf(comment);
 
       newCommentText += "(In reply to %@ from comment #%@)\n".fmt(Ember.get(comment, 'creator'), commentIndex);
-      newCommentText += Ember.get(comment, "text").replace(/^/m, "> ");
+      newCommentText += Ember.get(comment, "text").replace(/^/mg, "> ");
       newCommentText += "\n\n";
 
       this.set('newCommentText', newCommentText);
+
+      // FIXME: hacks
+      var $newCommentEl = Ember.$('.new-comment textarea');
+      $newCommentEl.focus();
+      $newCommentEl[0].scrollIntoViewIfNeeded();
     },
 
     reload: function() {
