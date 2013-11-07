@@ -243,7 +243,8 @@ Bug.reopenClass({
 
   // FIXME
   findQuery: function(params) {
-    return getJSON(urlFor("bug"), params).then(function(json) {
+    // don't cache, this is just for development
+    return getJSONWithCache(urlFor("bug"), params).then(function(json) {
       return json.bugs;
     }, function(reason) {
       alert("FAIL");

@@ -1,5 +1,6 @@
 import getJSON from 'bugzilla/utils/get_json';
 import urlFor from 'bugzilla/utils/url_for';
+import getJSONWithCache from 'bugzilla/utils/get_json_with_cache';
 
 var attr = Ember.attr;
 
@@ -15,7 +16,7 @@ var ProductAdapter = Ember.Adapter.extend({
   },
 
   findQuery: function(klass, records, params) {
-    return getJSON(urlFor("product"), {type: "enterable", include_fields: params.include_fields || "id, name"}).then(function(json) {
+    return getJSONWithCache(urlFor("product"), {type: "enterable", include_fields: params.include_fields || "id, name"}).then(function(json) {
       var sortedProducts = json.products.sort(function(a, b) {
         return Ember.compare(a.name, b.name);
       });

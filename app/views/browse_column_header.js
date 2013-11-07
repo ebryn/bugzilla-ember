@@ -1,6 +1,8 @@
 var BrowseColumnHeaderView = Ember.View.extend({
   tagName: 'th',
-  templateName:'browse_column_header',
+  templateName: 'browse_column_header',
+  classNameBindings: ['column'],
+
   sortClass: function(){
     var sortedBy = this.get('controller.sortProperties');
     if (!sortedBy.contains(this.get('column'))) return '';

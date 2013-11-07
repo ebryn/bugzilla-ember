@@ -1,0 +1,24 @@
+.listing-table {
+  background: white;
+  table-layout: fixed;
+}
+
+.listing-table th {
+  cursor: pointer;
+}
+
+.listing-table td, .listing-table th {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #cecece;
+}
+
+.listing-table .id {
+  width: 60px;
+  text-align: center;
+}
+
+.listing-table .summary {
+  width: 580px;
+}

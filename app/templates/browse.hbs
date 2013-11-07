@@ -1,54 +1,64 @@
-{{view Ember.Select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
-{{view Ember.Select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
+<div class="section">
+  <div class="row">
+    <div class="col">
+      <label>Select a product:</label>
+      {{view Ember.Select contentBinding="products" prompt="[Product]" selectionBinding="selectedProduct" optionLabelPath="content.name" optionValuePath="content.id"}}
+    </div>
+    <div class="col">
+      <label>Select a component:</label>
+      {{view Ember.Select contentBinding="components" prompt="[Component]" selectionBinding="selectedComponent" optionLabelPath="content.name" optionValuePath="content.id"}}
+    </div>
+  </div>
+</div>
 
-<table cellspacing="0" cellpadding="4" width="100%" class="browse-table">
-  <thead>
-    <tr>
-      {{view 'browse-column-header' column="id" title="ID"}}
-      {{view 'browse-column-header' column="product" title="Product"}}
-      {{view 'browse-column-header' column="component" title="Comp"}}
-      {{view 'browse-column-header' column="assigned_to" title="Assignee"}}
-      {{view 'browse-column-header' column="status" title="Status"}}
-      {{view 'browse-column-header' column="summary" title="Summary"}}
-      {{view 'browse-column-header' column="last_change_time" title="Changed"}}
-    </tr>
-  </thead>
-  <tbody>
-    {{#if isLoading}}
-      <tr>
-        <td collspan="7"> Loading...</td>
-      </tr>
-    {{else}}
-      {{#each}}
-      <tr>
-        <td class="id">
-          {{#linkTo 'bug' id}} {{id}} {{/linkTo}}
-        </td>
-        <td class="product">
-          {{product}}
-        </td>
-        <td class="component">
-          {{component}}
-        </td>
-        <td class="assignee">
-          {{assigned_to}}
-        </td>
-        <td class="status">
-          {{status}}
-        </td>
-        <td class="summary">
-          {{#linkTo 'bug' id}} {{summary}} {{/linkTo}}
-        </td>
-        <td class="changed">
-          {{last_change_time}}
-        </td>
-      </tr>
-      {{/each}}
-    {{/if}}
-  </tbody>
-  <tfoot>
-    <tr>
-      <td>Length: {{length}} </td>
-    </tr>
-  </tfoot>
-</table>
+{{#if isLoading}}
+  Loading...
+{{/if}}
+{{#if model}}
+  <div class="section">
+    {{length}} bugs found.
+  </div>
+
+  <div class="section">
+    <table cellspacing="0" cellpadding="4" width="100%" class="listing-table">
+      <thead>
+        <tr>
+          {{view 'browse-column-header' column="id" title="ID"}}
+          {{view 'browse-column-header' column="product" title="Product"}}
+          {{view 'browse-column-header' column="component" title="Component"}}
+          {{view 'browse-column-header' column="assigned_to" title="Assignee"}}
+          {{view 'browse-column-header' column="status" title="Status"}}
+          {{view 'browse-column-header' column="summary" title="Summary"}}
+          {{view 'browse-column-header' column="last_change_time" title="Changed"}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each}}
+        <tr>
+          <td class="id">
+            {{#linkTo 'bug' id}} {{id}} {{/linkTo}}
+          </td>
+          <td class="product">
+            {{product}}
+          </td>
+          <td class="component">
+            {{component}}
+          </td>
+          <td class="assignee">
+            {{emailToUsername assigned_to}}
+          </td>
+          <td class="status">
+            {{status}}
+          </td>
+          <td class="summary">
+            {{#linkTo 'bug' id title=summary}} {{summary}} {{/linkTo}}
+          </td>
+          <td class="changed">
+            {{formatDate last_change_time}}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+{{/if}}
