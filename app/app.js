@@ -7,6 +7,7 @@ import FormatBytesHelper from 'bugzilla/helpers/format_bytes';
 import FormatDateHelper from 'bugzilla/helpers/format_date';
 import GravatarHelper from 'bugzilla/helpers/gravatar';
 import LinkifyHelper from 'bugzilla/helpers/linkify';
+import PluralizeHelper from 'bugzilla/helpers/pluralize';
 import Router from 'bugzilla/router';
 // /preload
 

@@ -9,7 +9,7 @@
           <div class="comments-show-all">
             <a href="#" {{action "showRemainingComments"}}>
               <img src="assets/images/comments.png" alt="Show remaining comments">
-              Show other {{remainingComments.length}} comments
+              Show other {{pluralize remainingComments.length 'comment'}}
             </a>
           </div>
         {{/if}}

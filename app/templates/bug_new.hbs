@@ -241,7 +241,7 @@
         <label>GROUPS:</label>
         <div>
           {{#view 'popover_open_button' kind="edit_groups_popover" layoutName=null}}
-            {{fields.groups.currentValue.length}} groups selected
+            {{pluralize fields.groups.currentValue.length 'group'}} selected
           {{/view}}
         </div>
         <hr>

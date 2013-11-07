@@ -124,7 +124,7 @@
     <div>
       {{#view "popover_open_button" kind="bug/cc_modal" layoutName=null}}
         <a href="#">
-          {{fields.cc.currentValue.length}} users
+          {{pluralize fields.cc.currentValue.length 'user'}}
 
           {{#if currentUserInCCList}}
             (including you)
@@ -235,7 +235,7 @@
     <div class="groups">
       <label>Groups:</label>
       <div>
-        {{fields.groups.currentValue.length}} groups selected
+        {{pluralize fields.groups.currentValue.length 'group'}} selected
       </div>
       <hr>
     </div>

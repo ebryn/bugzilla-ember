@@ -1,7 +1,7 @@
 {{#unless quicksearch}}
   Please type in a search query above
 {{else}}
-  <div class="section">Search results for: <strong>{{quicksearch}}</strong>. {{length}} results found.</div>
+  <div class="section">Search results for: <strong>{{quicksearch}}</strong>. {{pluralize length 'result'}} found.</div>
 
   <div class="section">
     <table cellspacing="0" cellpadding="4" width="100%" class="listing-table">
