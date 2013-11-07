@@ -6,6 +6,7 @@ import Flag from 'bugzilla/models/flag';
 import FlagDefinition from 'bugzilla/models/flag_definition';
 import camelizeKeys from 'bugzilla/utils/camelize_keys';
 import underscoreKeys from 'bugzilla/utils/underscore_keys';
+import getJSONWithCache from 'bugzilla/utils/get_json_with_cache';
 
 var RSVP = Ember.RSVP;
 
@@ -182,9 +183,6 @@ function processAttributes(json) {
   attrs.fields.seeAlso = camelizeKeys(attrs.fields.seeAlso);
   attrs.fields.seeAlso.originalValue = (attrs.fields.seeAlso.currentValue || []).slice();
 
-  // attrs.attachments = json.attachments;
-  // attrs.comments = json.comments;
-
   return attrs;
 }
 
@@ -228,6 +226,8 @@ function create(type, newAttributes) {
   };
 }
 
+
+
 Bug.reopenClass({
   newRecord: function(productName, attrs){
     return getJSON(urlFor('ember/create/' + productName)).
@@ -236,7 +236,7 @@ Bug.reopenClass({
   },
 
   find: function(id) {
-    return getJSON(urlFor('ember/show/' + id)).
+    return getJSONWithCache(urlFor('ember/show/' + id)).
       then(processAttributes).
       then(create(this));
   },

@@ -1,0 +1,23 @@
+.section {
+  padding: 20px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.edit-side-bar.section > div {
+  width: 284px;
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+.row input {
+  box-sizing: border-box;
+}
+
+.col {
+  display: table-cell;
+  width: 300px;
+  padding-right: 50px;
+}

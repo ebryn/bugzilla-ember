@@ -425,6 +425,19 @@ var BugController = Ember.ObjectController.extend({
       newCommentText += "\n\n";
 
       this.set('newCommentText', newCommentText);
+    },
+
+    reload: function() {
+      var self = this,
+          bug = this.get('model'),
+          attachments = this.get('attachments'),
+          comments = this.get('comments');
+
+      this.set('isReloading', true);
+      return Ember.RSVP.hash({bug: bug.reload(), attachments: attachments.reload(), comments: comments.reload()}).
+        then(function(hash) {
+          self.set('isReloading', false);
+        });
     }
   },
 

@@ -1,4 +1,4 @@
-<div class="bug-info">
+<div class="bug-info section">
   <div>
     {{input type="text" class="bug-name" value=fields.summary.currentValue style="border: 1px solid white;" readonly="readonly"}}
     {{#linkTo "bug" this class="bug-no"}}Bug {{id}}{{/linkTo}}
@@ -10,6 +10,13 @@
     <p >{{fields.creator.currentValue}}</p>
     <span>last updated:</span>
     <p {{bindAttr title="fields.lastChangeTime.currentValue"}}>{{formatDate fields.lastChangeTime.currentValue}}</p>
+    <span>
+      {{#if isReloading}}
+        Reloading...
+      {{else}}
+        <a href="#" {{action "reload"}}>Refresh</a>
+      {{/if}}
+    </span>
     {{#if fields.alias.currentValue}}
       <div class="bug-alias">
         <span>alias:</span>

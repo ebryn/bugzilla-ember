@@ -12,6 +12,11 @@ hr {
   border-top: 1px dotted #d7d3c8;
 }
 
+h1 {
+  font-weight: 300;
+  text-align: center;
+}
+
 h2 {
   font-size: 24px;
   font-weight: 300;
@@ -57,13 +62,15 @@ input[type=checkbox] {
   margin-bottom: 5px;
 }
 
-label {
+.edit-side-bar label,
+.popover label {
   display: block;
   text-transform: uppercase;
   margin-bottom: 3px;
 }
 
-label a {
+.edit-side-bar label a,
+.popover label a {
   font-weight: 400;
   text-transform: none;
   margin-left: 3px;
@@ -80,6 +87,18 @@ a {
 
 a:hover {
   color: #00539F;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clear {
+  clear: both;
 }
 
 .wrapper {
@@ -111,13 +130,16 @@ a:hover {
   width: 450px;
 }
 
-.bug-info {
-  /* height: 104px; */
-  background-color: #ffffff;
-  margin-bottom: 35px;
-  padding: 10px 20px 10px 10px;
+.section {
+  padding: 20px;
+  background: white;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   border-left: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 35px;
+}
+
+.bug-info {
+  padding: 10px 20px 10px 10px;
 }
 
 .bug-name {
@@ -872,3 +894,5 @@ a:hover {
   }
 
 }
+
+@import "includes/bug_new";

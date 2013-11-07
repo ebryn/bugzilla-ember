@@ -1,7 +1,256 @@
-<h1>Choose a product</h1>
+<h1>File a New Bug</h1>
 
-<ul class="products">
-  {{#each}}
-    <li>{{#linkTo 'bugNew2' name}}{{name}}{{/linkTo}}</li>
-  {{/each}}
-</ul>
+<div class="section">
+  <label style="display: block; width: 460px; margin: 0 auto;">
+    Select a Product:
+    {{view 'chosen_select' content=controller selection=selectedProduct optionLabelPath="name" prompt=" "}}
+  </label>
+</div>
+
+{{#if newBug}}
+
+  <div class="main-view section">
+    {{#if flashMessage}}
+      <div class="alert error">{{flashMessage}}</div>
+    {{/if}}
+
+    <div class="row">
+      <label>Summary: {{input type="text" value=fields.summary.currentValue class="bug-name" style="width: 100%"}}</label>
+    </div>
+
+    <div class="row">
+      <label class="col">
+        Component:
+        {{select content=fields.component.values selection=selectedComponent value=fields.component.currentValue optionLabelPath="name" optionValuePath="name" prompt=" "}}
+      </label>
+      <label class="col">
+        Version:
+        {{select content=fields.version.values value=fields.version.currentValue optionLabelPath="name" prompt=" "}}
+      </label>
+    </div>
+
+    <div class="row">
+      <label class="col">
+        Importance:
+        {{select content=fields.priority.values value=priority optionLabelPath="name" optionValuePath="name"}}
+        {{select content=fields.severity.values value=severity optionLabelPath="name" optionValuePath="name"}}
+      </label>
+      <label class="col">
+        Hardware:
+        {{select content=fields.platform.values value=fields.platform.currentValue optionLabelPath="name" prompt=" "}}
+        {{select content=fields.opSys.values value=fields.opSys.currentValue optionLabelPath="name" prompt=" "}}
+      </label>
+    </div>
+
+    <div class="row">
+      <label>Description: {{textarea value=fields.description.currentValue cols=80 rows=10}}</label>
+    </div>
+
+    <!--
+    <div class="row">
+      <button>Add an attachment</button>
+    </div>
+    -->
+
+    <div class="row">
+      <label>Security: {{input type="checkbox"}} Restrict access to this bug to members of the "Security-Sensitive Core Bug" group.</label>
+    </div>
+
+    <button class="save-btn" {{action "save"}}>Create</button>
+  </div>
+
+  <div class="edit-side-bar section" style="top: 226px;">
+    <div {{action "toggleAdvanced"}}>
+      {{#if showingAdvanced}}
+        Hide
+      {{else}}
+        Show
+      {{/if}}
+      advanced fields
+    </div>
+
+    {{#if showingAdvanced}}
+      <hr>
+
+      <div>
+        <label>Whiteboard:</label>
+        {{input type="text"}}
+      </div>
+      <hr>
+
+      <div>
+        <label>Keywords:</label>
+        {{input type="text"}}
+      </div>
+      <hr>
+
+      <div>
+        <label>Target Milestone:</label>
+        {{view Ember.Select contentBinding="fields.targetMilestone.values" optionLabelPath="content.name"}}
+      </div>
+      <hr>
+
+      <div>
+        <label>ASSIGNEE:</label>
+        {{input type="text"}}
+      </div>
+      <hr>
+
+      <div>
+        <label>QA Contact:</label>
+        {{input type="text"}}
+      </div>
+      <hr>
+
+      <div class="url">
+        <label>URL:</label>
+        {{input type="text"}}
+      </div>
+      <hr>
+
+      <div class="depends_on">
+        <label>Depends on:</label>
+        <div>
+          {{multi-value values=fields.dependsOn.currentValue}}
+        </div>
+      </div>
+      <hr>
+
+      <div class="blocks">
+        <label>Blocks:</label>
+        <div>
+          {{multi-value values=fields.blocks.currentValue}}
+        </div>
+      </div>
+      <hr>
+
+      <div class="cc">
+        <label>CC LIST:</label>
+        <div>
+          {{multi-value values=fields.blocks.currentValue}}
+        </div>
+      </div>
+      <hr>
+
+      <div class="flags">
+        <label>Flags:</label>
+
+        <div class="table-container with-button">
+          <table class="table">
+            {{#each currentFlags itemController="flag"}}
+              <tr>
+                <td class="flag-setter">{{emailToUsername setter.email}}</td>
+                <td class="flag-name">{{name}}</td>
+                <td class="flag-status">
+                  <div class="select-container">
+                    {{view Ember.Select contentBinding="values" valueBinding="status"}}
+                    <img src="assets/images/downarrow.png">
+                  </div>
+                </td>
+                <td>
+                  {{#if showRequestee}}
+                    {{input type="text" value=requestee.email}}
+                  {{/if}}
+                </td>
+              </tr>
+            {{else}}
+              <tr><td colspan="4"><em>No flags</em></td></tr>
+            {{/each}}
+          </table>
+        </div>
+        {{#view "popover_open_button" kind="add_flag_popover" class="label-btn with-table"}}
+          Add a flag
+        {{/view}}
+        <hr>
+      </div>
+
+      <div class="project-flags">
+        <label>Project flags:</label>
+        <div {{bindAttr class=":table-container :with-button"}}>
+          <table class="table">
+            {{#each projectFlags.currentValue}}
+              <tr>
+                <td>{{description}}</td>
+                <td class="status">
+                  <div class="select-container">
+                    {{view Ember.Select
+                        contentBinding="values"
+                        optionLabelPath="content.name"
+                        optionValuePath="content.name"
+                        valueBinding="currentValue"}}
+                    <img src="assets/images/downarrow.png">
+                  </div>
+                </td>
+              </tr>
+            {{else}}
+              <tr><td colspan="4"><em>No project flags</em></td></tr>
+            {{/each}}
+          </table>
+        </div>
+        {{#view "popover_open_button" kind="add_project_flag_popover" class="label-btn with-table"}}
+          Add a project flag
+        {{/view}}
+      </div>
+      <hr>
+
+      <div class="tracking-flags">
+        <label>Tracking flags:</label>
+        <div {{bindAttr class=":table-container :with-button"}}>
+          <table class="table">
+            {{#each trackingFlags.currentValue}}
+              <tr>
+                <td>{{description}}</td>
+                <td class="status">
+                  <div class="select-container">
+                    {{view Ember.Select
+                          contentBinding="values"
+                          optionLabelPath="content.name"
+                          optionValuePath="content.name"
+                          valueBinding="currentValue"}}
+                    <img src="assets/images/downarrow.png">
+                  </div>
+                </td>
+              </tr>
+            {{else}}
+              <tr><td colspan="4"><em>No tracking flags</em></td></tr>
+            {{/each}}
+          </table>
+        </div>
+        {{#view "popover_open_button" kind="add_tracking_flag_popover" class="label-btn with-table"}}
+          Add a tracking flag
+        {{/view}}
+      </div>
+      <hr>
+
+
+      {{#each customFields}}
+        <div {{bind-attr class="name"}}>
+          <label>
+            {{#if description}}
+              {{description}}:
+            {{else}}
+              {{name}}:
+            {{/if}}
+          </label>
+          {{field this}}
+        </div>
+        <hr>
+      {{/each}}
+
+      <div class="groups">
+        <label>GROUPS:</label>
+        <div>
+          {{#view 'popover_open_button' kind="edit_groups_popover" layoutName=null}}
+            {{fields.groups.currentValue.length}} groups selected
+          {{/view}}
+        </div>
+        <hr>
+      </div>
+    {{/if}}
+  </div>
+
+{{else}}
+  {{#if newBugIsLoading}}
+    Loading...
+  {{/if}}
+{{/if}}

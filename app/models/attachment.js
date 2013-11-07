@@ -2,6 +2,7 @@ import getJSON from 'bugzilla/utils/get_json';
 import urlFor from 'bugzilla/utils/url_for';
 import ajax from 'bugzilla/utils/ajax';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
+import getJSONWithCache from 'bugzilla/utils/get_json_with_cache';
 
 var attr = Ember.attr;
 
@@ -56,7 +57,7 @@ Attachment.reopenClass({
       var bugId = params.bug_id,
           url = urlFor("bug/" + bugId + "/attachment");
 
-      getJSON(url).then(function(json) {
+      getJSONWithCache(url).then(function(json) {
         var attachmentsJson = json.bugs[bugId];
 
         // FIXME: workaround data being a special property in EM

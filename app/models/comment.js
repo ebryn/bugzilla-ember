@@ -3,6 +3,7 @@ import urlFor from 'bugzilla/utils/url_for';
 import promiseStorage from 'bugzilla/utils/promise_storage';
 import unhandledRejection from 'bugzilla/utils/unhandled_rejection';
 import ajax from 'bugzilla/utils/ajax';
+import getJSONWithCache from 'bugzilla/utils/get_json_with_cache';
 
 var attr = Ember.attr;
 
@@ -42,9 +43,8 @@ Comment.reopenClass({
       //       records.pushObjects(newComments);
       //     });
       //   } else { // not cached locally, fetch all comments
-          return getJSON(url).then(function(json) {
+          return getJSONWithCache(url).then(function(json) {
             records.load(klass, json.bugs[bugId].comments);
-            return promiseStorage.setItem(cacheKey, json.bugs[bugId].comments);
           });
       //   }
       // });
