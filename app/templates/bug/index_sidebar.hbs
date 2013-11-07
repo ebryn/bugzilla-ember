@@ -122,10 +122,15 @@
   <div class="cc">
     <label>CC LIST:</label>
     <div>
-      <a href="#" {{action "showCCModal" this}}>{{fields.cc.currentValue.length}} users</a>
-      {{#if currentUserInCCList}}
-        (including you)
-      {{/if}}
+      {{#view "popover_open_button" kind="bug/cc_modal" layoutName=null}}
+        <a href="#">
+          {{fields.cc.currentValue.length}} users
+
+          {{#if currentUserInCCList}}
+            (including you)
+          {{/if}}
+        </a>
+      {{/view}}
     </div>
 
     <label class="notifications">
