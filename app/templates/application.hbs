@@ -1,7 +1,9 @@
 <div class="wrapper">
   <header class="main-app-header">
     <img width="154" height="42" style="float: right; margin-top: -16px; margin-left: 20px;" src="assets/images/tabzilla.png">
-    {{render 'search'}}
+    {{#if user.isLoggedIn}}
+      {{render 'search'}}
+    {{/if}}
     {{partial 'nav'}}
   </header>
 
